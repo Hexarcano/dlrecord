@@ -40,6 +40,7 @@ public class DeviceTypeController {
     @PostMapping()
     public ResponseEntity<DeviceType> createDeviceType(@RequestBody DeviceType deviceType) {
         DeviceType createdDeviceType = deviceTypeService.createDeviceType(deviceType);
+
         return new ResponseEntity<>(createdDeviceType, HttpStatus.CREATED);
     }
 
@@ -52,6 +53,7 @@ public class DeviceTypeController {
     @GetMapping()
     public ResponseEntity<List<DeviceType>> getAllDeviceTypes() {
         List<DeviceType> list = deviceTypeService.findAll();
+
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

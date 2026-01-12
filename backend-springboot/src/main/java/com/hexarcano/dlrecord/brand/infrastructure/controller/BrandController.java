@@ -66,9 +66,7 @@ public class BrandController {
     @GetMapping("/{id}")
     public ResponseEntity<Brand> findBrandById(@PathVariable String id) {
         return brandService.findById(id)
-                .map(brand -> {
-                    return new ResponseEntity<Brand>(brand, HttpStatus.OK);
-                })
+                .map(brand -> new ResponseEntity<Brand>(brand, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -85,9 +83,7 @@ public class BrandController {
     @PutMapping("/{id}")
     public ResponseEntity<Brand> updateBrand(@PathVariable String id, @RequestBody Brand entity) {
         return brandService.updateBrand(id, entity)
-                .map(brand -> {
-                    return new ResponseEntity<Brand>(brand, HttpStatus.OK);
-                })
+                .map(brand -> new ResponseEntity<Brand>(brand, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

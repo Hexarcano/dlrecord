@@ -38,8 +38,8 @@ public class JpaDeviceTypeRepositoryAdapter implements IDeviceTypeRepository {
     @Transactional
     public DeviceType save(DeviceType deviceType) {
         DeviceTypeEntity entity = DeviceTypeEntity.fromDomainModel(deviceType);
-        DeviceTypeEntity savedEntity = repository.save(entity);
-        return savedEntity.toDomainModel();
+
+        return repository.save(entity).toDomainModel();
     }
 
     /**
@@ -80,8 +80,8 @@ public class JpaDeviceTypeRepositoryAdapter implements IDeviceTypeRepository {
         return repository.findById(uuid)
                 .map(entity -> {
                     entity.setName(deviceType.getName());
-                    DeviceTypeEntity saved = repository.save(entity);
-                    return saved.toDomainModel();
+
+                    return repository.save(entity).toDomainModel();
                 });
     }
 
@@ -96,6 +96,7 @@ public class JpaDeviceTypeRepositoryAdapter implements IDeviceTypeRepository {
     @Transactional
     public boolean deleteById(String uuid) {
         long affectedRows = repository.deleteByUuid(uuid);
+
         return affectedRows > 0;
     }
 }

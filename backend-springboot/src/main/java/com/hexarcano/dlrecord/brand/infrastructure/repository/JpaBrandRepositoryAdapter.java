@@ -37,9 +37,7 @@ public class JpaBrandRepositoryAdapter implements IBrandRepository {
     public Brand save(Brand brand) {
         BrandEntity entity = BrandEntity.fromDomainModel(brand);
 
-        BrandEntity savedEntity = repository.save(entity);
-
-        return savedEntity.toDomainModel();
+        return repository.save(entity).toDomainModel();
     }
 
     /**
@@ -81,9 +79,7 @@ public class JpaBrandRepositoryAdapter implements IBrandRepository {
                 .map(entity -> {
                     entity.setName(brand.getName());
 
-                    BrandEntity saved = repository.save(entity);
-
-                    return saved.toDomainModel();
+                    return repository.save(entity).toDomainModel();
                 });
     }
 
