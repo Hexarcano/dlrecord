@@ -6,15 +6,17 @@ import com.hexarcano.dlrecord.brand.model.entity.Brand;
 
 /**
  * Input port (Driving Port) for the 'Update Brand' use case.
- * Defines the contract for updating an existing brand within the application core.
+ * Defines the contract for updating an existing brand within the application
+ * core.
  */
 public interface IUpdateBrand {
     /**
      * Executes the logic to update an existing brand.
      *
-     * @param uuid The unique identifier of the brand to update.
+     * @param uuid  The unique identifier of the brand to update.
      * @param brand The brand object containing the new data.
-     * @return An {@link Optional} containing the updated {@link Brand} if found and updated, or an empty Optional otherwise.
+     * @return An {@link Optional} containing the updated {@link Brand} if found and
+     *         updated, or an empty Optional otherwise.
      */
     Optional<Brand> updateBrand(String uuid, Brand brand);
 }

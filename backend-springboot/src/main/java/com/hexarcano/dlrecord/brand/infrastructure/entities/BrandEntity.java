@@ -20,11 +20,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * Represents a Brand in the persistence layer.
- * <p>
- * This is a JPA entity that will be mapped to a "brand" table in the database.
- * It includes framework-specific annotations for persistence and auditing.
- * It is responsible for converting to and from the {@link Brand} domain model.
- * </p>
  */
 @Entity(name = "brand")
 @Data
@@ -51,7 +46,9 @@ public class BrandEntity {
     }
 
     /**
-     * Maps a {@link Brand} domain model object to a {@link BrandEntity} persistence object.
+     * Maps a {@link Brand} domain model object to a {@link BrandEntity} persistence
+     * object.
+     * 
      * @param brand The domain model to convert.
      * @return A new {@link BrandEntity} instance with data from the domain model.
      */
@@ -60,8 +57,11 @@ public class BrandEntity {
     }
 
     /**
-     * Maps this {@link BrandEntity} persistence object to a {@link Brand} domain model object.
-     * @return A new {@link Brand} instance with data from this entity, representing the application's core domain.
+     * Maps this {@link BrandEntity} persistence object to a {@link Brand} domain
+     * model object.
+     * 
+     * @return A new {@link Brand} instance with data from this entity, representing
+     *         the application's core domain.
      */
     public Brand toDomainModel() {
         return new Brand(uuid, name);

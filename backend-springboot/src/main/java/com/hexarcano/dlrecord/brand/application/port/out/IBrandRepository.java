@@ -6,8 +6,13 @@ import java.util.Optional;
 import com.hexarcano.dlrecord.brand.model.entity.Brand;
 
 /**
- * Output port (Driven Port) defining the contract for persistence operations on the {@link Brand} entity.
- * This interface is implemented by an adapter in the infrastructure layer to interact with a specific database.
+ * Output port (Driven Port) defining the contract for persistence operations on
+ * the {@link Brand} entity.
+ * 
+ * <p>
+ * This interface is implemented by an adapter in the infrastructure layer to
+ * interact with a specific database.
+ * </p>
  */
 public interface IBrandRepository {
     /**
@@ -22,7 +27,8 @@ public interface IBrandRepository {
      * Finds a brand by its unique identifier.
      *
      * @param uuid The ID of the brand to find.
-     * @return An {@link Optional} containing the brand if found, or empty otherwise.
+     * @return An {@link Optional} containing the brand if found, or empty
+     *         otherwise.
      */
     Optional<Brand> findById(String uuid);
 
@@ -37,7 +43,8 @@ public interface IBrandRepository {
      * Updates an existing brand in the repository.
      *
      * @param brand The {@link Brand} entity with updated data.
-     * @return An {@link Optional} containing the updated brand if the operation was successful, or empty if the brand to update was not found.
+     * @return An {@link Optional} containing the updated brand if the operation was
+     *         successful, or empty if the brand to update was not found.
      */
     Optional<Brand> update(String uuid, Brand brand);
 
@@ -45,8 +52,8 @@ public interface IBrandRepository {
      * Deletes a brand from the repository by its unique identifier.
      *
      * @param uuid The ID of the brand to delete.
-     * @return {@code true} if the brand was successfully deleted, {@code false} if the brand was not found.
+     * @return {@code true} if the brand was successfully deleted,
+     *         {@code false} otherwise.
      */
     boolean deleteById(String uuid);
 }
-

@@ -6,9 +6,9 @@ import lombok.ToString;
 
 /**
  * Represents the core domain model for a Brand.
+ * 
  * <p>
- * This class is a "Rich Domain Object" that protects its own invariants (business rules).
- * It is completely independent of any framework-specific logic.
+ * Rich Domain Object that protects its own business rules.
  * </p>
  */
 @Getter
@@ -20,6 +20,7 @@ public class Brand {
 
     /**
      * Constructs a new Brand, ensuring its initial state is valid.
+     * 
      * @param uuid The unique identifier.
      * @param name The name of the brand, which will be validated.
      * @throws IllegalArgumentException if the name is invalid.
@@ -32,6 +33,7 @@ public class Brand {
 
     /**
      * Changes the name of the brand, ensuring the new name is valid.
+     * 
      * @param newName The new name for the brand.
      * @throws IllegalArgumentException if the new name is invalid.
      */
@@ -42,6 +44,7 @@ public class Brand {
 
     /**
      * Private helper method to enforce business rules on the brand's name.
+     * 
      * @param name The name to validate.
      * @throws IllegalArgumentException if the validation fails.
      */

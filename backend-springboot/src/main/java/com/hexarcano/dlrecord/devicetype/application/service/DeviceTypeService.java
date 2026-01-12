@@ -1,21 +1,26 @@
 package com.hexarcano.dlrecord.devicetype.application.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.hexarcano.dlrecord.devicetype.application.port.in.ICreateDeviceType;
 import com.hexarcano.dlrecord.devicetype.application.port.in.IDeleteDeviceType;
 import com.hexarcano.dlrecord.devicetype.application.port.in.IRetrieveDeviceType;
 import com.hexarcano.dlrecord.devicetype.application.port.in.IUpdateDeviceType;
 import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+
 import lombok.AllArgsConstructor;
 
-import java.util.List;
-import java.util.Optional;
-
 /**
- * A service facade that aggregates all device-type-related use cases into a single entry point.
+ * A service facade that aggregates all device-type-related use cases into a
+ * single entry point.
+ * 
  * <p>
- * This class implements all the input port interfaces ({@link ICreateDeviceType}, {@link IRetrieveDeviceType}, etc.)
- * and delegates the calls to the actual use case implementations. It is used by the primary adapter
- * (e.g., {@code DeviceTypeController}) to interact with the application's core logic.
+ * This class implements all the input port interfaces
+ * ({@link ICreateDeviceType}, {@link IRetrieveDeviceType}, etc.) and delegates
+ * the calls to the actual use case implementations. It is used by the primary
+ * adapter (e.g., {@code DeviceTypeController}) to interact with the
+ * application's core logic.
  * </p>
  */
 @AllArgsConstructor
@@ -27,6 +32,7 @@ public class DeviceTypeService implements ICreateDeviceType, IRetrieveDeviceType
 
     /**
      * Delegates the call to the 'Create DeviceType' use case implementation.
+     * 
      * @param deviceType The device type to create.
      * @return The created device type.
      */
@@ -36,7 +42,9 @@ public class DeviceTypeService implements ICreateDeviceType, IRetrieveDeviceType
     }
 
     /**
-     * Delegates the call to the 'Retrieve DeviceType' use case to find a device type by its ID.
+     * Delegates the call to the 'Retrieve DeviceType' use case to find a device
+     * type by its ID.
+     * 
      * @param uuid The unique ID of the device type to find.
      * @return An {@link Optional} with the found device type, or empty.
      */
@@ -46,7 +54,9 @@ public class DeviceTypeService implements ICreateDeviceType, IRetrieveDeviceType
     }
 
     /**
-     * Delegates the call to the 'Retrieve DeviceType' use case to find all device types.
+     * Delegates the call to the 'Retrieve DeviceType' use case to find all device
+     * types.
+     * 
      * @return A list of all device types.
      */
     @Override
@@ -56,7 +66,8 @@ public class DeviceTypeService implements ICreateDeviceType, IRetrieveDeviceType
 
     /**
      * Delegates the call to the 'Update DeviceType' use case.
-     * @param uuid The unique ID of the device type to update.
+     * 
+     * @param uuid       The unique ID of the device type to update.
      * @param deviceType The device type data to update.
      * @return An {@link Optional} with the updated device type, or empty.
      */
@@ -67,6 +78,7 @@ public class DeviceTypeService implements ICreateDeviceType, IRetrieveDeviceType
 
     /**
      * Delegates the call to the 'Delete DeviceType' use case.
+     * 
      * @param uuid The unique ID of the device type to delete.
      * @return {@code true} if deleted, {@code false} otherwise.
      */

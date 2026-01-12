@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 
 /**
  * Use case implementation for deleting a brand.
+ * 
+ * <p>
  * This class contains the business logic for the deletion process.
- * It implements the {@link IDeleteBrand} input port and uses the {@link IBrandRepository} output port
- * to delete the brand data.
+ * It implements the {@link IDeleteBrand} input port and uses the
+ * {@link IBrandRepository} output port to delete the brand data.
+ * </p>
  */
 @AllArgsConstructor
 public class DeleteBrand implements IDeleteBrand {
@@ -17,8 +20,10 @@ public class DeleteBrand implements IDeleteBrand {
 
     /**
      * Deletes a brand by its unique identifier.
+     * 
      * @param uuid The unique ID of the brand to be deleted.
-     * @return {@code true} if the brand was successfully deleted, {@code false} otherwise.
+     * @return {@code true} if the brand was successfully deleted,
+     *         {@code false} otherwise.
      */
     @Override
     public boolean deleteBrand(String uuid) {

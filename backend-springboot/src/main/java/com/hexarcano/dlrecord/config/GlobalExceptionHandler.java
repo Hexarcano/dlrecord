@@ -1,23 +1,26 @@
 package com.hexarcano.dlrecord.config;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
-
 /**
  * Global exception handler for the application's controllers.
- * This class captures specific exceptions and translates them into
- * appropriate HTTP responses.
+ * 
+ * <p>
+ * This class captures specific exceptions and translates them into appropriate
+ * HTTP responses.
+ * </p>
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
-     * Handles IllegalArgumentException, which is thrown by domain models
-     * when a business rule is violated.
+     * Handles IllegalArgumentException, thrown by domain models when a business
+     * rule is violated.
      *
      * @param ex The captured IllegalArgumentException.
      * @return A ResponseEntity with HTTP status 400 (Bad Request) and a

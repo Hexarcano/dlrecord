@@ -11,9 +11,12 @@ import lombok.AllArgsConstructor;
 
 /**
  * Use case implementation for retrieving one or more brands.
+ * 
+ * <p>
  * This class contains the business logic for querying brands.
- * It implements the {@link IRetrieveBrand} input port and uses the {@link IBrandRepository} output port
- * to fetch brand data.
+ * It implements the {@link IRetrieveBrand} input port and uses the
+ * {@link IBrandRepository} output port to fetch brand data.
+ * </p>
  */
 @AllArgsConstructor
 public class RetrieveBrand implements IRetrieveBrand {
@@ -21,8 +24,10 @@ public class RetrieveBrand implements IRetrieveBrand {
 
     /**
      * Retrieves a single brand by its unique identifier.
+     * 
      * @param uuid The unique ID of the brand to find.
-     * @return An {@link Optional} containing the found {@link Brand}, or empty if not found.
+     * @return An {@link Optional} containing the found {@link Brand}, or empty if
+     *         not found.
      */
     @Override
     public Optional<Brand> findById(String uuid) {
@@ -31,6 +36,7 @@ public class RetrieveBrand implements IRetrieveBrand {
 
     /**
      * Retrieves a list of all brands.
+     * 
      * @return A {@link List} of all {@link Brand} domain models.
      */
     @Override
