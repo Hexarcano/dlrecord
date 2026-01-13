@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.hexarcano.dlrecord.exception.DataConflictException;
+
 /**
  * Global exception handler for the application's controllers.
  * 
@@ -30,5 +32,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
         Map<String, String> errorBody = Map.of("error", ex.getMessage());
         return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataConflictException.class)
+    public ResponseEntity<Map<String, String>> handleDataConflictException(DataConflictException ex) {
+        Map<String, String> errorBody = Map.of("error", ex.getMessage());
+        return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT);
     }
 }

@@ -2,6 +2,8 @@ package com.hexarcano.dlrecord.brand.application.implementation;
 
 import com.hexarcano.dlrecord.brand.application.port.in.IDeleteBrand;
 import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
+import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
+import com.hexarcano.dlrecord.exception.DataConflictException;
 
 import lombok.AllArgsConstructor;
 
@@ -16,7 +18,8 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public class DeleteBrand implements IDeleteBrand {
-    private final IBrandRepository repository;
+    private final IBrandRepository brandRepository;
+    private final IDeviceModelRepository deviceModelRepository;
 
     /**
      * Deletes a brand by its unique identifier.
@@ -24,9 +27,14 @@ public class DeleteBrand implements IDeleteBrand {
      * @param uuid The unique ID of the brand to be deleted.
      * @return {@code true} if the brand was successfully deleted,
      *         {@code false} otherwise.
+     * @throws DataConflictException if brand has associated device models.
      */
     @Override
     public boolean deleteBrand(String uuid) {
-        return repository.deleteById(uuid);
+        if (deviceModelRepository.countByBrandUuid(uuid) > 0) {
+            throw new DataConflictException("Cannot delete brand. Delete associated device models first.");
+        }
+
+        return brandRepository.deleteById(uuid);
     }
 }
