@@ -34,6 +34,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles DataConflictException, thrown when an attempt to create or update a resource conflicts with existing data.
+     *
+     * @param ex The captured DataConflictException.
+     * @return A ResponseEntity with HTTP status 409 (Conflict) and a
+     *         JSON body containing the error message.
+     */
     @ExceptionHandler(DataConflictException.class)
     public ResponseEntity<Map<String, String>> handleDataConflictException(DataConflictException ex) {
         Map<String, String> errorBody = Map.of("error", ex.getMessage());

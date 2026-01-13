@@ -20,18 +20,36 @@ import com.hexarcano.dlrecord.devicemodel.model.entity.DeviceModel;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Primary (Driving) Adapter that exposes device model use cases via a RESTful API.
+ * It handles incoming HTTP requests and delegates them to the application
+ * service layer.
+ */
 @RestController
 @RequestMapping("/api/v1/device-models")
 @AllArgsConstructor
 public class DeviceModelController {
     private final DeviceModelService deviceModelService;
 
+    /**
+     * REST endpoint to create a new device model.
+     *
+     * @param request The device model data sent in the request body.
+     * @return A {@link ResponseEntity} with the created device model and an HTTP
+     *         status of 201 (Created).
+     */
     @PostMapping()
     public ResponseEntity<DeviceModel> createDeviceModel(@RequestBody CreateDeviceModelRequest request) {
         DeviceModel createdDeviceModel = deviceModelService.createDeviceModel(request.name(), request.brandId());
         return new ResponseEntity<>(createdDeviceModel, HttpStatus.CREATED);
     }
 
+    /**
+     * REST endpoint to retrieve all device models.
+     *
+     * @return A {@link ResponseEntity} with a list of all device models and an HTTP
+     *         status of 200 (OK).
+     */
     @GetMapping()
     public ResponseEntity<List<DeviceModel>> getAllDeviceModels() {
         List<DeviceModel> list = deviceModelService.findAll();
@@ -39,6 +57,14 @@ public class DeviceModelController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * REST endpoint to find a single device model by its unique ID.
+     *
+     * @param id The unique identifier of the device model, passed in the URL path.
+     * @return A {@link ResponseEntity} with the found device model and HTTP status
+     *         200 (OK), or HTTP status 404 (Not Found) if the device model does not
+     *         exist.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<DeviceModel> findDeviceModelById(@PathVariable String id) {
         return deviceModelService.findById(id)
@@ -46,6 +72,16 @@ public class DeviceModelController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * REST endpoint to update an existing device model.
+     *
+     * @param id      The unique identifier of the device model to update, passed in
+     *                the URL path.
+     * @param request The updated device model data sent in the request body.
+     * @return A {@link ResponseEntity} with the updated device model and HTTP status
+     *         200 (OK), or HTTP status 404 (Not Found) if the device model to update
+     *         does not exist.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<DeviceModel> updateDeviceModel(
             @PathVariable String id,
@@ -55,6 +91,15 @@ public class DeviceModelController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * REST endpoint to delete a device model by its unique ID.
+     *
+     * @param id The unique identifier of the device model to delete, passed in the
+     *           URL path.
+     * @return A {@link ResponseEntity} with HTTP status 204 (No Content) if
+     *         deletion was successful, or HTTP status 404 (Not Found) if the device
+     *         model does not exist.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDeviceModel(@PathVariable String id) {
         return (deviceModelService.deleteDeviceModel(id))

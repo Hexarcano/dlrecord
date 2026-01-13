@@ -22,6 +22,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a DeviceModel in the persistence layer.
+ */
 @Entity(name = "device_model")
 @Data
 @AllArgsConstructor
@@ -45,12 +48,27 @@ public class DeviceModelEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    /**
+     * Constructs a new DeviceModelEntity with the specified UUID, name and brand.
+     *
+     * @param uuid  The unique identifier.
+     * @param name  The name of the device model.
+     * @param brand The associated brand entity.
+     */
     public DeviceModelEntity(String uuid, String name, BrandEntity brand) {
         this.uuid = uuid;
         this.name = name;
         this.brand = brand;
     }
 
+    /**
+     * Maps a {@link DeviceModel} domain model object to a {@link DeviceModelEntity}
+     * persistence object.
+     *
+     * @param deviceModel The domain model to convert.
+     * @return A new {@link DeviceModelEntity} instance with data from the domain
+     *         model.
+     */
     public static DeviceModelEntity fromDomainModel(DeviceModel deviceModel) {
         BrandEntity brandEntity = BrandEntity.fromDomainModel(deviceModel.getBrand());
 
@@ -60,6 +78,12 @@ public class DeviceModelEntity {
                 brandEntity);
     }
 
+    /**
+     * Maps this {@link DeviceModelEntity} persistence object to a {@link DeviceModel}
+     * domain model object.
+     *
+     * @return A new {@link DeviceModel} instance with data from this entity.
+     */
     public DeviceModel toDomainModel() {
         return new DeviceModel(
                 this.uuid,

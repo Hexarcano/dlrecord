@@ -14,37 +14,73 @@ import com.hexarcano.dlrecord.devicemodel.model.entity.DeviceModel;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Secondary (Driven) Adapter that implements the {@link IDeviceModelRepository}
+ * output port.
+ * 
+ * <p>
+ * It connects the application's core logic to the persistence layer using
+ * Spring Data JPA. All methods operate on the {@link DeviceModel} domain model,
+ * abstracting away the underlying persistence-specific {@link DeviceModelEntity}.
+ * </p>
+ */
 @Repository
 @AllArgsConstructor
 public class JpaDeviceModelRepositoryAdapter implements IDeviceModelRepository {
     private final JpaDeviceModelRepository deviceModelrepository;
     private final JpaBrandRepository brandRepository;
 
+    /**
+     * Saves a {@link DeviceModel} domain model to the database.
+     * 
+     * @param deviceModel The {@link DeviceModel} domain object to save.
+     * @return The persisted {@link DeviceModel} object, including any
+     *         repository-generated values.
+     */
     @Override
     @Transactional
     public DeviceModel save(DeviceModel deviceModel) {
         BrandEntity brandEntity = brandRepository.findById(deviceModel.getBrand().getUuid())
                 .orElseThrow(() -> new IllegalArgumentException("Brand not found"));
 
-        DeviceModelEntity deviceTypeEntity = DeviceModelEntity.fromDomainModel(deviceModel);
+        DeviceModelEntity deviceModelEntity = DeviceModelEntity.fromDomainModel(deviceModel);
 
-        deviceTypeEntity.setBrand(brandEntity);
+        deviceModelEntity.setBrand(brandEntity);
 
-        return deviceModelrepository.save(deviceTypeEntity).toDomainModel();
+        return deviceModelrepository.save(deviceModelEntity).toDomainModel();
     }
 
+    /**
+     * Finds a device model by its unique ID.
+     *
+     * @param uuid The unique identifier of the device model.
+     * @return An {@link Optional} containing the {@link DeviceModel} if found,
+     *         otherwise empty.
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<DeviceModel> findById(String uuid) {
         return deviceModelrepository.findById(uuid).map(DeviceModelEntity::toDomainModel);
     }
 
+    /**
+     * Retrieves all device models from the database.
+     *
+     * @return A {@link List} of all {@link DeviceModel} domain models.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<DeviceModel> findAll() {
         return deviceModelrepository.findAll().stream().map(DeviceModelEntity::toDomainModel).toList();
     }
 
+    /**
+     * Deletes a device model by its unique ID.
+     *
+     * @param uuid The unique identifier of the device model to delete.
+     * @return {@code true} if a device model was deleted, {@code false} if no device
+     *         model was found with the given ID.
+     */
     @Override
     @Transactional
     public boolean deleteById(String uuid) {
@@ -53,6 +89,12 @@ public class JpaDeviceModelRepositoryAdapter implements IDeviceModelRepository {
         return affectedRows > 0;
     }
 
+    /**
+     * Counts the number of device models associated with a specific brand.
+     *
+     * @param brandUuid The unique identifier of the brand.
+     * @return The count of device models for the given brand.
+     */
     @Override
     @Transactional(readOnly = true)
     public long countByBrandUuid(String brandUuid) {
