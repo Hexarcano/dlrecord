@@ -4,10 +4,11 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.hexarcano.dlrecord.exception.DataConflictException;
+import com.hexarcano.dlrecord.exception.UsernameNotFoundException;
 
 /**
  * Global exception handler for the application's controllers.
@@ -35,15 +36,17 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles DataConflictException, thrown when an attempt to create or update a resource conflicts with existing data.
+     * Handles authentication exceptions (BadCredentialsException and
+     * UsernameNotFoundException).
+     * Returns a generic error message to prevent user enumeration.
      *
-     * @param ex The captured DataConflictException.
-     * @return A ResponseEntity with HTTP status 409 (Conflict) and a
-     *         JSON body containing the error message.
+     * @param ex The captured exception (either BadCredentials or UsernameNotFound).
+     * @return A ResponseEntity with HTTP status 401 (Unauthorized) and a generic
+     *         error message.
      */
-    @ExceptionHandler(DataConflictException.class)
-    public ResponseEntity<Map<String, String>> handleDataConflictException(DataConflictException ex) {
-        Map<String, String> errorBody = Map.of("error", ex.getMessage());
-        return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT);
+    @ExceptionHandler({ BadCredentialsException.class, UsernameNotFoundException.class })
+    public ResponseEntity<Map<String, String>> handleAuthenticationException(RuntimeException ex) {
+        Map<String, String> errorBody = Map.of("error", "Bad credentials");
+        return new ResponseEntity<>(errorBody, HttpStatus.UNAUTHORIZED);
     }
 }
