@@ -11,6 +11,7 @@ allowed-tools: Read, Write, Glob, Grep
 # Project Architecture Rules (Hexagonal & DDD)
 
 ## Core Principles
+
 1.  **Dependency Rule**: Dependencies point **INWARDS**.
     *   `Domain` depends on NOTHING.
     *   `Application` depends on `Domain`.
@@ -29,7 +30,7 @@ Each logical module (e.g., `auth`, `devicemodel`) must follow this directory lay
 │   │   ├── in/                 # Use Case Interfaces (Inputs)
 |   |   |   └── dto/            # Data Transfer Objects for Inputs
 │   │   └── out/                # Repository/External System Interfaces (Outputs)
-│   └── service/                # Implementation of 'port.in' (Use Cases)
+│   └── service/                # Facade implementing all Input Ports, delegating to implementation classes.
 │
 ├── domain/                     # BUSINESS RULES LAYER
 │   ├── model/                  # Entities, Aggregates, Value Objects (POJOs)
@@ -57,8 +58,8 @@ Each logical module (e.g., `auth`, `devicemodel`) must follow this directory lay
 
 *   **Content**: Application logic, flow control.
 *   **Rules**:
-    *   ✅ **Implementation**: Implement `port.in` use cases.
-    *   ✅ **Service**: Centralizes and call `port.in` interfaces.
+    *   ✅ **Implementation**: Actual implement `port.in` of use cases.
+    *   ✅ **Service**: Facade that centralizes and call `port.in` interfaces for controller calls.
     *   ✅ **Ports**: Interfaces only. `port.in` defines what the app *can do*. `port.out` defines what the app *needs*.
     *   ❌ **Anotations**: Never use JPA / framework annotations.
 
