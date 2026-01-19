@@ -1,8 +1,8 @@
 package com.hexarcano.dlrecord.devicetype.application.implementation;
 
-import com.hexarcano.dlrecord.devicetype.application.port.in.ICreateDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.out.IDeviceTypeRepository;
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.application.port.in.CreateDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.AllArgsConstructor;
 
@@ -16,8 +16,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class CreateDeviceType implements ICreateDeviceType {
-    private final IDeviceTypeRepository repository;
+public class CreateDeviceType implements CreateDeviceTypeUseCase {
+    private final DeviceTypeRepositoryPort repository;
 
     /**
      * Creates a new device type.

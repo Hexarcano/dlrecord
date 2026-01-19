@@ -1,7 +1,7 @@
 package com.hexarcano.dlrecord.devicetype.application.implementation;
 
-import com.hexarcano.dlrecord.devicetype.application.port.in.IDeleteDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.out.IDeviceTypeRepository;
+import com.hexarcano.dlrecord.devicetype.application.port.in.DeleteDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 
 import lombok.AllArgsConstructor;
 
@@ -15,8 +15,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class DeleteDeviceType implements IDeleteDeviceType {
-    private final IDeviceTypeRepository repository;
+public class DeleteDeviceType implements DeleteDeviceTypeUseCase {
+    private final DeviceTypeRepositoryPort repository;
 
     /**
      * Deletes a device type by its unique identifier.

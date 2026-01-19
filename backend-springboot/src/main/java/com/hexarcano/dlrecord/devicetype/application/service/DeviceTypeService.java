@@ -3,11 +3,11 @@ package com.hexarcano.dlrecord.devicetype.application.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicetype.application.port.in.ICreateDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.in.IDeleteDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.in.IRetrieveDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.in.IUpdateDeviceType;
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.application.port.in.CreateDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.in.DeleteDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.in.RetrieveDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.in.UpdateDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.AllArgsConstructor;
 
@@ -24,11 +24,12 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class DeviceTypeService implements ICreateDeviceType, IRetrieveDeviceType, IUpdateDeviceType, IDeleteDeviceType {
-    private final ICreateDeviceType createDeviceType;
-    private final IRetrieveDeviceType retrieveDeviceType;
-    private final IUpdateDeviceType updateDeviceType;
-    private final IDeleteDeviceType deleteDeviceType;
+public class DeviceTypeService implements CreateDeviceTypeUseCase, RetrieveDeviceTypeUseCase, UpdateDeviceTypeUseCase,
+        DeleteDeviceTypeUseCase {
+    private final CreateDeviceTypeUseCase createDeviceType;
+    private final RetrieveDeviceTypeUseCase retrieveDeviceType;
+    private final UpdateDeviceTypeUseCase updateDeviceType;
+    private final DeleteDeviceTypeUseCase deleteDeviceType;
 
     /**
      * Delegates the call to the 'Create DeviceType' use case implementation.

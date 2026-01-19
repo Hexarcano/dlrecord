@@ -3,9 +3,9 @@ package com.hexarcano.dlrecord.devicetype.application.implementation;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicetype.application.port.in.IRetrieveDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.out.IDeviceTypeRepository;
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.application.port.in.RetrieveDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.AllArgsConstructor;
 
@@ -19,8 +19,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class RetrieveDeviceType implements IRetrieveDeviceType {
-    private final IDeviceTypeRepository repository;
+public class RetrieveDeviceType implements RetrieveDeviceTypeUseCase {
+    private final DeviceTypeRepositoryPort repository;
 
     /**
      * Retrieves a single device type by its unique identifier.

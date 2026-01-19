@@ -7,7 +7,7 @@ import com.hexarcano.dlrecord.devicetype.application.implementation.CreateDevice
 import com.hexarcano.dlrecord.devicetype.application.implementation.DeleteDeviceType;
 import com.hexarcano.dlrecord.devicetype.application.implementation.RetrieveDeviceType;
 import com.hexarcano.dlrecord.devicetype.application.implementation.UpdateDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.out.IDeviceTypeRepository;
+import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 import com.hexarcano.dlrecord.devicetype.application.service.DeviceTypeService;
 import com.hexarcano.dlrecord.devicetype.infrastructure.repository.JpaDeviceTypeRepository;
 import com.hexarcano.dlrecord.devicetype.infrastructure.repository.JpaDeviceTypeRepositoryAdapter;
@@ -36,7 +36,7 @@ public class DeviceTypeModuleConfig {
      *         resolved.
      */
     @Bean
-    DeviceTypeService deviceTypeService(IDeviceTypeRepository repository) {
+    DeviceTypeService deviceTypeService(DeviceTypeRepositoryPort repository) {
         return new DeviceTypeService(
                 new CreateDeviceType(repository),
                 new RetrieveDeviceType(repository),
@@ -59,7 +59,7 @@ public class DeviceTypeModuleConfig {
      *         the driven adapter.
      */
     @Bean
-    IDeviceTypeRepository deviceTypeRepository(JpaDeviceTypeRepository repository) {
+    DeviceTypeRepositoryPort deviceTypeRepository(JpaDeviceTypeRepository repository) {
         return new JpaDeviceTypeRepositoryAdapter(repository);
     }
 }

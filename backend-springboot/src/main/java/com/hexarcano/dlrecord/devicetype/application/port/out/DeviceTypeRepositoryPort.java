@@ -3,7 +3,7 @@ package com.hexarcano.dlrecord.devicetype.application.port.out;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 /**
  * Output port (Driven Port) defining the contract for persistence operations on
@@ -14,7 +14,7 @@ import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
  * interact with a specific database.
  * </p>
  */
-public interface IDeviceTypeRepository {
+public interface DeviceTypeRepositoryPort {
     /**
      * Saves a new device type to the repository.
      *

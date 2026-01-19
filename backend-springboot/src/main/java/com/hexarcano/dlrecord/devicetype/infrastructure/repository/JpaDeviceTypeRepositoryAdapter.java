@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hexarcano.dlrecord.devicetype.application.port.out.IDeviceTypeRepository;
-import com.hexarcano.dlrecord.devicetype.infrastructure.entities.DeviceTypeEntity;
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
+import com.hexarcano.dlrecord.devicetype.infrastructure.entity.DeviceTypeEntity;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.AllArgsConstructor;
 
@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class JpaDeviceTypeRepositoryAdapter implements IDeviceTypeRepository {
+public class JpaDeviceTypeRepositoryAdapter implements DeviceTypeRepositoryPort {
     private final JpaDeviceTypeRepository repository;
 
     /**

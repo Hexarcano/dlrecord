@@ -2,14 +2,14 @@ package com.hexarcano.dlrecord.devicetype.application.port.in;
 
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 /**
  * Input port (Driving Port) for the 'Update DeviceType' use case.
  * Defines the contract for updating an existing device type within the
  * application core.
  */
-public interface IUpdateDeviceType {
+public interface UpdateDeviceTypeUseCase {
     /**
      * Executes the logic to update an existing device type.
      * 

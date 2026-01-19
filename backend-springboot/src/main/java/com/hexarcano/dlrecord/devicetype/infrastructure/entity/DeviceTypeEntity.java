@@ -1,4 +1,4 @@
-package com.hexarcano.dlrecord.devicetype.infrastructure.entities;
+package com.hexarcano.dlrecord.devicetype.infrastructure.entity;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

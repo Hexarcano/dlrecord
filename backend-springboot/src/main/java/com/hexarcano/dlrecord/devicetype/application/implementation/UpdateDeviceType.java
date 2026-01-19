@@ -2,9 +2,9 @@ package com.hexarcano.dlrecord.devicetype.application.implementation;
 
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicetype.application.port.in.IUpdateDeviceType;
-import com.hexarcano.dlrecord.devicetype.application.port.out.IDeviceTypeRepository;
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.application.port.in.UpdateDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.AllArgsConstructor;
 
@@ -18,8 +18,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class UpdateDeviceType implements IUpdateDeviceType {
-    private final IDeviceTypeRepository repository;
+public class UpdateDeviceType implements UpdateDeviceTypeUseCase {
+    private final DeviceTypeRepositoryPort repository;
 
     /**
      * Updates an existing device type by its unique identifier.

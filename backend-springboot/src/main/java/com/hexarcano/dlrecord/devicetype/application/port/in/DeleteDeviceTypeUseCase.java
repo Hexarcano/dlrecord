@@ -4,7 +4,7 @@ package com.hexarcano.dlrecord.devicetype.application.port.in;
  * Input port (Driving Port) for the 'Delete DeviceType' use case.
  * Defines the contract for deleting a device type from the application core.
  */
-public interface IDeleteDeviceType {
+public interface DeleteDeviceTypeUseCase {
     /**
      * Executes the logic to delete a device type by its unique identifier.
      * 

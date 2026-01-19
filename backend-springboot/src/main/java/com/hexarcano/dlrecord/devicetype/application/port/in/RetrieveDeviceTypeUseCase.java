@@ -3,14 +3,14 @@ package com.hexarcano.dlrecord.devicetype.application.port.in;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 /**
  * Input port (Driving Port) for the 'Retrieve DeviceType' use case.
  * Defines the contract for querying device type information from the
  * application core.
  */
-public interface IRetrieveDeviceType {
+public interface RetrieveDeviceTypeUseCase {
     /**
      * Finds a device type by its unique identifier.
      * 

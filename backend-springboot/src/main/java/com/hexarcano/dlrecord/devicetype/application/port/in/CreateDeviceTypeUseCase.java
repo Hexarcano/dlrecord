@@ -1,13 +1,13 @@
 package com.hexarcano.dlrecord.devicetype.application.port.in;
 
-import com.hexarcano.dlrecord.devicetype.model.entity.DeviceType;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 /**
  * Input port (Driving Port) for the 'Create DeviceType' use case.
  * Defines the contract for creating a new device brand within the application
  * core.
  */
-public interface ICreateDeviceType {
+public interface CreateDeviceTypeUseCase {
     /**
      * Executes the logic to create a new device type.
      * 
