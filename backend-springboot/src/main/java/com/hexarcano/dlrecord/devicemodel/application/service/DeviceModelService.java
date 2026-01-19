@@ -3,44 +3,43 @@ package com.hexarcano.dlrecord.devicemodel.application.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicemodel.application.port.in.ICreateDeviceModel;
-import com.hexarcano.dlrecord.devicemodel.application.port.in.IDeleteDeviceModel;
-import com.hexarcano.dlrecord.devicemodel.application.port.in.IRetrieveDeviceModel;
-import com.hexarcano.dlrecord.devicemodel.application.port.in.IUpdateDeviceModel;
-import com.hexarcano.dlrecord.devicemodel.model.entity.DeviceModel;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.CreateDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.DeleteDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.RetrieveDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.UpdateDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
- * A service facade that aggregates all device-model-related use cases into a single
+ * A service facade that aggregates all device-model-related use cases into a
+ * single
  * entry point.
  * 
  * <p>
- * This class implements all the input port interfaces
- * ({@link ICreateDeviceModel}, {@link IRetrieveDeviceModel}, etc.) and delegates
- * the calls to the actual use case implementations. It is used by the primary
- * adapter (e.g., {@code DeviceModelController}) to interact with the
- * application's core logic.
+ * This class implements all the input port interfaces and delegates the calls
+ * to the actual use case implementations. It is used by the primary adapter
+ * (e.g., DeviceModelController) to interact with the application's core logic.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeviceModelService
-        implements ICreateDeviceModel, IRetrieveDeviceModel, IUpdateDeviceModel, IDeleteDeviceModel {
-    private final ICreateDeviceModel createDeviceModel;
-    private final IRetrieveDeviceModel retrieveDeviceModel;
-    private final IUpdateDeviceModel updateDeviceModel;
-    private final IDeleteDeviceModel deleteDeviceModel;
+        implements CreateDeviceModelUseCase, RetrieveDeviceModelUseCase, UpdateDeviceModelUseCase,
+        DeleteDeviceModelUseCase {
+    private final CreateDeviceModelUseCase createDeviceModel;
+    private final RetrieveDeviceModelUseCase retrieveDeviceModel;
+    private final UpdateDeviceModelUseCase updateDeviceModel;
+    private final DeleteDeviceModelUseCase deleteDeviceModel;
 
     /**
      * Delegates the call to the 'Create DeviceModel' use case implementation.
      * 
-     * @param name    The name of the device model.
-     * @param brandId The ID of the brand associated with the device model.
+     * @param deviceModel The device model to create.
      * @return The created device model.
      */
     @Override
-    public DeviceModel createDeviceModel(String name, String brandId) {
-        return createDeviceModel.createDeviceModel(name, brandId);
+    public DeviceModel createDeviceModel(DeviceModel deviceModel) {
+        return createDeviceModel.createDeviceModel(deviceModel);
     }
 
     /**
@@ -75,8 +74,8 @@ public class DeviceModelService
      * @return An {@link Optional} with the updated device model, or empty.
      */
     @Override
-    public Optional<DeviceModel> updateDeviceModel(String uuid, String newName, String newBrandId) {
-        return updateDeviceModel.updateDeviceModel(uuid, newName, newBrandId);
+    public Optional<DeviceModel> updateDeviceModel(String uuid, DeviceModel deviceModel) {
+        return updateDeviceModel.updateDeviceModel(uuid, deviceModel);
     }
 
     /**

@@ -9,16 +9,17 @@ import com.hexarcano.dlrecord.devicemodel.application.implementation.CreateDevic
 import com.hexarcano.dlrecord.devicemodel.application.implementation.DeleteDeviceModel;
 import com.hexarcano.dlrecord.devicemodel.application.implementation.RetrieveDeviceModel;
 import com.hexarcano.dlrecord.devicemodel.application.implementation.UpdateDeviceModel;
-import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
+import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 import com.hexarcano.dlrecord.devicemodel.application.service.DeviceModelService;
 import com.hexarcano.dlrecord.devicemodel.infrastructure.repository.JpaDeviceModelRepository;
-import com.hexarcano.dlrecord.devicemodel.infrastructure.repository.JpaDeviceModelRepositoryAdapter;
+import com.hexarcano.dlrecord.devicemodel.infrastructure.adapter.JpaDeviceModelRepositoryAdapter;
 
 @Configuration
 public class DeviceModelModuleConfig {
+
     @Bean
     DeviceModelService deviceModelService(
-            IDeviceModelRepository deviceModelRepository,
+            DeviceModelRepositoryPort deviceModelRepository,
             BrandRepositoryPort brandRepository) {
         return new DeviceModelService(
                 new CreateDeviceModel(deviceModelRepository, brandRepository),
@@ -28,7 +29,7 @@ public class DeviceModelModuleConfig {
     }
 
     @Bean
-    IDeviceModelRepository deviceModelRepository(
+    DeviceModelRepositoryPort deviceModelRepository(
             JpaDeviceModelRepository repository,
             JpaBrandRepository jpaBrandRepository) {
         return new JpaDeviceModelRepositoryAdapter(repository, jpaBrandRepository);

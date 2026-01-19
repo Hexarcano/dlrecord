@@ -1,18 +1,18 @@
-package com.hexarcano.dlrecord.devicemodel.infrastructure.repository;
+package com.hexarcano.dlrecord.devicemodel.infrastructure.adapter;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hexarcano.dlrecord.brand.infrastructure.entity.BrandEntity;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
-import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
-import com.hexarcano.dlrecord.devicemodel.infrastructure.entities.DeviceModelEntity;
-import com.hexarcano.dlrecord.devicemodel.model.entity.DeviceModel;
+import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
+import com.hexarcano.dlrecord.devicemodel.infrastructure.entity.DeviceModelEntity;
+import com.hexarcano.dlrecord.devicemodel.infrastructure.repository.JpaDeviceModelRepository;
+import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Secondary (Driven) Adapter that implements the {@link IDeviceModelRepository}
@@ -21,12 +21,12 @@ import lombok.AllArgsConstructor;
  * <p>
  * It connects the application's core logic to the persistence layer using
  * Spring Data JPA. All methods operate on the {@link DeviceModel} domain model,
- * abstracting away the underlying persistence-specific {@link DeviceModelEntity}.
+ * abstracting away the underlying persistence-specific
+ * {@link DeviceModelEntity}.
  * </p>
  */
-@Repository
-@AllArgsConstructor
-public class JpaDeviceModelRepositoryAdapter implements IDeviceModelRepository {
+@RequiredArgsConstructor
+public class JpaDeviceModelRepositoryAdapter implements DeviceModelRepositoryPort {
     private final JpaDeviceModelRepository deviceModelrepository;
     private final JpaBrandRepository brandRepository;
 
@@ -78,7 +78,8 @@ public class JpaDeviceModelRepositoryAdapter implements IDeviceModelRepository {
      * Deletes a device model by its unique ID.
      *
      * @param uuid The unique identifier of the device model to delete.
-     * @return {@code true} if a device model was deleted, {@code false} if no device
+     * @return {@code true} if a device model was deleted, {@code false} if no
+     *         device
      *         model was found with the given ID.
      */
     @Override
@@ -99,5 +100,15 @@ public class JpaDeviceModelRepositoryAdapter implements IDeviceModelRepository {
     @Transactional(readOnly = true)
     public long countByBrandUuid(String brandUuid) {
         return deviceModelrepository.countByBrand_Uuid(brandUuid);
+    }
+
+    @Override
+    public boolean existsById(String uuid) {
+        return deviceModelrepository.existsById(uuid);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return deviceModelrepository.existsByName(name);
     }
 }

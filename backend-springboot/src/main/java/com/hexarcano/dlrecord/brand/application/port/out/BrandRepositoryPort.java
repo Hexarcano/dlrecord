@@ -56,4 +56,12 @@ public interface BrandRepositoryPort {
      *         {@code false} otherwise.
      */
     boolean deleteById(String uuid);
+
+    /**
+     * Checks if a brand exists in the repository by its unique identifier.
+     *
+     * @param uuid The ID of the brand to check.
+     * @return {@code true} if the brand exists, {@code false} otherwise.
+     */
+    boolean existsById(String uuid);
 }

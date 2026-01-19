@@ -98,4 +98,9 @@ public class JpaBrandRepositoryAdapter implements BrandRepositoryPort {
 
         return affectedRows > 0;
     }
+
+    @Override
+    public boolean existsById(String uuid) {
+        return repository.existsById(uuid);
+    }
 }

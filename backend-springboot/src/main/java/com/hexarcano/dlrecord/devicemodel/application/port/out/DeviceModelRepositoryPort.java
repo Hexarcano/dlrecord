@@ -3,19 +3,12 @@ package com.hexarcano.dlrecord.devicemodel.application.port.out;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.devicemodel.model.entity.DeviceModel;
+import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
 /**
- * Output port for device model persistence.
- * Defines the operations necessary to interact with the data repository.
+ * Output port (Repository) for managing device models.
  */
-public interface IDeviceModelRepository {
-    /**
-     * Saves a device model in the repository.
-     *
-     * @param deviceModel The device model entity to save.
-     * @return The saved device model entity (may include generated fields like ID).
-     */
+public interface DeviceModelRepositoryPort {
     DeviceModel save(DeviceModel deviceModel);
 
     /**
@@ -40,6 +33,22 @@ public interface IDeviceModelRepository {
      * @return true if the entity was successfully deleted, false otherwise.
      */
     boolean deleteById(String uuid);
+
+    /**
+     * Checks if a device model with the given unique identifier exists.
+     *
+     * @param uuid The unique identifier of the device model.
+     * @return true if a device model with the given UUID exists, false otherwise.
+     */
+    boolean existsById(String uuid);
+
+    /**
+     * Checks if a device model with the given name exists.
+     *
+     * @param name The name of the device model.
+     * @return true if a device model with the given name exists, false otherwise.
+     */
+    boolean existsByName(String name);
 
     /**
      * Counts the number of device models associated with a specific brand.

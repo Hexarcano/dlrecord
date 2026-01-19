@@ -1,4 +1,4 @@
-package com.hexarcano.dlrecord.devicemodel.model.entity;
+package com.hexarcano.dlrecord.devicemodel.domain.model;
 
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 

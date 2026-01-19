@@ -1,7 +1,7 @@
 package com.hexarcano.dlrecord.devicemodel.application.implementation;
 
-import com.hexarcano.dlrecord.devicemodel.application.port.in.IDeleteDeviceModel;
-import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.DeleteDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 
 import lombok.AllArgsConstructor;
 
@@ -10,13 +10,14 @@ import lombok.AllArgsConstructor;
  * 
  * <p>
  * This class contains the business logic for the deletion process.
- * It implements the {@link IDeleteDeviceModel} input port and uses the
- * {@link IDeviceModelRepository} output port to delete the device model data.
+ * It implements the {@link DeleteDeviceModelUseCase} input port and uses the
+ * {@link DeviceModelRepositoryPort} output port to delete the device model
+ * data.
  * </p>
  */
 @AllArgsConstructor
-public class DeleteDeviceModel implements IDeleteDeviceModel {
-    private final IDeviceModelRepository repository;
+public class DeleteDeviceModel implements DeleteDeviceModelUseCase {
+    private final DeviceModelRepositoryPort deviceModelRepository;
 
     /**
      * Deletes a device model by its unique identifier.
@@ -27,6 +28,6 @@ public class DeleteDeviceModel implements IDeleteDeviceModel {
      */
     @Override
     public boolean deleteDeviceModel(String uuid) {
-        return repository.deleteById(uuid);
+        return deviceModelRepository.deleteById(uuid);
     }
 }

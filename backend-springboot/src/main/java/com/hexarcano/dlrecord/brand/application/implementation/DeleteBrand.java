@@ -2,7 +2,7 @@ package com.hexarcano.dlrecord.brand.application.implementation;
 
 import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
-import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
+import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 import com.hexarcano.dlrecord.exception.DataConflictException;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DeleteBrand implements DeleteBrandUseCase {
     private final BrandRepositoryPort brandRepository;
-    private final IDeviceModelRepository deviceModelRepository;
+    private final DeviceModelRepositoryPort deviceModelRepository;
 
     /**
      * Deletes a brand by its unique identifier.

@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.devicemodel.application.service.DeviceModelService;
+import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 import com.hexarcano.dlrecord.devicemodel.infrastructure.controller.dto.CreateDeviceModelRequest;
 import com.hexarcano.dlrecord.devicemodel.infrastructure.controller.dto.UpdateDeviceModelRequest;
-import com.hexarcano.dlrecord.devicemodel.model.entity.DeviceModel;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Primary (Driving) Adapter that exposes device model use cases via a RESTful API.
@@ -27,7 +28,7 @@ import lombok.AllArgsConstructor;
  */
 @RestController
 @RequestMapping("/api/v1/device-models")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeviceModelController {
     private final DeviceModelService deviceModelService;
 
@@ -40,7 +41,10 @@ public class DeviceModelController {
      */
     @PostMapping()
     public ResponseEntity<DeviceModel> createDeviceModel(@RequestBody CreateDeviceModelRequest request) {
-        DeviceModel createdDeviceModel = deviceModelService.createDeviceModel(request.name(), request.brandId());
+        Brand brand = new Brand(request.brandId(), "Placeholder");
+        DeviceModel deviceModel = new DeviceModel(null, request.name(), brand);
+
+        DeviceModel createdDeviceModel = deviceModelService.createDeviceModel(deviceModel);
         return new ResponseEntity<>(createdDeviceModel, HttpStatus.CREATED);
     }
 
@@ -78,15 +82,24 @@ public class DeviceModelController {
      * @param id      The unique identifier of the device model to update, passed in
      *                the URL path.
      * @param request The updated device model data sent in the request body.
-     * @return A {@link ResponseEntity} with the updated device model and HTTP status
-     *         200 (OK), or HTTP status 404 (Not Found) if the device model to update
+     * @return A {@link ResponseEntity} with the updated device model and HTTP
+     *         status
+     *         200 (OK), or HTTP status 404 (Not Found) if the device model to
+     *         update
      *         does not exist.
      */
     @PutMapping("/{id}")
     public ResponseEntity<DeviceModel> updateDeviceModel(
             @PathVariable String id,
             @RequestBody UpdateDeviceModelRequest request) {
-        return deviceModelService.updateDeviceModel(id, request.name(), request.brandId())
+
+        Brand brand = null;
+        if (request.brandId() != null) {
+            brand = new Brand(request.brandId(), "Placeholder");
+        }
+        DeviceModel deviceModel = new DeviceModel(id, request.name(), brand);
+
+        return deviceModelService.updateDeviceModel(id, deviceModel)
                 .map(updatedDeviceModel -> new ResponseEntity<>(updatedDeviceModel, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

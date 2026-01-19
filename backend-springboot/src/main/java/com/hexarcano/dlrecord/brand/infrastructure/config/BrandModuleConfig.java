@@ -11,7 +11,7 @@ import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
 import com.hexarcano.dlrecord.brand.infrastructure.adapter.JpaBrandRepositoryAdapter;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
-import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
+import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 
 /**
  * Spring Configuration class for the Brand module.
@@ -39,7 +39,7 @@ public class BrandModuleConfig {
      *         resolved.
      */
     @Bean
-    BrandService brandService(BrandRepositoryPort brandRepository, IDeviceModelRepository deviceModelRepository) {
+    BrandService brandService(BrandRepositoryPort brandRepository, DeviceModelRepositoryPort deviceModelRepository) {
         return new BrandService(
                 new CreateBrand(brandRepository),
                 new RetrieveBrand(brandRepository),
