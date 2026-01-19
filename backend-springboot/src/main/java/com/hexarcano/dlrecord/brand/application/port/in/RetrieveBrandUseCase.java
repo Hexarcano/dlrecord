@@ -3,14 +3,14 @@ package com.hexarcano.dlrecord.brand.application.port.in;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 /**
  * Input port (Driving Port) for the 'Retrieve Brand' use case.
  * Defines the contract for querying brand information from the application
  * core.
  */
-public interface IRetrieveBrand {
+public interface RetrieveBrandUseCase {
     /**
      * Finds a brand by its unique identifier.
      *

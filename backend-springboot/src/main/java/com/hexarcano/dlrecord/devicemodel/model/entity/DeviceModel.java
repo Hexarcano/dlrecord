@@ -1,6 +1,6 @@
 package com.hexarcano.dlrecord.devicemodel.model.entity;
 
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

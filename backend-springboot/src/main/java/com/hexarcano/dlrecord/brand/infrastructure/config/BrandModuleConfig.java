@@ -7,7 +7,7 @@ import com.hexarcano.dlrecord.brand.application.implementation.CreateBrand;
 import com.hexarcano.dlrecord.brand.application.implementation.DeleteBrand;
 import com.hexarcano.dlrecord.brand.application.implementation.RetrieveBrand;
 import com.hexarcano.dlrecord.brand.application.implementation.UpdateBrand;
-import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
+import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepositoryAdapter;
@@ -31,15 +31,15 @@ public class BrandModuleConfig {
      * implementations into a single entry point for the controller.
      * </p>
      * 
-     * @param brandRepository The brand repository port implementation, which will be injected
-     *                   by Spring.
-     * @param deviceModelRepository The device model repository port implementation, which will be injected
-     *                   by Spring.
+     * @param brandRepository       The brand repository port implementation, which
+     *                              will be injected by Spring.
+     * @param deviceModelRepository The device model repository port implementation,
+     *                              which will be injected by Spring.
      * @return An instance of {@link BrandService} with all its dependencies
      *         resolved.
      */
     @Bean
-    BrandService brandService(IBrandRepository brandRepository, IDeviceModelRepository deviceModelRepository) {
+    BrandService brandService(BrandRepositoryPort brandRepository, IDeviceModelRepository deviceModelRepository) {
         return new BrandService(
                 new CreateBrand(brandRepository),
                 new RetrieveBrand(brandRepository),
@@ -48,12 +48,12 @@ public class BrandModuleConfig {
     }
 
     /**
-     * Creates the {@link IBrandRepository} bean, providing the JPA
+     * Creates the {@link BrandRepositoryPort} bean, providing the JPA
      * implementation.
      * 
      * <p>
      * This method defines that whenever a component asks for an
-     * {@link IBrandRepository}, Spring should provide an instance of
+     * {@link BrandRepositoryPort}, Spring should provide an instance of
      * an adapter implementing it.
      * </p>
      * 
@@ -62,7 +62,7 @@ public class BrandModuleConfig {
      *         the driven adapter.
      */
     @Bean
-    IBrandRepository brandRepository(JpaBrandRepository repository) {
+    BrandRepositoryPort brandRepository(JpaBrandRepository repository) {
         return new JpaBrandRepositoryAdapter(repository);
     }
 }

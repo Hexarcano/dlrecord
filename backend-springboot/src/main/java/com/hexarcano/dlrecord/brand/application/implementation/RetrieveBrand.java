@@ -3,9 +3,9 @@ package com.hexarcano.dlrecord.brand.application.implementation;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.brand.application.port.in.IRetrieveBrand;
-import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.application.port.in.RetrieveBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.AllArgsConstructor;
 
@@ -19,8 +19,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class RetrieveBrand implements IRetrieveBrand {
-    private final IBrandRepository repository;
+public class RetrieveBrand implements RetrieveBrandUseCase {
+    private final BrandRepositoryPort repository;
 
     /**
      * Retrieves a single brand by its unique identifier.

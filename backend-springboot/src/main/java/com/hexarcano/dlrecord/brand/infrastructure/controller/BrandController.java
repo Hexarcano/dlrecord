@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.AllArgsConstructor;
 

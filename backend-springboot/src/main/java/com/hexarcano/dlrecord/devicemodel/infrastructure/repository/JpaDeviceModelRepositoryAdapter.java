@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hexarcano.dlrecord.brand.infrastructure.entities.BrandEntity;
+import com.hexarcano.dlrecord.brand.infrastructure.entity.BrandEntity;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
 import com.hexarcano.dlrecord.devicemodel.infrastructure.entities.DeviceModelEntity;

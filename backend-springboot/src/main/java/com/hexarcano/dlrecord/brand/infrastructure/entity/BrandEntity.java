@@ -1,4 +1,4 @@
-package com.hexarcano.dlrecord.brand.infrastructure.entities;
+package com.hexarcano.dlrecord.brand.infrastructure.entity;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

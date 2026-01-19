@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
-import com.hexarcano.dlrecord.brand.infrastructure.entities.BrandEntity;
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.brand.infrastructure.entity.BrandEntity;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.AllArgsConstructor;
 
@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class JpaBrandRepositoryAdapter implements IBrandRepository {
+public class JpaBrandRepositoryAdapter implements BrandRepositoryPort {
     private final JpaBrandRepository repository;
 
     /**

@@ -2,9 +2,9 @@ package com.hexarcano.dlrecord.brand.application.implementation;
 
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.brand.application.port.in.IUpdateBrand;
-import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.application.port.in.UpdateBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.AllArgsConstructor;
 
@@ -18,8 +18,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class UpdateBrand implements IUpdateBrand {
-    private final IBrandRepository repository;
+public class UpdateBrand implements UpdateBrandUseCase {
+    private final BrandRepositoryPort repository;
 
     /**
      * Updates an existing brand by its unique identifier.

@@ -3,7 +3,7 @@ package com.hexarcano.dlrecord.brand.application.port.out;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 /**
  * Output port (Driven Port) defining the contract for persistence operations on
@@ -14,7 +14,7 @@ import com.hexarcano.dlrecord.brand.model.entity.Brand;
  * interact with a specific database.
  * </p>
  */
-public interface IBrandRepository {
+public interface BrandRepositoryPort {
     /**
      * Saves a new brand to the repository.
      *

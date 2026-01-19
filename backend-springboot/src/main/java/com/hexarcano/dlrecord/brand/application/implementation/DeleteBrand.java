@@ -1,7 +1,7 @@
 package com.hexarcano.dlrecord.brand.application.implementation;
 
-import com.hexarcano.dlrecord.brand.application.port.in.IDeleteBrand;
-import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
+import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
 import com.hexarcano.dlrecord.exception.DataConflictException;
 
@@ -17,8 +17,8 @@ import lombok.AllArgsConstructor;
  * </p>
  */
 @AllArgsConstructor
-public class DeleteBrand implements IDeleteBrand {
-    private final IBrandRepository brandRepository;
+public class DeleteBrand implements DeleteBrandUseCase {
+    private final BrandRepositoryPort brandRepository;
     private final IDeviceModelRepository deviceModelRepository;
 
     /**

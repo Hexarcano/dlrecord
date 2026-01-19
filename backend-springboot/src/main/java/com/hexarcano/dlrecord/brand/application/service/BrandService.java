@@ -3,11 +3,11 @@ package com.hexarcano.dlrecord.brand.application.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.brand.application.port.in.ICreateBrand;
-import com.hexarcano.dlrecord.brand.application.port.in.IDeleteBrand;
-import com.hexarcano.dlrecord.brand.application.port.in.IRetrieveBrand;
-import com.hexarcano.dlrecord.brand.application.port.in.IUpdateBrand;
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.application.port.in.CreateBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.in.RetrieveBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.in.UpdateBrandUseCase;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.AllArgsConstructor;
 
@@ -16,18 +16,19 @@ import lombok.AllArgsConstructor;
  * entry point.
  * 
  * <p>
- * This class implements all the input port interfaces ({@link ICreateBrand},
- * {@link IRetrieveBrand}, etc.) and delegates the calls to the actual use case
- * implementations. It is used by the primary adapter (e.g.,
- * {@code BrandController}) to interact with the application's core logic.
+ * This class implements all the input port interfaces
+ * ({@link CreateBrandUseCase}, {@link RetrieveBrandUseCase}, etc.) and
+ * delegates the calls to the actual use case implementations. It is used by the
+ * primary adapter (e.g., {@code BrandController}) to interact with the
+ * application's core logic.
  * </p>
  */
 @AllArgsConstructor
-public class BrandService implements ICreateBrand, IRetrieveBrand, IUpdateBrand, IDeleteBrand {
-    private final ICreateBrand createBrand;
-    private final IRetrieveBrand retrieveBrand;
-    private final IUpdateBrand updateBrand;
-    private final IDeleteBrand deleteBrand;
+public class BrandService implements CreateBrandUseCase, RetrieveBrandUseCase, UpdateBrandUseCase, DeleteBrandUseCase {
+    private final CreateBrandUseCase createBrand;
+    private final RetrieveBrandUseCase retrieveBrand;
+    private final UpdateBrandUseCase updateBrand;
+    private final DeleteBrandUseCase deleteBrand;
 
     /**
      * Delegates the call to the 'Create Brand' use case implementation.

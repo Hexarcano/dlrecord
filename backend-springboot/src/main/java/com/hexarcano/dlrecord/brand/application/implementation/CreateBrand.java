@@ -1,8 +1,8 @@
 package com.hexarcano.dlrecord.brand.application.implementation;
 
-import com.hexarcano.dlrecord.brand.application.port.in.ICreateBrand;
-import com.hexarcano.dlrecord.brand.application.port.out.IBrandRepository;
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.application.port.in.CreateBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.AllArgsConstructor;
 
@@ -11,13 +11,13 @@ import lombok.AllArgsConstructor;
  * 
  * <p>
  * This class contains the business logic for the creation process.
- * It implements the {@link ICreateBrand} input port and uses the
- * {@link IBrandRepository} output port to persist the brand data.
+ * It implements the {@link CreateBrandUseCase} input port and uses the
+ * {@link BrandRepositoryPort} output port to persist the brand data.
  * <p>
  */
 @AllArgsConstructor
-public class CreateBrand implements ICreateBrand {
-    private final IBrandRepository repository;
+public class CreateBrand implements CreateBrandUseCase {
+    private final BrandRepositoryPort repository;
 
     /**
      * Creates a new brand.

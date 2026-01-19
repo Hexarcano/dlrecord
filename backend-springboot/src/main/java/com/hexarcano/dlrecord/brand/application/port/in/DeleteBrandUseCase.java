@@ -4,7 +4,7 @@ package com.hexarcano.dlrecord.brand.application.port.in;
  * Input port (Driving Port) for the 'Delete Brand' use case.
  * Defines the contract for deleting a brand from the application core.
  */
-public interface IDeleteBrand {
+public interface DeleteBrandUseCase {
     /**
      * Executes the logic to delete a brand by its unique identifier.
      *

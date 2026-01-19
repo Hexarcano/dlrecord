@@ -2,14 +2,14 @@ package com.hexarcano.dlrecord.brand.application.port.in;
 
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.brand.model.entity.Brand;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 /**
  * Input port (Driving Port) for the 'Update Brand' use case.
  * Defines the contract for updating an existing brand within the application
  * core.
  */
-public interface IUpdateBrand {
+public interface UpdateBrandUseCase {
     /**
      * Executes the logic to update an existing brand.
      *
