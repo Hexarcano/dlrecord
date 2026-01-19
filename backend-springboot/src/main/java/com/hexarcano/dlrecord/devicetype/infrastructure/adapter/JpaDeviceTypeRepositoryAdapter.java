@@ -1,4 +1,4 @@
-package com.hexarcano.dlrecord.devicetype.infrastructure.repository;
+package com.hexarcano.dlrecord.devicetype.infrastructure.adapter;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 import com.hexarcano.dlrecord.devicetype.infrastructure.entity.DeviceTypeEntity;
+import com.hexarcano.dlrecord.devicetype.infrastructure.repository.JpaDeviceTypeRepository;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Secondary (Driven) Adapter that implements the {@link IDeviceTypeRepository}
@@ -23,7 +24,7 @@ import lombok.AllArgsConstructor;
  * {@link DeviceTypeEntity}.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JpaDeviceTypeRepositoryAdapter implements DeviceTypeRepositoryPort {
     private final JpaDeviceTypeRepository repository;
 

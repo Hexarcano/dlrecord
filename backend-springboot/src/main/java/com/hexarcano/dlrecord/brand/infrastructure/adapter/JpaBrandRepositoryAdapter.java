@@ -1,4 +1,4 @@
-package com.hexarcano.dlrecord.brand.infrastructure.repository;
+package com.hexarcano.dlrecord.brand.infrastructure.adapter;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.infrastructure.entity.BrandEntity;
+import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Secondary (Driven) Adapter that implements the {@link IBrandRepository}
@@ -21,7 +22,7 @@ import lombok.AllArgsConstructor;
  * abstracting away the underlying persistence-specific {@link BrandEntity}.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JpaBrandRepositoryAdapter implements BrandRepositoryPort {
     private final JpaBrandRepository repository;
 

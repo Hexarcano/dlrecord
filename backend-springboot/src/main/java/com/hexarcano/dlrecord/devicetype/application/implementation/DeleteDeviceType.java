@@ -3,7 +3,7 @@ package com.hexarcano.dlrecord.devicetype.application.implementation;
 import com.hexarcano.dlrecord.devicetype.application.port.in.DeleteDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for deleting a device type.
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
  * {@link IDeviceTypeRepository} output port to delete the device type data.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeleteDeviceType implements DeleteDeviceTypeUseCase {
     private final DeviceTypeRepositoryPort repository;
 

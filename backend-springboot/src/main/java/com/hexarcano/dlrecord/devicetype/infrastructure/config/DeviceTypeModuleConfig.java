@@ -9,8 +9,8 @@ import com.hexarcano.dlrecord.devicetype.application.implementation.RetrieveDevi
 import com.hexarcano.dlrecord.devicetype.application.implementation.UpdateDeviceType;
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 import com.hexarcano.dlrecord.devicetype.application.service.DeviceTypeService;
+import com.hexarcano.dlrecord.devicetype.infrastructure.adapter.JpaDeviceTypeRepositoryAdapter;
 import com.hexarcano.dlrecord.devicetype.infrastructure.repository.JpaDeviceTypeRepository;
-import com.hexarcano.dlrecord.devicetype.infrastructure.repository.JpaDeviceTypeRepositoryAdapter;
 
 /**
  * Spring Configuration class for the DeviceType module.

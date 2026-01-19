@@ -9,7 +9,7 @@ import com.hexarcano.dlrecord.brand.application.port.in.RetrieveBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.in.UpdateBrandUseCase;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * A service facade that aggregates all brand-related use cases into a single
@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
  * application's core logic.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BrandService implements CreateBrandUseCase, RetrieveBrandUseCase, UpdateBrandUseCase, DeleteBrandUseCase {
     private final CreateBrandUseCase createBrand;
     private final RetrieveBrandUseCase retrieveBrand;

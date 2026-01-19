@@ -9,8 +9,8 @@ import com.hexarcano.dlrecord.brand.application.implementation.RetrieveBrand;
 import com.hexarcano.dlrecord.brand.application.implementation.UpdateBrand;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
+import com.hexarcano.dlrecord.brand.infrastructure.adapter.JpaBrandRepositoryAdapter;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
-import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepositoryAdapter;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.IDeviceModelRepository;
 
 /**

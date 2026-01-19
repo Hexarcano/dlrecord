@@ -9,7 +9,7 @@ import com.hexarcano.dlrecord.devicetype.application.port.in.RetrieveDeviceTypeU
 import com.hexarcano.dlrecord.devicetype.application.port.in.UpdateDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * A service facade that aggregates all device-type-related use cases into a
@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
  * application's core logic.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeviceTypeService implements CreateDeviceTypeUseCase, RetrieveDeviceTypeUseCase, UpdateDeviceTypeUseCase,
         DeleteDeviceTypeUseCase {
     private final CreateDeviceTypeUseCase createDeviceType;

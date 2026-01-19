@@ -7,7 +7,7 @@ import com.hexarcano.dlrecord.brand.application.port.in.RetrieveBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for retrieving one or more brands.
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
  * {@link IBrandRepository} output port to fetch brand data.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RetrieveBrand implements RetrieveBrandUseCase {
     private final BrandRepositoryPort repository;
 

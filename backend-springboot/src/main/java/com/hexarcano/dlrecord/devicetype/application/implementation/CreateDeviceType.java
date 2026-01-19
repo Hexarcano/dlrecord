@@ -4,7 +4,7 @@ import com.hexarcano.dlrecord.devicetype.application.port.in.CreateDeviceTypeUse
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for creating a new device type.
@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
  * {@link IDeviceTypeRepository} output port to persist the device type data.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreateDeviceType implements CreateDeviceTypeUseCase {
     private final DeviceTypeRepositoryPort repository;
 

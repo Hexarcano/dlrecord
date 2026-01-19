@@ -6,7 +6,7 @@ import com.hexarcano.dlrecord.brand.application.port.in.UpdateBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for updating an existing brand.
@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
  * {@link IBrandRepository} output port to persist the changes.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UpdateBrand implements UpdateBrandUseCase {
     private final BrandRepositoryPort repository;
 

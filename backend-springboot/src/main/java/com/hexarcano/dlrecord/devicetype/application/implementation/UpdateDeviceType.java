@@ -6,7 +6,7 @@ import com.hexarcano.dlrecord.devicetype.application.port.in.UpdateDeviceTypeUse
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for updating an existing device type.
@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
  * {@link IDeviceTypeRepository} output port to persist the changes.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UpdateDeviceType implements UpdateDeviceTypeUseCase {
     private final DeviceTypeRepositoryPort repository;
 

@@ -4,7 +4,7 @@ import com.hexarcano.dlrecord.brand.application.port.in.CreateBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for creating a new brand.
@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
  * {@link BrandRepositoryPort} output port to persist the brand data.
  * <p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreateBrand implements CreateBrandUseCase {
     private final BrandRepositoryPort repository;
 
