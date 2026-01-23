@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class RetrieveBrand implements RetrieveBrandUseCase {
-    private final BrandRepositoryPort repository;
+    private final BrandRepositoryPort brandRepository;
 
     /**
      * Retrieves a single brand by its unique identifier.
@@ -31,7 +31,7 @@ public class RetrieveBrand implements RetrieveBrandUseCase {
      */
     @Override
     public Optional<Brand> findById(String uuid) {
-        return repository.findById(uuid);
+        return brandRepository.findById(uuid);
     }
 
     /**
@@ -41,6 +41,6 @@ public class RetrieveBrand implements RetrieveBrandUseCase {
      */
     @Override
     public List<Brand> findAll() {
-        return repository.findAll();
+        return brandRepository.findAll();
     }
 }

@@ -7,6 +7,8 @@ import com.hexarcano.dlrecord.brand.application.port.in.CreateBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.in.RetrieveBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.in.UpdateBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.in.command.CreateBrandCommand;
+import com.hexarcano.dlrecord.brand.application.port.in.command.UpdateBrandCommand;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 import lombok.RequiredArgsConstructor;
@@ -37,8 +39,8 @@ public class BrandService implements CreateBrandUseCase, RetrieveBrandUseCase, U
      * @return The created brand.
      */
     @Override
-    public Brand createBrand(Brand brand) {
-        return createBrand.createBrand(brand);
+    public Brand createBrand(CreateBrandCommand command) {
+        return createBrand.createBrand(command);
     }
 
     /**
@@ -63,16 +65,9 @@ public class BrandService implements CreateBrandUseCase, RetrieveBrandUseCase, U
         return retrieveBrand.findAll();
     }
 
-    /**
-     * Delegates the call to the 'Update Brand' use case.
-     * 
-     * @param uuid  The unique ID of the brand to update.
-     * @param brand The brand data to update.
-     * @return An {@link Optional} with the updated brand, or empty.
-     */
     @Override
-    public Optional<Brand> updateBrand(String uuid, Brand brand) {
-        return updateBrand.updateBrand(uuid, brand);
+    public Optional<Brand> updateBrand(String uuid, UpdateBrandCommand command) {
+        return updateBrand.updateBrand(uuid, command);
     }
 
     /**

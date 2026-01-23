@@ -1,5 +1,6 @@
 package com.hexarcano.dlrecord.brand.application.port.in;
 
+import com.hexarcano.dlrecord.brand.application.port.in.command.CreateBrandCommand;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 /**
@@ -13,5 +14,5 @@ public interface CreateBrandUseCase {
      * @param brand The brand object with the data to be created.
      * @return The newly created {@link Brand}.
      */
-    Brand createBrand(Brand brand);
+    Brand createBrand(CreateBrandCommand command);
 }

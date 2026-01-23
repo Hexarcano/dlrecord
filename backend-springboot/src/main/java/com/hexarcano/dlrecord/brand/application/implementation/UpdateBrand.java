@@ -3,6 +3,7 @@ package com.hexarcano.dlrecord.brand.application.implementation;
 import java.util.Optional;
 
 import com.hexarcano.dlrecord.brand.application.port.in.UpdateBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.in.command.UpdateBrandCommand;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class UpdateBrand implements UpdateBrandUseCase {
-    private final BrandRepositoryPort repository;
+    private final BrandRepositoryPort brandRepository;
 
     /**
      * Updates an existing brand by its unique identifier.
@@ -30,7 +31,13 @@ public class UpdateBrand implements UpdateBrandUseCase {
      *         brand was not found.
      */
     @Override
-    public Optional<Brand> updateBrand(String uuid, Brand brand) {
-        return repository.update(uuid, brand);
+    public Optional<Brand> updateBrand(String uuid, UpdateBrandCommand command) {
+        return brandRepository.findById(uuid).map(brandToUpdate -> {
+            if (command.name() != null && !command.name().equals(brandToUpdate.getName())) {
+                brandToUpdate.changeName(command.name());
+            }
+
+            return brandRepository.save(brandToUpdate);
+        });
     }
 }

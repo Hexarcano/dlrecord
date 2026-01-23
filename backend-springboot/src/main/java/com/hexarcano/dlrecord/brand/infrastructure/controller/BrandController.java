@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
+import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.CreateBrandRequest;
+import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.UpdateBrandRequest;
 
 import lombok.AllArgsConstructor;
 
@@ -37,8 +39,8 @@ public class BrandController {
      *         201 (Created).
      */
     @PostMapping()
-    public ResponseEntity<Brand> createBrand(@RequestBody Brand brand) {
-        Brand createdBrand = brandService.createBrand(brand);
+    public ResponseEntity<Brand> createBrand(@RequestBody CreateBrandRequest request) {
+        Brand createdBrand = brandService.createBrand(request.toCreateBrandCommand());
 
         return new ResponseEntity<Brand>(createdBrand, HttpStatus.CREATED);
     }
@@ -70,19 +72,9 @@ public class BrandController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    /**
-     * REST endpoint to update an existing brand.
-     * 
-     * @param id     The unique identifier of the brand to update, passed in the URL
-     *               path.
-     * @param entity The updated brand data sent in the request body.
-     * @return A {@link ResponseEntity} with the updated brand and HTTP status 200
-     *         (OK),or HTTP status 404 (Not Found) if the brand to update does not
-     *         exist.
-     */
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable String id, @RequestBody Brand entity) {
-        return brandService.updateBrand(id, entity)
+    public ResponseEntity<Brand> updateBrand(@PathVariable String id, @RequestBody UpdateBrandRequest request) {
+        return brandService.updateBrand(id, request.toUpdateBrandCommand())
                 .map(brand -> new ResponseEntity<Brand>(brand, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

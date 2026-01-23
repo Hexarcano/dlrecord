@@ -2,6 +2,7 @@ package com.hexarcano.dlrecord.brand.application.port.in;
 
 import java.util.Optional;
 
+import com.hexarcano.dlrecord.brand.application.port.in.command.UpdateBrandCommand;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
 /**
@@ -18,5 +19,5 @@ public interface UpdateBrandUseCase {
      * @return An {@link Optional} containing the updated {@link Brand} if found and
      *         updated, or an empty Optional otherwise.
      */
-    Optional<Brand> updateBrand(String uuid, Brand brand);
+    Optional<Brand> updateBrand(String uuid, UpdateBrandCommand command);
 }

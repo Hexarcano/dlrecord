@@ -1,6 +1,7 @@
 package com.hexarcano.dlrecord.brand.application.implementation;
 
 import com.hexarcano.dlrecord.brand.application.port.in.CreateBrandUseCase;
+import com.hexarcano.dlrecord.brand.application.port.in.command.CreateBrandCommand;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class CreateBrand implements CreateBrandUseCase {
-    private final BrandRepositoryPort repository;
+    private final BrandRepositoryPort brandRepository;
 
     /**
      * Creates a new brand.
@@ -26,7 +27,9 @@ public class CreateBrand implements CreateBrandUseCase {
      * @return The created {@link Brand} domain model, typically with a new ID.
      */
     @Override
-    public Brand createBrand(Brand brand) {
-        return repository.save(brand);
+    public Brand createBrand(CreateBrandCommand command) {
+        Brand brand = new Brand(null, command.name());
+
+        return brandRepository.save(brand);
     }
 }
