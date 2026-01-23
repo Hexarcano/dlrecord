@@ -7,6 +7,8 @@ import com.hexarcano.dlrecord.devicemodel.application.port.in.CreateDeviceModelU
 import com.hexarcano.dlrecord.devicemodel.application.port.in.DeleteDeviceModelUseCase;
 import com.hexarcano.dlrecord.devicemodel.application.port.in.RetrieveDeviceModelUseCase;
 import com.hexarcano.dlrecord.devicemodel.application.port.in.UpdateDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.command.CreateDeviceModelCommand;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.command.UpdateDeviceModelCommand;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
 import lombok.RequiredArgsConstructor;
@@ -38,8 +40,8 @@ public class DeviceModelService
      * @return The created device model.
      */
     @Override
-    public DeviceModel createDeviceModel(DeviceModel deviceModel) {
-        return createDeviceModel.createDeviceModel(deviceModel);
+    public DeviceModel createDeviceModel(CreateDeviceModelCommand command) {
+        return createDeviceModel.createDeviceModel(command);
     }
 
     /**
@@ -74,8 +76,8 @@ public class DeviceModelService
      * @return An {@link Optional} with the updated device model, or empty.
      */
     @Override
-    public Optional<DeviceModel> updateDeviceModel(String uuid, DeviceModel deviceModel) {
-        return updateDeviceModel.updateDeviceModel(uuid, deviceModel);
+    public Optional<DeviceModel> updateDeviceModel(String uuid, UpdateDeviceModelCommand command) {
+        return updateDeviceModel.updateDeviceModel(uuid, command);
     }
 
     /**

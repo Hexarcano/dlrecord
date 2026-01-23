@@ -1,5 +1,6 @@
 package com.hexarcano.dlrecord.devicemodel.application.port.in;
 
+import com.hexarcano.dlrecord.devicemodel.application.port.in.command.CreateDeviceModelCommand;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
 /**
@@ -12,5 +13,5 @@ public interface CreateDeviceModelUseCase {
      * @param deviceModel The device model to create.
      * @return The created device model.
      */
-    DeviceModel createDeviceModel(DeviceModel deviceModel);
+    DeviceModel createDeviceModel(CreateDeviceModelCommand command);
 }

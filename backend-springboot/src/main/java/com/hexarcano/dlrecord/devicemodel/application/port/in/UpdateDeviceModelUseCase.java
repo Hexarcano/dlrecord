@@ -2,6 +2,7 @@ package com.hexarcano.dlrecord.devicemodel.application.port.in;
 
 import java.util.Optional;
 
+import com.hexarcano.dlrecord.devicemodel.application.port.in.command.UpdateDeviceModelCommand;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
 /**
@@ -15,5 +16,5 @@ public interface UpdateDeviceModelUseCase {
      * @param deviceModel The device model containing the new data.
      * @return An {@link Optional} with the updated device model, or empty.
      */
-    Optional<DeviceModel> updateDeviceModel(String uuid, DeviceModel deviceModel);
+    Optional<DeviceModel> updateDeviceModel(String uuid, UpdateDeviceModelCommand command);
 }

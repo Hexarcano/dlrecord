@@ -1,7 +1,9 @@
 package com.hexarcano.dlrecord.devicemodel.application.implementation;
 
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.devicemodel.application.port.in.CreateDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.command.CreateDeviceModelCommand;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
@@ -29,14 +31,15 @@ public class CreateDeviceModel implements CreateDeviceModelUseCase {
      * @throws IllegalArgumentException if the brand does not exist.
      */
     @Override
-    public DeviceModel createDeviceModel(DeviceModel deviceModel) {
-        if (!brandRepository.existsById(deviceModel.getBrand().getUuid())) {
-            throw new IllegalArgumentException("Invalid brand reference.");
-        }
+    public DeviceModel createDeviceModel(CreateDeviceModelCommand command) {
+        Brand brand = brandRepository.findById(command.brandId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid brand reference."));
 
-        if (deviceModelRepository.existsByName(deviceModel.getName())) {
+        if (deviceModelRepository.existsByName(command.name())) {
             throw new IllegalArgumentException("Device model already exists.");
         }
+
+        DeviceModel deviceModel = new DeviceModel(null, command.name(), brand);
 
         return deviceModelRepository.save(deviceModel);
     }

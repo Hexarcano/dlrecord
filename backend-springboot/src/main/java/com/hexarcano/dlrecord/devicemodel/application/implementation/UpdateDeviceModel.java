@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.devicemodel.application.port.in.UpdateDeviceModelUseCase;
+import com.hexarcano.dlrecord.devicemodel.application.port.in.command.UpdateDeviceModelCommand;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
@@ -32,17 +33,15 @@ public class UpdateDeviceModel implements UpdateDeviceModelUseCase {
      * @return An {@link Optional} with the updated {@link DeviceModel}, or empty.
      */
     @Override
-    public Optional<DeviceModel> updateDeviceModel(String uuid, DeviceModel deviceModel) {
+    public Optional<DeviceModel> updateDeviceModel(String uuid, UpdateDeviceModelCommand command) {
         return deviceModelRepository.findById(uuid).map(modelToUpdate -> {
-            if (deviceModel.getName() != null && !deviceModel.getName().equals(modelToUpdate.getName())) {
-                modelToUpdate.changeName(deviceModel.getName());
+            if (command.name() != null && !command.name().equals(modelToUpdate.getName())) {
+                modelToUpdate.changeName(command.name());
             }
 
-            if (deviceModel.getBrand() != null && deviceModel.getBrand().getUuid() != null
-                    && !deviceModel.getBrand().getUuid().equals(modelToUpdate.getBrand().getUuid())) {
-                Brand newBrand = brandRepository.findById(deviceModel.getBrand().getUuid())
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "Invalid brand reference."));
+            if (command.brandId() != null && !command.brandId().equals(modelToUpdate.getBrand().getUuid())) {
+                Brand newBrand = brandRepository.findById(command.brandId())
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid brand reference."));
 
                 modelToUpdate.changeBrand(newBrand);
             }

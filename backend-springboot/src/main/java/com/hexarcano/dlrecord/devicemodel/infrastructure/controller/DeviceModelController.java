@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.devicemodel.application.service.DeviceModelService;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 import com.hexarcano.dlrecord.devicemodel.infrastructure.controller.dto.CreateDeviceModelRequest;
@@ -22,7 +21,8 @@ import com.hexarcano.dlrecord.devicemodel.infrastructure.controller.dto.UpdateDe
 import lombok.RequiredArgsConstructor;
 
 /**
- * Primary (Driving) Adapter that exposes device model use cases via a RESTful API.
+ * Primary (Driving) Adapter that exposes device model use cases via a RESTful
+ * API.
  * It handles incoming HTTP requests and delegates them to the application
  * service layer.
  */
@@ -41,10 +41,8 @@ public class DeviceModelController {
      */
     @PostMapping()
     public ResponseEntity<DeviceModel> createDeviceModel(@RequestBody CreateDeviceModelRequest request) {
-        Brand brand = new Brand(request.brandId(), "Placeholder");
-        DeviceModel deviceModel = new DeviceModel(null, request.name(), brand);
+        DeviceModel createdDeviceModel = deviceModelService.createDeviceModel(request.toCreateDeviceModelCommand());
 
-        DeviceModel createdDeviceModel = deviceModelService.createDeviceModel(deviceModel);
         return new ResponseEntity<>(createdDeviceModel, HttpStatus.CREATED);
     }
 
@@ -92,14 +90,7 @@ public class DeviceModelController {
     public ResponseEntity<DeviceModel> updateDeviceModel(
             @PathVariable String id,
             @RequestBody UpdateDeviceModelRequest request) {
-
-        Brand brand = null;
-        if (request.brandId() != null) {
-            brand = new Brand(request.brandId(), "Placeholder");
-        }
-        DeviceModel deviceModel = new DeviceModel(id, request.name(), brand);
-
-        return deviceModelService.updateDeviceModel(id, deviceModel)
+        return deviceModelService.updateDeviceModel(id, request.toUpdateDeviceModelCommand())
                 .map(updatedDeviceModel -> new ResponseEntity<>(updatedDeviceModel, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
