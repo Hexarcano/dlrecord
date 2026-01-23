@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class RetrieveDeviceType implements RetrieveDeviceTypeUseCase {
-    private final DeviceTypeRepositoryPort repository;
+    private final DeviceTypeRepositoryPort deviceTypeRepository;
 
     /**
      * Retrieves a single device type by its unique identifier.
@@ -31,7 +31,7 @@ public class RetrieveDeviceType implements RetrieveDeviceTypeUseCase {
      */
     @Override
     public Optional<DeviceType> findById(String uuid) {
-        return repository.findById(uuid);
+        return deviceTypeRepository.findById(uuid);
     }
 
     /**
@@ -41,6 +41,6 @@ public class RetrieveDeviceType implements RetrieveDeviceTypeUseCase {
      */
     @Override
     public List<DeviceType> findAll() {
-        return repository.findAll();
+        return deviceTypeRepository.findAll();
     }
 }

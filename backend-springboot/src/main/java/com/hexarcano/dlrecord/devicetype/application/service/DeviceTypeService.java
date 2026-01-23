@@ -7,6 +7,8 @@ import com.hexarcano.dlrecord.devicetype.application.port.in.CreateDeviceTypeUse
 import com.hexarcano.dlrecord.devicetype.application.port.in.DeleteDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.in.RetrieveDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.in.UpdateDeviceTypeUseCase;
+import com.hexarcano.dlrecord.devicetype.application.port.in.command.CreateDeviceTypeCommand;
+import com.hexarcano.dlrecord.devicetype.application.port.in.command.UpdateDeviceTypeCommand;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.RequiredArgsConstructor;
@@ -38,8 +40,8 @@ public class DeviceTypeService implements CreateDeviceTypeUseCase, RetrieveDevic
      * @return The created device type.
      */
     @Override
-    public DeviceType createDeviceType(DeviceType deviceType) {
-        return createDeviceType.createDeviceType(deviceType);
+    public DeviceType createDeviceType(CreateDeviceTypeCommand command) {
+        return createDeviceType.createDeviceType(command);
     }
 
     /**
@@ -68,13 +70,13 @@ public class DeviceTypeService implements CreateDeviceTypeUseCase, RetrieveDevic
     /**
      * Delegates the call to the 'Update DeviceType' use case.
      * 
-     * @param uuid       The unique ID of the device type to update.
-     * @param deviceType The device type data to update.
+     * @param uuid    The unique ID of the device type to update.
+     * @param command The command containing the new data.
      * @return An {@link Optional} with the updated device type, or empty.
      */
     @Override
-    public Optional<DeviceType> updateDeviceType(String uuid, DeviceType deviceType) {
-        return updateDeviceType.updateDeviceType(uuid, deviceType);
+    public Optional<DeviceType> updateDeviceType(String uuid, UpdateDeviceTypeCommand command) {
+        return updateDeviceType.updateDeviceType(uuid, command);
     }
 
     /**

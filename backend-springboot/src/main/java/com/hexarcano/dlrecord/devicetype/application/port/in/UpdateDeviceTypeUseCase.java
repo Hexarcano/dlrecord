@@ -2,6 +2,7 @@ package com.hexarcano.dlrecord.devicetype.application.port.in;
 
 import java.util.Optional;
 
+import com.hexarcano.dlrecord.devicetype.application.port.in.command.UpdateDeviceTypeCommand;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 /**
@@ -18,5 +19,5 @@ public interface UpdateDeviceTypeUseCase {
      * @return An {@link Optional} containing the updated {@link DeviceType} if
      *         found and updated, or an empty Optional otherwise.
      */
-    Optional<DeviceType> updateDeviceType(String uuid, DeviceType deviceType);
+    Optional<DeviceType> updateDeviceType(String uuid, UpdateDeviceTypeCommand command);
 }

@@ -1,5 +1,6 @@
 package com.hexarcano.dlrecord.devicetype.application.port.in;
 
+import com.hexarcano.dlrecord.devicetype.application.port.in.command.CreateDeviceTypeCommand;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 /**
@@ -14,5 +15,5 @@ public interface CreateDeviceTypeUseCase {
      * @param deviceType The device type object with the data to be created.
      * @return The newly created {@link DeviceType}.
      */
-    DeviceType createDeviceType(DeviceType deviceType);
+    DeviceType createDeviceType(CreateDeviceTypeCommand command);
 }
