@@ -28,14 +28,12 @@ Each logical module (e.g., `auth`, `devicemodel`) must follow this directory lay
 │   ├── implementation          # Implementation of 'port.in' (Use Cases)
 │   ├── port/
 │   │   ├── in/                 # Use Case Interfaces (Inputs)
-|   |   |   └── dto/            # Data Transfer Objects for Inputs
+│   │   │   └── command/        # Input Commands (Records/POJOs) for Use Cases
 │   │   └── out/                # Repository/External System Interfaces (Outputs)
-│   └── service/                # Facade implementing all Input Ports, delegating to implementation classes.
-│
+│   └── service/                # Facade joining and implementing all Input Ports, delegating to implementation classes.
 ├── domain/                     # BUSINESS RULES LAYER
 │   ├── model/                  # Entities, Aggregates, Value Objects (POJOs)
 │   └── exception/              # Domain-specific exceptions
-│
 └── infrastructure/             # ADAPTERS LAYER
     ├── adapter/                # Implementations of 'port.out'
     ├── config/                 # Spring @Configuration beans
@@ -61,13 +59,14 @@ Each logical module (e.g., `auth`, `devicemodel`) must follow this directory lay
     *   ✅ **Implementation**: Actual implement `port.in` of use cases.
     *   ✅ **Service**: Facade that centralizes and call `port.in` interfaces for controller calls.
     *   ✅ **Ports**: Interfaces only. `port.in` defines what the app *can do*. `port.out` defines what the app *needs*.
+    *   ✅ **Commands**: Use specific Command objects (Java Records) in `port.in.command` for input data (e.g. `UpdateDeviceCommand`), decoupling Controller from Domain.
     *   ❌ **Anotations**: Never use JPA / framework annotations.
 
 ### 3. Infrastructure Layer (`infrastructure`)
 
 *   **Content**: Framework specific implementations (Web, Database, Messaging).
 *   **Rules**:
-    *   ✅ **Controllers**: Convert HTTP DTOs to Application DTOs/Domain objects. Call `application.service`.
+    *   ✅ **Controllers**: Convert HTTP DTOs to Commands (App Layer). Call `application.service`.
     *   ✅ **Persistence**: Implement `port.out`. Map `domain.model` to `infrastructure.entity` before saving.
     *   ✅ **Access**: Never access `infrastructure` classes from `domain` or `application`.
     *   ✅ **Configuration**: All module configuration using spring `@Configuration` annotation in <\<module_name>ModuleConfig>.
@@ -76,7 +75,7 @@ Each logical module (e.g., `auth`, `devicemodel`) must follow this directory lay
 
 ## Data Conversion Strategy
 
-*   **Request** (`Web DTO`) → **Controller** → `App DTO`/`Domain`
+*   **Request** (`Web DTO`) → **Controller** → `Command` → `Domain` (Service)
 *   **Service** → **Repository Port**
 *   **Repository Adapter** → `Domain` → `JPA Entity` (save)
 *   **Database** → `JPA Entity` → `Domain` (load)
