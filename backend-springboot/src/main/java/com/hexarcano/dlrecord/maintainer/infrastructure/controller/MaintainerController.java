@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexarcano.dlrecord.maintainer.application.service.MaintainerService;
+import com.hexarcano.dlrecord.maintainer.infrastructure.controller.dto.CreateMaintainerRequest;
 import com.hexarcano.dlrecord.maintainer.infrastructure.controller.dto.UpdateMaintainerRequest;
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
@@ -26,29 +27,27 @@ public class MaintainerController {
     private final MaintainerService maintainerService;
 
     @PostMapping
-    public ResponseEntity<Maintainer> createMaintainer(@RequestBody Maintainer maintainer) {
-        Maintainer createdMaintainer = maintainerService.createMaintainer(maintainer);
+    public ResponseEntity<Maintainer> createMaintainer(@RequestBody CreateMaintainerRequest request) {
+        Maintainer createdMaintainer = maintainerService.createMaintainer(request.toCreateMaintainerCommand());
         return new ResponseEntity<>(createdMaintainer, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Maintainer> findMaintainerById(@PathVariable String id) {
-        return maintainerService.findById(id)
-                .map(maintainer -> new ResponseEntity<>(maintainer, HttpStatus.OK))
+        return maintainerService.findById(id).map(maintainer -> new ResponseEntity<>(maintainer, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
     public ResponseEntity<List<Maintainer>> getAllMaintainers() {
-        List<Maintainer> list = maintainerService.findAll();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return new ResponseEntity<>(maintainerService.findAll(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Maintainer> updateMaintainer(@PathVariable String id,
-            @RequestBody UpdateMaintainerRequest updateMaintainerRequest) {
-        return maintainerService.updateMaintainer(id, updateMaintainerRequest)
-                .map(updatedMaintainer -> new ResponseEntity<>(updatedMaintainer, HttpStatus.OK))
+            @RequestBody UpdateMaintainerRequest request) {
+        return maintainerService.updateMaintainer(id, request.toUpdateMaintainerCommand())
+                .map(maintainer -> new ResponseEntity<>(maintainer, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

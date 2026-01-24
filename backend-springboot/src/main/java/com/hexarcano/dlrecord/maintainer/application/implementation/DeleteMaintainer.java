@@ -1,17 +1,17 @@
 package com.hexarcano.dlrecord.maintainer.application.implementation;
 
-import com.hexarcano.dlrecord.maintainer.application.port.in.IDeleteMaintainer;
+import com.hexarcano.dlrecord.maintainer.application.port.in.DeleteMaintainerUseCase;
 import com.hexarcano.dlrecord.maintainer.application.port.out.IMaintainerRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-public class DeleteMaintainer implements IDeleteMaintainer {
-    private final IMaintainerRepository repository;
+@RequiredArgsConstructor
+public class DeleteMaintainer implements DeleteMaintainerUseCase {
+    private final IMaintainerRepository maintainerRepository;
 
     @Override
     public boolean deleteMaintainer(String uuid) {
-        return repository.delete(uuid);
+        return maintainerRepository.delete(uuid);
     }
 
 }

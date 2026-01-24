@@ -1,18 +1,21 @@
 package com.hexarcano.dlrecord.maintainer.application.implementation;
 
-import com.hexarcano.dlrecord.maintainer.application.port.in.ICreateMaintainer;
+import com.hexarcano.dlrecord.maintainer.application.port.in.CreateMaintainerUseCase;
+import com.hexarcano.dlrecord.maintainer.application.port.in.command.CreateMaintainerCommand;
 import com.hexarcano.dlrecord.maintainer.application.port.out.IMaintainerRepository;
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-public class CreateMaintainer implements ICreateMaintainer {
-    private final IMaintainerRepository repository;
+@RequiredArgsConstructor
+public class CreateMaintainer implements CreateMaintainerUseCase {
+    private final IMaintainerRepository maintainerRepository;
 
     @Override
-    public Maintainer createMaintainer(Maintainer maintainer) {
-        return repository.save(maintainer);
+    public Maintainer createMaintainer(CreateMaintainerCommand command) {
+        Maintainer maintainer = new Maintainer(null, command.username(), command.email(), command.password(),
+                command.isAdmin());
+        return maintainerRepository.save(maintainer);
     }
 
 }

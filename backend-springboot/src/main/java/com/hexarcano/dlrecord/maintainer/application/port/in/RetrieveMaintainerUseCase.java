@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
-public interface IRetrieveMaintainer {
+public interface RetrieveMaintainerUseCase {
     Optional<Maintainer> findById(String uuid);
 
     List<Maintainer> findAll();

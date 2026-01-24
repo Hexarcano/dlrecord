@@ -3,25 +3,27 @@ package com.hexarcano.dlrecord.maintainer.application.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.maintainer.application.port.in.ICreateMaintainer;
-import com.hexarcano.dlrecord.maintainer.application.port.in.IDeleteMaintainer;
-import com.hexarcano.dlrecord.maintainer.application.port.in.IRetrieveMaintainer;
-import com.hexarcano.dlrecord.maintainer.application.port.in.IUpdateMaintainer;
-import com.hexarcano.dlrecord.maintainer.infrastructure.controller.dto.UpdateMaintainerRequest;
+import com.hexarcano.dlrecord.maintainer.application.port.in.CreateMaintainerUseCase;
+import com.hexarcano.dlrecord.maintainer.application.port.in.DeleteMaintainerUseCase;
+import com.hexarcano.dlrecord.maintainer.application.port.in.RetrieveMaintainerUseCase;
+import com.hexarcano.dlrecord.maintainer.application.port.in.UpdateMaintainerUseCase;
+import com.hexarcano.dlrecord.maintainer.application.port.in.command.CreateMaintainerCommand;
+import com.hexarcano.dlrecord.maintainer.application.port.in.command.UpdateMaintainerCommand;
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MaintainerService implements ICreateMaintainer, IRetrieveMaintainer, IUpdateMaintainer, IDeleteMaintainer {
-    private final ICreateMaintainer createMaintainer;
-    private final IRetrieveMaintainer retrieveMaintainer;
-    private final IUpdateMaintainer updateMaintainer;
-    private final IDeleteMaintainer deleteMaintainer;
+public class MaintainerService implements CreateMaintainerUseCase, RetrieveMaintainerUseCase, UpdateMaintainerUseCase,
+        DeleteMaintainerUseCase {
+    private final CreateMaintainerUseCase createMaintainer;
+    private final RetrieveMaintainerUseCase retrieveMaintainer;
+    private final UpdateMaintainerUseCase updateMaintainer;
+    private final DeleteMaintainerUseCase deleteMaintainer;
 
     @Override
-    public Maintainer createMaintainer(Maintainer maintainer) {
-        return createMaintainer.createMaintainer(maintainer);
+    public Maintainer createMaintainer(CreateMaintainerCommand command) {
+        return createMaintainer.createMaintainer(command);
     }
 
     @Override
@@ -35,8 +37,8 @@ public class MaintainerService implements ICreateMaintainer, IRetrieveMaintainer
     }
 
     @Override
-    public Optional<Maintainer> updateMaintainer(String uuid, UpdateMaintainerRequest request) {
-        return updateMaintainer.updateMaintainer(uuid, request);
+    public Optional<Maintainer> updateMaintainer(String uuid, UpdateMaintainerCommand command) {
+        return updateMaintainer.updateMaintainer(uuid, command);
     }
 
     @Override

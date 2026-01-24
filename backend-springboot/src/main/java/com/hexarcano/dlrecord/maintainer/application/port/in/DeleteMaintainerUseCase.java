@@ -1,5 +1,5 @@
 package com.hexarcano.dlrecord.maintainer.application.port.in;
 
-public interface IDeleteMaintainer {
+public interface DeleteMaintainerUseCase {
     boolean deleteMaintainer(String uuid);
 }
