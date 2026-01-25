@@ -16,10 +16,10 @@ Use Lombok to reduce boilerplate, but follow these rules:
 *   ✅ **@Data**: Use for DTOs and mutable domain objects (if carefully designed).
 *   ✅ **@Value**: Use for immutable Value Objects (Domain).
 *   ✅ **@Builder**: Recommended for complex object creation.
-*   ✅ **@RequiredArgsConstructor**: Use for dependency injection (final fields) instead of `@Autowired` on fields.
+*   ✅ **@RequiredArgsConstructor**: MANDATORY for Dependency Injection (Controllers, Services, Adapters).
 *   ✅ **@Slf4j**: For logging.
 *   ⚠️ **@ToString** / **@EqualsAndHashCode**: Be careful with circular dependencies (exclude relationships).
-*   ❌ **@AllArgsConstructor**: Avoid on JPA Entities (breaks lazy loading proxies sometimes).
+*   ❌ **@AllArgsConstructor**: Forbidden on Spring Components (use RequiredArgs); Discouraged on JPA Entities.
 
 ## 2. Java Modern Practices (Java 25)
 
