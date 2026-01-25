@@ -36,14 +36,40 @@ Use Lombok to reduce boilerplate, but follow these rules:
     *   Throw specific runtime exceptions (e.g., `UserNotFoundException`).
     *   Let `@ControllerAdvice` handle the HTTP response mapping.
 
-## 4. Naming Conventions
+## 4. Import Management
+
+### Prohibit Fully Qualified Names (FQN)
+
+**Rule:** Do NOT use fully qualified names for classes inside methods, parameters, or fields if they can be imported.
+**Exception:** Only use FQN if there is a class name collision (e.g. `java.util.Date` vs `java.sql.Date`).
+
+**Bad Example:**
+
+```java
+public void configure(org.springframework.security.config.annotation.web.builders.HttpSecurity http) {
+    http.sessionManagement(s -> s.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS));
+}
+```
+
+**Good Example:**
+
+```java
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+
+public void configure(HttpSecurity http) {
+    http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+}
+```
+
+## 5. Naming Conventions
 
 *   **Classes**: PascalCase (`UserService`).
 *   **Methods**: camelCase (`saveUser`).
 *   **Constants**: UPPER_SNAKE_CASE (`MAX_RETRY_COUNT`).
 *   **Generics**: Single uppercase letter (`T`, `R`) or descriptive (`TUser`).
 
-## 5. Testing
+## 6. Testing
 
 > **IMPORTANT**: For detailed Testing patterns (Mocks, Verifications, Optimizations), refer to the specialized **`java-unit-testing-springboot`** skill.
 
@@ -51,7 +77,7 @@ Use Lombok to reduce boilerplate, but follow these rules:
 *   **Unit Tests**: Use `@ExtendWith(MockitoExtension.class)`.
 *   **Integration Tests**: Use `@SpringBootTest(webEnvironment = RANDOM_PORT)`.
 
-## 6. Code Style (Spotless/Checkstyle)
+## 7. Code Style (Spotless/Checkstyle)
 
 *   **Indentation**: 4 spaces (or match project .editorconfig).
 *   **Braces**: K&R style (same line).
