@@ -18,7 +18,7 @@ import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.CreateBrandRequest;
 import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.UpdateBrandRequest;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Primary (Driving) Adapter that exposes brand use cases via a RESTful API.
@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
  */
 @RestController
 @RequestMapping("/api/v1/brands")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BrandController {
     private final BrandService brandService;
 

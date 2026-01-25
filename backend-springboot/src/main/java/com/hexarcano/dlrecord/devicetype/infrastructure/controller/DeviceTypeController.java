@@ -18,7 +18,7 @@ import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 import com.hexarcano.dlrecord.devicetype.infrastructure.controller.dto.CreateDeviceTypeRequest;
 import com.hexarcano.dlrecord.devicetype.infrastructure.controller.dto.UpdateDeviceTypeRequest;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Primary (Driving) Adapter that exposes device type use cases via a RESTful
@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
  */
 @RestController
 @RequestMapping("/api/v1/device-types")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeviceTypeController {
     private final DeviceTypeService deviceTypeService;
 

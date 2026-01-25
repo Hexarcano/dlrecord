@@ -7,7 +7,7 @@ import com.hexarcano.dlrecord.devicemodel.application.port.in.RetrieveDeviceMode
 import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 import com.hexarcano.dlrecord.devicemodel.domain.model.DeviceModel;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for retrieving one or more device models.
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
  * {@link DeviceModelRepositoryPort} output port to fetch device model data.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RetrieveDeviceModel implements RetrieveDeviceModelUseCase {
     private final DeviceModelRepositoryPort deviceModelRepository;
 

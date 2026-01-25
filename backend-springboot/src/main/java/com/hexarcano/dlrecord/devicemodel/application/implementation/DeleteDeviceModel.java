@@ -3,7 +3,7 @@ package com.hexarcano.dlrecord.devicemodel.application.implementation;
 import com.hexarcano.dlrecord.devicemodel.application.port.in.DeleteDeviceModelUseCase;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Use case implementation for deleting a device model.
@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
  * data.
  * </p>
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeleteDeviceModel implements DeleteDeviceModelUseCase {
     private final DeviceModelRepositoryPort deviceModelRepository;
 
