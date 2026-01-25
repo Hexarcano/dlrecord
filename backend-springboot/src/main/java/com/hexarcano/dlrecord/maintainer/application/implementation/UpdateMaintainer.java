@@ -16,23 +16,37 @@ public class UpdateMaintainer implements UpdateMaintainerUseCase {
     @Override
     public Optional<Maintainer> updateMaintainer(String uuid, UpdateMaintainerCommand command) {
         return maintainerRepository.findById(uuid).map(maintainerToUpdate -> {
+            boolean updated = false;
+
             if (command.username() != null && !command.username().equals(maintainerToUpdate.getUsername())) {
                 maintainerToUpdate.changeUsername(command.username());
+
+                updated = true;
             }
 
             if (command.email() != null && !command.email().equals(maintainerToUpdate.getEmail())) {
                 maintainerToUpdate.changeEmail(command.email());
+
+                updated = true;
             }
 
             if (command.password() != null && !command.password().equals(maintainerToUpdate.getPassword())) {
                 maintainerToUpdate.changePassword(command.password());
+
+                updated = true;
             }
 
             if (command.isAdmin() != null && command.isAdmin() != maintainerToUpdate.getIsAdmin()) {
                 maintainerToUpdate.changeIsAdmin(command.isAdmin());
+
+                updated = true;
             }
 
-            return maintainerRepository.save(maintainerToUpdate);
+            if (updated) {
+                return maintainerRepository.save(maintainerToUpdate);
+            }
+
+            return maintainerToUpdate;
         });
     }
 

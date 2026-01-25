@@ -35,8 +35,12 @@ public class UpdateDeviceModel implements UpdateDeviceModelUseCase {
     @Override
     public Optional<DeviceModel> updateDeviceModel(String uuid, UpdateDeviceModelCommand command) {
         return deviceModelRepository.findById(uuid).map(modelToUpdate -> {
+            boolean updated = false;
+
             if (command.name() != null && !command.name().equals(modelToUpdate.getName())) {
                 modelToUpdate.changeName(command.name());
+
+                updated = true;
             }
 
             if (command.brandId() != null && !command.brandId().equals(modelToUpdate.getBrand().getUuid())) {
@@ -44,9 +48,15 @@ public class UpdateDeviceModel implements UpdateDeviceModelUseCase {
                         .orElseThrow(() -> new IllegalArgumentException("Invalid brand reference."));
 
                 modelToUpdate.changeBrand(newBrand);
+
+                updated = true;
             }
 
-            return deviceModelRepository.save(modelToUpdate);
+            if (updated) {
+                return deviceModelRepository.save(modelToUpdate);
+            }
+
+            return modelToUpdate;
         });
     }
 }

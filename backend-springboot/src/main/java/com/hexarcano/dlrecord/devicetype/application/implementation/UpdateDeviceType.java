@@ -35,9 +35,11 @@ public class UpdateDeviceType implements UpdateDeviceTypeUseCase {
         return deviceTypeRepository.findById(uuid).map(deviceTypeToUpdate -> {
             if (command.name() != null && !command.name().equals(deviceTypeToUpdate.getName())) {
                 deviceTypeToUpdate.changeName(command.name());
+
+                return deviceTypeRepository.save(deviceTypeToUpdate);
             }
 
-            return deviceTypeRepository.save(deviceTypeToUpdate);
+            return deviceTypeToUpdate;
         });
     }
 }

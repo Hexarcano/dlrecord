@@ -35,9 +35,11 @@ public class UpdateBrand implements UpdateBrandUseCase {
         return brandRepository.findById(uuid).map(brandToUpdate -> {
             if (command.name() != null && !command.name().equals(brandToUpdate.getName())) {
                 brandToUpdate.changeName(command.name());
+
+                return brandRepository.save(brandToUpdate);
             }
 
-            return brandRepository.save(brandToUpdate);
+            return brandToUpdate;
         });
     }
 }
