@@ -4,7 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.hexarcano.dlrecord.auth.infrastructure.entities.AuthUser;
-import com.hexarcano.dlrecord.exception.UsernameNotFoundException;
+import com.hexarcano.dlrecord.config.exception.UsernameNotFoundException;
 import com.hexarcano.dlrecord.maintainer.infrastructure.repository.JpaMaintainerRepository;
 
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.hexarcano.dlrecord.exception.UsernameNotFoundException;
+import com.hexarcano.dlrecord.config.exception.UsernameNotFoundException;
 
 /**
  * Global exception handler for the application's controllers.

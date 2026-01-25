@@ -1,7 +1,4 @@
-package com.hexarcano.dlrecord.exception;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+package com.hexarcano.dlrecord.config.exception;
 
 public class UsernameNotFoundException extends RuntimeException {
     public UsernameNotFoundException(String message) {

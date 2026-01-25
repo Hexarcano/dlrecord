@@ -2,8 +2,8 @@ package com.hexarcano.dlrecord.brand.application.implementation;
 
 import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.config.exception.DataConflictException;
 import com.hexarcano.dlrecord.devicemodel.application.port.out.DeviceModelRepositoryPort;
-import com.hexarcano.dlrecord.exception.DataConflictException;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,10 +1,11 @@
-package com.hexarcano.dlrecord.exception;
+package com.hexarcano.dlrecord.config.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Exception thrown when a data integrity conflict occurs, such as trying to insert a duplicate record.
+ * Exception thrown when a data integrity conflict occurs, such as trying to
+ * insert a duplicate record.
  * This maps to an HTTP 409 Conflict status.
  */
 @ResponseStatus(value = HttpStatus.CONFLICT)
