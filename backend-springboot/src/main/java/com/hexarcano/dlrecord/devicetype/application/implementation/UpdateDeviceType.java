@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
  * 
  * <p>
  * This class contains the specific business logic for the update process.
- * It implements the {@link IUpdateDeviceType} input port and uses the
- * {@link IDeviceTypeRepository} output port to persist the changes.
+ * It implements the {@link UpdateDeviceTypeUseCase} input port and uses the
+ * {@link DeviceTypeRepositoryPort} output port to persist the changes.
  * </p>
  */
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class UpdateDeviceType implements UpdateDeviceTypeUseCase {
      * Updates an existing device type by its unique identifier.
      * 
      * @param uuid    The unique ID of the device type to update.
-     * @param command The command containing the new data.
+     * @param command The {@link UpdateDeviceTypeCommand} containing the new data.
      * @return An {@link Optional} with the updated {@link DeviceType}, or empty if
      *         the device type was not found.
      */

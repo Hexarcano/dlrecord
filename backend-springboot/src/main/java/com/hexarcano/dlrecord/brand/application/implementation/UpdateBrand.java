@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
  * 
  * <p>
  * This class contains the business logic for the update process.
- * It implements the {@link IUpdateBrand} input port and uses the
- * {@link IBrandRepository} output port to persist the changes.
+ * It implements the {@link UpdateBrandUseCase} input port and uses the
+ * {@link BrandRepositoryPort} output port to persist the changes.
  * </p>
  */
 @RequiredArgsConstructor
@@ -25,8 +25,8 @@ public class UpdateBrand implements UpdateBrandUseCase {
     /**
      * Updates an existing brand by its unique identifier.
      * 
-     * @param uuid  The unique ID of the brand to update.
-     * @param brand The {@link Brand} domain model containing the new values.
+     * @param uuid    The unique ID of the brand to update.
+     * @param command The {@link UpdateBrandCommand} containing the new values.
      * @return An {@link Optional} with the updated {@link Brand}, or empty if the
      *         brand was not found.
      */

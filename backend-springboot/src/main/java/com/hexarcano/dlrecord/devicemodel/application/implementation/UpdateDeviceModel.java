@@ -28,8 +28,8 @@ public class UpdateDeviceModel implements UpdateDeviceModelUseCase {
     /**
      * Updates an existing device model.
      * 
-     * @param uuid        The unique ID of the device model to update.
-     * @param deviceModel The device model containing the new data.
+     * @param uuid    The unique ID of the device model to update.
+     * @param command The {@link UpdateDeviceModelCommand} containing the new data.
      * @return An {@link Optional} with the updated {@link DeviceModel}, or empty.
      */
     @Override

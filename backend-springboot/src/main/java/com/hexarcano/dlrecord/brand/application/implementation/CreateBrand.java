@@ -23,7 +23,8 @@ public class CreateBrand implements CreateBrandUseCase {
     /**
      * Creates a new brand.
      * 
-     * @param brand The {@link Brand} domain model to create.
+     * @param command The {@link CreateBrandCommand} containing the data to create
+     *                the brand.
      * @return The created {@link Brand} domain model, typically with a new ID.
      */
     @Override

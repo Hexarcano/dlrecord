@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
  * Use case implementation for retrieving one or more brands.
  * 
  * <p>
- * This class contains the business logic for querying brands.
- * It implements the {@link IRetrieveBrand} input port and uses the
- * {@link IBrandRepository} output port to fetch brand data.
+ * This class contains the business logic for creating brands.
+ * It implements the {@link RetrieveBrandUseCase} input port and uses the
+ * {@link BrandRepositoryPort} output port to fetch brand data.
  * </p>
  */
 @RequiredArgsConstructor

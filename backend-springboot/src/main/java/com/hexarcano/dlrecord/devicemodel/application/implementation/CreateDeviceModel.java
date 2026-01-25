@@ -14,8 +14,9 @@ import lombok.RequiredArgsConstructor;
  * 
  * <p>
  * This class contains the business logic for the creation process.
- * It implements the {@link ICreateDeviceModel} input port and uses the
- * {@link IDeviceModelRepository} output port to persist the device model data.
+ * It implements the {@link CreateDeviceModelUseCase} input port and uses the
+ * {@link DeviceModelRepositoryPort} output port to persist the device model
+ * data.
  * </p>
  */
 @RequiredArgsConstructor
@@ -26,7 +27,8 @@ public class CreateDeviceModel implements CreateDeviceModelUseCase {
     /**
      * Creates a new device model.
      * 
-     * @param deviceModel The device model to create.
+     * @param command The {@link CreateDeviceModelCommand} containing the data to
+     *                create the device model.
      * @return The created device model with its assigned unique ID.
      * @throws IllegalArgumentException if the brand does not exist.
      */

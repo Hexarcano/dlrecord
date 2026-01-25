@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
  * 
  * <p>
  * This class contains the business logic for the deletion process.
- * It implements the {@link IDeleteBrand} input port and uses the
- * {@link IBrandRepository} output port to delete the brand data.
+ * It implements the {@link DeleteBrandUseCase} input port and uses the
+ * {@link BrandRepositoryPort} output port to delete the brand data.
  * </p>
  */
 @RequiredArgsConstructor

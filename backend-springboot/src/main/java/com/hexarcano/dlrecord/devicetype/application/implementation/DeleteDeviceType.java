@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
  * 
  * <p>
  * This class contains the specific business logic for the deletion process.
- * It implements the {@link IDeleteDeviceType} input port and uses the
- * {@link IDeviceTypeRepository} output port to delete the device type data.
+ * It implements the {@link DeleteDeviceTypeUseCase} input port and uses the
+ * {@link DeviceTypeRepositoryPort} output port to delete the device type data.
  * </p>
  */
 @RequiredArgsConstructor

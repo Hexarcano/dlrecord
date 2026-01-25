@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
  * 
  * <p>
  * This class contains the specific business logic for querying device types.
- * It implements the {@link IRetrieveDeviceType} input port and uses the
- * {@link IDeviceTypeRepository} output port to fetch device type data.
+ * It implements the {@link RetrieveDeviceTypeUseCase} input port and uses the
+ * {@link DeviceTypeRepositoryPort} output port to fetch device type data.
  * </p>
  */
 @RequiredArgsConstructor
