@@ -4,8 +4,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.hexarcano.dlrecord.auth.application.port.in.dto.Credentials;
-import com.hexarcano.dlrecord.auth.application.port.out.IAuthRepository;
+
+import com.hexarcano.dlrecord.auth.application.port.out.AuthRepositoryPort;
 import com.hexarcano.dlrecord.auth.infrastructure.entities.AuthUser;
 import com.hexarcano.dlrecord.maintainer.infrastructure.entities.MaintainerEntity;
 import com.hexarcano.dlrecord.maintainer.infrastructure.repository.JpaMaintainerRepository;
@@ -14,7 +14,7 @@ import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AuthRepositoryAdapter implements IAuthRepository {
+public class AuthRepositoryAdapter implements AuthRepositoryPort {
     private final JpaMaintainerRepository maintainerRepository;
     private final AuthenticationManager authenticationManager;
 
@@ -26,11 +26,11 @@ public class AuthRepositoryAdapter implements IAuthRepository {
     }
 
     @Override
-    public Maintainer logIn(Credentials credentials) {
+    public Maintainer logIn(String username, String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        credentials.username(),
-                        credentials.password()));
+                        username,
+                        password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

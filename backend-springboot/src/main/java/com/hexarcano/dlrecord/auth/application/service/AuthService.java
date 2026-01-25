@@ -1,24 +1,25 @@
 package com.hexarcano.dlrecord.auth.application.service;
 
-import com.hexarcano.dlrecord.auth.application.port.in.ILogIn;
-import com.hexarcano.dlrecord.auth.application.port.in.ISignUp;
-import com.hexarcano.dlrecord.auth.application.port.in.dto.Credentials;
+import com.hexarcano.dlrecord.auth.application.port.in.LoginUseCase;
+import com.hexarcano.dlrecord.auth.application.port.in.SignUpUseCase;
+import com.hexarcano.dlrecord.auth.application.port.in.command.LoginCommand;
+import com.hexarcano.dlrecord.auth.application.port.in.command.SignUpCommand;
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-public class AuthService implements ILogIn, ISignUp {
-    private final ILogIn logIn;
-    private final ISignUp signUp;
+@RequiredArgsConstructor
+public class AuthService implements LoginUseCase, SignUpUseCase {
+    private final LoginUseCase loginUseCase;
+    private final SignUpUseCase signUpUseCase;
 
     @Override
-    public Maintainer signUp(Maintainer maintainer) {
-        return signUp.signUp(maintainer);
+    public Maintainer signUp(SignUpCommand command) {
+        return signUpUseCase.signUp(command);
     }
 
     @Override
-    public Maintainer logIn(Credentials credentials) {
-        return logIn.logIn(credentials);
+    public Maintainer logIn(LoginCommand command) {
+        return loginUseCase.logIn(command);
     }
 }
