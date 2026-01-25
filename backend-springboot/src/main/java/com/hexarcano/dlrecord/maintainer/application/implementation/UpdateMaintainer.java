@@ -4,14 +4,14 @@ import java.util.Optional;
 
 import com.hexarcano.dlrecord.maintainer.application.port.in.UpdateMaintainerUseCase;
 import com.hexarcano.dlrecord.maintainer.application.port.in.command.UpdateMaintainerCommand;
-import com.hexarcano.dlrecord.maintainer.application.port.out.IMaintainerRepository;
+import com.hexarcano.dlrecord.maintainer.application.port.out.MaintainerRepositoryPort;
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class UpdateMaintainer implements UpdateMaintainerUseCase {
-    private final IMaintainerRepository maintainerRepository;
+    private final MaintainerRepositoryPort maintainerRepository;
 
     @Override
     public Optional<Maintainer> updateMaintainer(String uuid, UpdateMaintainerCommand command) {

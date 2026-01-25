@@ -6,14 +6,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hexarcano.dlrecord.maintainer.application.port.out.IMaintainerRepository;
+import com.hexarcano.dlrecord.maintainer.application.port.out.MaintainerRepositoryPort;
 import com.hexarcano.dlrecord.maintainer.infrastructure.entities.MaintainerEntity;
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
-public class JpaMaintainerRepositoryAdapter implements IMaintainerRepository {
+@RequiredArgsConstructor
+public class JpaMaintainerRepositoryAdapter implements MaintainerRepositoryPort {
     private final JpaMaintainerRepository repository;
 
     @Override
@@ -22,16 +22,6 @@ public class JpaMaintainerRepositoryAdapter implements IMaintainerRepository {
         MaintainerEntity entity = MaintainerEntity.fromDomainModel(maintainer);
 
         return repository.save(entity).toDomainModel();
-    }
-
-    @Override
-    @Transactional
-    public Optional<Maintainer> update(String uuid, Maintainer maintainer) {
-        return repository.findById(uuid).map(entity -> {
-            entity.setUsername(maintainer.getUsername());
-
-            return repository.save(entity).toDomainModel();
-        });
     }
 
     @Override

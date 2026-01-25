@@ -7,7 +7,7 @@ import com.hexarcano.dlrecord.maintainer.application.implementation.CreateMainta
 import com.hexarcano.dlrecord.maintainer.application.implementation.DeleteMaintainer;
 import com.hexarcano.dlrecord.maintainer.application.implementation.RetrieveMaintainer;
 import com.hexarcano.dlrecord.maintainer.application.implementation.UpdateMaintainer;
-import com.hexarcano.dlrecord.maintainer.application.port.out.IMaintainerRepository;
+import com.hexarcano.dlrecord.maintainer.application.port.out.MaintainerRepositoryPort;
 import com.hexarcano.dlrecord.maintainer.application.service.MaintainerService;
 import com.hexarcano.dlrecord.maintainer.infrastructure.repository.JpaMaintainerRepository;
 import com.hexarcano.dlrecord.maintainer.infrastructure.repository.JpaMaintainerRepositoryAdapter;
@@ -15,7 +15,7 @@ import com.hexarcano.dlrecord.maintainer.infrastructure.repository.JpaMaintainer
 @Configuration
 public class MaintainerModuleConfig {
     @Bean
-    MaintainerService maintainerService(IMaintainerRepository maintainerRepository) {
+    MaintainerService maintainerService(MaintainerRepositoryPort maintainerRepository) {
         return new MaintainerService(
                 new CreateMaintainer(maintainerRepository),
                 new RetrieveMaintainer(maintainerRepository),
@@ -24,7 +24,7 @@ public class MaintainerModuleConfig {
     }
 
     @Bean
-    IMaintainerRepository maintainerRepository(JpaMaintainerRepository jpaMaintainerRepository) {
+    MaintainerRepositoryPort maintainerRepository(JpaMaintainerRepository jpaMaintainerRepository) {
         return new JpaMaintainerRepositoryAdapter(jpaMaintainerRepository);
     }
 }

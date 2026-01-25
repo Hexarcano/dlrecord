@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
-public interface IMaintainerRepository {
+public interface MaintainerRepositoryPort {
     Maintainer save(Maintainer maintainer);
-
-    Optional<Maintainer> update(String uuid, Maintainer maintainer);
 
     Optional<Maintainer> findByUsername(String username);
 
