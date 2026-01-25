@@ -21,7 +21,8 @@ Use these skills for detailed patterns on-demand:
 | Skill | Description | URL |
 |-------|-------------|-----|
 | `project-architecture` | Hexagonal Architecture and DDD rules | [SKILL.md](skills/project-architecture/SKILL.md) |
-| `java-springboot` | Java best practices, Lombok, Testing | [SKILL.md](skills/java-springboot/SKILL.md) |
+| `java-springboot` | Java best practices, Lombok, General Styles | [SKILL.md](skills/java-springboot/SKILL.md) |
+| `java-unit-testing-springboot` | **Detailed** patterns for Unit Testing (Mockito, Optimization, Sad Paths) | [SKILL.md](skills/java-unit-testing-springboot/SKILL.md) |
 
 ### Frontend Skills (Vue.js)
 
@@ -39,5 +40,5 @@ When performing these actions, **ALWAYS** invoke the corresponding skill **FIRST
 | Creating new modules or refactoring | `project-architecture` |
 | Creating or modifying Vue.js components | `vue-frontend` |
 | Creating a commit or pull request | `git-workflow` |
-| Writing Unit Tests (Java) | `java-springboot` |
+| Writing Unit Tests (Java) | `java-unit-testing-springboot` |
 

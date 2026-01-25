@@ -45,14 +45,11 @@ Use Lombok to reduce boilerplate, but follow these rules:
 
 ## 5. Testing
 
+> **IMPORTANT**: For detailed Testing patterns (Mocks, Verifications, Optimizations), refer to the specialized **`java-unit-testing-springboot`** skill.
+
 *   **Framework**: JUnit 5 + Mockito.
-*   **Unit Tests**:
-    *   Classes ending in `Test`.
-    *   Use `@ExtendWith(MockitoExtension.class)`.
-    *   Mock dependencies using `@Mock` and inject with `@InjectMocks`.
-*   **Integration Tests**:
-    *   Classes ending in `IT`.
-    *   Use `@SpringBootTest(webEnvironment = RANDOM_PORT)`.
+*   **Unit Tests**: Use `@ExtendWith(MockitoExtension.class)`.
+*   **Integration Tests**: Use `@SpringBootTest(webEnvironment = RANDOM_PORT)`.
 
 ## 6. Code Style (Spotless/Checkstyle)
 
