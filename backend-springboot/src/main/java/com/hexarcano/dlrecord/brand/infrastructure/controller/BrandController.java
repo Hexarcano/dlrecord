@@ -90,7 +90,7 @@ public class BrandController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteBrand(@PathVariable String id) {
-        return (brandService.deleteBrand(id)) ? new ResponseEntity<>(HttpStatus.OK)
+        return (brandService.deleteBrand(id)) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
