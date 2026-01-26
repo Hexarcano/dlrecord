@@ -47,9 +47,7 @@ class CreateBrandTest {
     void shouldThrowException_WhenNameIsInvalid() {
         CreateBrandCommand command = new CreateBrandCommand("");
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            createBrand.createBrand(command);
-        });
+        assertThrows(IllegalArgumentException.class, () -> createBrand.createBrand(command));
 
         verify(brandRepository, never()).save(any(Brand.class));
     }

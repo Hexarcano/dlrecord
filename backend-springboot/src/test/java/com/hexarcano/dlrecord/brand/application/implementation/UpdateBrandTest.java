@@ -1,6 +1,7 @@
 package com.hexarcano.dlrecord.brand.application.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -55,6 +56,19 @@ class UpdateBrandTest {
         when(brandRepository.findById(uuid)).thenReturn(Optional.of(existingBrand));
 
         updateBrand.updateBrand(uuid, command);
+
+        verify(brandRepository, never()).save(any(Brand.class));
+    }
+
+    @Test
+    void shouldThrowException_WhenNameIsInvalid() {
+        String uuid = "uuid-123";
+        Brand existingBrand = new Brand(uuid, "ValidName");
+        UpdateBrandCommand command = new UpdateBrandCommand("");
+
+        when(brandRepository.findById(uuid)).thenReturn(Optional.of(existingBrand));
+
+        assertThrows(IllegalArgumentException.class, () -> updateBrand.updateBrand(uuid, command));
 
         verify(brandRepository, never()).save(any(Brand.class));
     }

@@ -98,6 +98,22 @@ class BrandControllerTest {
 
     @Test
     @WithMockUser(username = "user")
+    void createBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
+        CreateBrandRequest request = new CreateBrandRequest("");
+
+        when(brandService.createBrand(any(CreateBrandCommand.class)))
+                .thenThrow(new IllegalArgumentException("Invalid name"));
+
+        mockMvc.perform(post("/api/v1/brands")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Invalid name"));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void getAllBrands_ShouldReturn200_WhenUserIsAuthenticated() throws Exception {
         Brand brand1 = new Brand("1", "Samsung");
         Brand brand2 = new Brand("2", "Apple");
@@ -172,6 +188,22 @@ class BrandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void updateBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
+        UpdateBrandRequest request = new UpdateBrandRequest("");
+
+        when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
+                .thenThrow(new IllegalArgumentException("Invalid name"));
+
+        mockMvc.perform(put("/api/v1/brands/1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Invalid name"));
     }
 
     @Test
