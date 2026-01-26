@@ -44,204 +44,204 @@ import tools.jackson.databind.ObjectMapper;
 @Import({ WebSecurityConfig.class, JwtAuthFilter.class })
 class BrandControllerTest {
 
-        private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-        @Autowired
-        private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-        @MockitoBean
-        private BrandService brandService;
+	@MockitoBean
+	private BrandService brandService;
 
-        @MockitoBean
-        private JwtService jwtService;
+	@MockitoBean
+	private JwtService jwtService;
 
-        @MockitoBean
-        private UserDetailsService userDetailsService;
+	@MockitoBean
+	private UserDetailsService userDetailsService;
 
-        @Autowired
-        private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-        @BeforeEach
-        void setUp() {
-                mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                                .apply(springSecurity())
-                                .build();
-        }
+	@BeforeEach
+	void setUp() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(context)
+				.apply(springSecurity())
+				.build();
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void createBrand_ShouldReturn201_WhenUserIsAuthenticated() throws Exception {
-                CreateBrandRequest request = new CreateBrandRequest("Samsung");
-                Brand createdBrand = new Brand("uuid-123", "Samsung");
+	@Test
+	@WithMockUser(username = "user")
+	void createBrand_ShouldReturn201_WhenUserIsAuthenticated() throws Exception {
+		CreateBrandRequest request = new CreateBrandRequest("Samsung");
+		Brand createdBrand = new Brand("uuid-123", "Samsung");
 
-                when(brandService.createBrand(any(CreateBrandCommand.class))).thenReturn(createdBrand);
+		when(brandService.createBrand(any(CreateBrandCommand.class))).thenReturn(createdBrand);
 
-                mockMvc.perform(post("/api/v1/brands")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.uuid").value("uuid-123"))
-                                .andExpect(jsonPath("$.name").value("Samsung"));
-        }
+		mockMvc.perform(post("/api/v1/brands")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.uuid").value("uuid-123"))
+				.andExpect(jsonPath("$.name").value("Samsung"));
+	}
 
-        @Test
-        void createBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
-                CreateBrandRequest request = new CreateBrandRequest("Samsung");
+	@Test
+	void createBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+		CreateBrandRequest request = new CreateBrandRequest("Samsung");
 
-                mockMvc.perform(post("/api/v1/brands")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isUnauthorized());
-        }
+		mockMvc.perform(post("/api/v1/brands")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isUnauthorized());
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void createBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
-                CreateBrandRequest request = new CreateBrandRequest("");
+	@Test
+	@WithMockUser(username = "user")
+	void createBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
+		CreateBrandRequest request = new CreateBrandRequest("");
 
-                when(brandService.createBrand(any(CreateBrandCommand.class)))
-                                .thenThrow(new IllegalArgumentException("Invalid name"));
+		when(brandService.createBrand(any(CreateBrandCommand.class)))
+				.thenThrow(new IllegalArgumentException("Invalid name"));
 
-                mockMvc.perform(post("/api/v1/brands")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.error").value("Invalid name"));
-        }
+		mockMvc.perform(post("/api/v1/brands")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.error").value("Invalid name"));
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void getAllBrands_ShouldReturn200_WhenUserIsAuthenticated() throws Exception {
-                Brand brand1 = new Brand("1", "Samsung");
-                Brand brand2 = new Brand("2", "Apple");
+	@Test
+	@WithMockUser(username = "user")
+	void getAllBrands_ShouldReturn200_WhenUserIsAuthenticated() throws Exception {
+		Brand brand1 = new Brand("1", "Samsung");
+		Brand brand2 = new Brand("2", "Apple");
 
-                when(brandService.findAll()).thenReturn(Arrays.asList(brand1, brand2));
+		when(brandService.findAll()).thenReturn(Arrays.asList(brand1, brand2));
 
-                mockMvc.perform(get("/api/v1/brands"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.size()").value(2))
-                                .andExpect(jsonPath("$[0].name").value("Samsung"))
-                                .andExpect(jsonPath("$[1].name").value("Apple"));
-        }
+		mockMvc.perform(get("/api/v1/brands"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.size()").value(2))
+				.andExpect(jsonPath("$[0].name").value("Samsung"))
+				.andExpect(jsonPath("$[1].name").value("Apple"));
+	}
 
-        @Test
-        void getAllBrands_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
-                mockMvc.perform(get("/api/v1/brands"))
-                                .andExpect(status().isUnauthorized());
-        }
+	@Test
+	void getAllBrands_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+		mockMvc.perform(get("/api/v1/brands"))
+				.andExpect(status().isUnauthorized());
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void findBrandById_ShouldReturn200_WhenFound() throws Exception {
-                Brand brand = new Brand("1", "Samsung");
+	@Test
+	@WithMockUser(username = "user")
+	void findBrandById_ShouldReturn200_WhenFound() throws Exception {
+		Brand brand = new Brand("1", "Samsung");
 
-                when(brandService.findById("1")).thenReturn(Optional.of(brand));
+		when(brandService.findById("1")).thenReturn(Optional.of(brand));
 
-                mockMvc.perform(get("/api/v1/brands/1"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name").value("Samsung"));
-        }
+		mockMvc.perform(get("/api/v1/brands/1"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.name").value("Samsung"));
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void findBrandById_ShouldReturn404_WhenNotFound() throws Exception {
-                when(brandService.findById("1")).thenReturn(Optional.empty());
+	@Test
+	@WithMockUser(username = "user")
+	void findBrandById_ShouldReturn404_WhenNotFound() throws Exception {
+		when(brandService.findById("1")).thenReturn(Optional.empty());
 
-                mockMvc.perform(get("/api/v1/brands/1"))
-                                .andExpect(status().isNotFound());
-        }
+		mockMvc.perform(get("/api/v1/brands/1"))
+				.andExpect(status().isNotFound());
+	}
 
-        @Test
-        void findBrandById_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
-                mockMvc.perform(get("/api/v1/brands/1"))
-                                .andExpect(status().isUnauthorized());
-        }
+	@Test
+	void findBrandById_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+		mockMvc.perform(get("/api/v1/brands/1"))
+				.andExpect(status().isUnauthorized());
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void updateBrand_ShouldReturn200_WhenSuccessful() throws Exception {
-                UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
-                Brand updatedBrand = new Brand("1", "Samsung Updated");
+	@Test
+	@WithMockUser(username = "user")
+	void updateBrand_ShouldReturn200_WhenSuccessful() throws Exception {
+		UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
+		Brand updatedBrand = new Brand("1", "Samsung Updated");
 
-                when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
-                                .thenReturn(Optional.of(updatedBrand));
+		when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
+				.thenReturn(Optional.of(updatedBrand));
 
-                mockMvc.perform(put("/api/v1/brands/1")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.name").value("Samsung Updated"));
-        }
+		mockMvc.perform(put("/api/v1/brands/1")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.name").value("Samsung Updated"));
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void updateBrand_ShouldReturn404_WhenNotFound() throws Exception {
-                UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
+	@Test
+	@WithMockUser(username = "user")
+	void updateBrand_ShouldReturn404_WhenNotFound() throws Exception {
+		UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
 
-                when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class))).thenReturn(Optional.empty());
+		when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class))).thenReturn(Optional.empty());
 
-                mockMvc.perform(put("/api/v1/brands/1")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isNotFound());
-        }
+		mockMvc.perform(put("/api/v1/brands/1")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isNotFound());
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void updateBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
-                UpdateBrandRequest request = new UpdateBrandRequest("");
+	@Test
+	@WithMockUser(username = "user")
+	void updateBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
+		UpdateBrandRequest request = new UpdateBrandRequest("");
 
-                when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
-                                .thenThrow(new IllegalArgumentException("Invalid name"));
+		when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
+				.thenThrow(new IllegalArgumentException("Invalid name"));
 
-                mockMvc.perform(put("/api/v1/brands/1")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.error").value("Invalid name"));
-        }
+		mockMvc.perform(put("/api/v1/brands/1")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.error").value("Invalid name"));
+	}
 
-        @Test
-        void updateBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
-                UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
+	@Test
+	void updateBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+		UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
 
-                mockMvc.perform(put("/api/v1/brands/1")
-                                .with(csrf())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request)))
-                                .andExpect(status().isUnauthorized());
-        }
+		mockMvc.perform(put("/api/v1/brands/1")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isUnauthorized());
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void deleteBrand_ShouldReturn204_WhenSuccessful() throws Exception {
-                when(brandService.deleteBrand("1")).thenReturn(true);
+	@Test
+	@WithMockUser(username = "user")
+	void deleteBrand_ShouldReturn204_WhenSuccessful() throws Exception {
+		when(brandService.deleteBrand("1")).thenReturn(true);
 
-                mockMvc.perform(delete("/api/v1/brands/1")
-                                .with(csrf()))
-                                .andExpect(status().isNoContent());
-        }
+		mockMvc.perform(delete("/api/v1/brands/1")
+				.with(csrf()))
+				.andExpect(status().isNoContent());
+	}
 
-        @Test
-        @WithMockUser(username = "user")
-        void deleteBrand_ShouldReturn404_WhenNotFound() throws Exception {
-                when(brandService.deleteBrand("1")).thenReturn(false);
+	@Test
+	@WithMockUser(username = "user")
+	void deleteBrand_ShouldReturn404_WhenNotFound() throws Exception {
+		when(brandService.deleteBrand("1")).thenReturn(false);
 
-                mockMvc.perform(delete("/api/v1/brands/1")
-                                .with(csrf()))
-                                .andExpect(status().isNotFound());
-        }
+		mockMvc.perform(delete("/api/v1/brands/1")
+				.with(csrf()))
+				.andExpect(status().isNotFound());
+	}
 
-        @Test
-        void deleteBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
-                mockMvc.perform(delete("/api/v1/brands/1")
-                                .with(csrf()))
-                                .andExpect(status().isUnauthorized());
-        }
+	@Test
+	void deleteBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+		mockMvc.perform(delete("/api/v1/brands/1")
+				.with(csrf()))
+				.andExpect(status().isUnauthorized());
+	}
 }
