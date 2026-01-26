@@ -6,7 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

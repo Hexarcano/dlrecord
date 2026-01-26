@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.hexarcano.dlrecord.auth.application.port.in.SignUpUseCase;
 import com.hexarcano.dlrecord.auth.application.port.in.command.SignUpCommand;
 import com.hexarcano.dlrecord.auth.application.port.out.AuthRepositoryPort;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 

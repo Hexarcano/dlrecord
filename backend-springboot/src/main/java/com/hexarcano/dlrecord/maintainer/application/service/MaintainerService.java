@@ -9,7 +9,7 @@ import com.hexarcano.dlrecord.maintainer.application.port.in.RetrieveMaintainerU
 import com.hexarcano.dlrecord.maintainer.application.port.in.UpdateMaintainerUseCase;
 import com.hexarcano.dlrecord.maintainer.application.port.in.command.CreateMaintainerCommand;
 import com.hexarcano.dlrecord.maintainer.application.port.in.command.UpdateMaintainerCommand;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 

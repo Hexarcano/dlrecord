@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexarcano.dlrecord.maintainer.application.service.MaintainerService;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 import com.hexarcano.dlrecord.maintainer.infrastructure.controller.dto.CreateMaintainerRequest;
 import com.hexarcano.dlrecord.maintainer.infrastructure.controller.dto.UpdateMaintainerRequest;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,7 +54,7 @@ public class MaintainerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMaintainer(@PathVariable String id) {
         return maintainerService.deleteMaintainer(id)
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.notFound().build();
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

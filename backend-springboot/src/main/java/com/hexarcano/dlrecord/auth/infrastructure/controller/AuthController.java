@@ -13,7 +13,7 @@ import com.hexarcano.dlrecord.auth.infrastructure.controller.dto.LoginRequest;
 import com.hexarcano.dlrecord.auth.infrastructure.controller.dto.RefreshTokenRequest;
 import com.hexarcano.dlrecord.auth.infrastructure.controller.dto.SignUpRequest;
 import com.hexarcano.dlrecord.config.token.JwtService;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

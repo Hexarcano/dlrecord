@@ -3,7 +3,7 @@ package com.hexarcano.dlrecord.maintainer.application.port.out;
 import java.util.List;
 import java.util.Optional;
 
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 public interface MaintainerRepositoryPort {
     Maintainer save(Maintainer maintainer);

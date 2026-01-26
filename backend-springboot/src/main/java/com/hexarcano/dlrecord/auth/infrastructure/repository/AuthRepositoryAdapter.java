@@ -7,9 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.hexarcano.dlrecord.auth.application.port.out.AuthRepositoryPort;
 import com.hexarcano.dlrecord.auth.infrastructure.entities.AuthUser;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 import com.hexarcano.dlrecord.maintainer.infrastructure.entities.MaintainerEntity;
 import com.hexarcano.dlrecord.maintainer.infrastructure.repository.JpaMaintainerRepository;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 

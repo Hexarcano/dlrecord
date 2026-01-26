@@ -1,4 +1,4 @@
-package com.hexarcano.dlrecord.maintainer.model;
+package com.hexarcano.dlrecord.maintainer.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

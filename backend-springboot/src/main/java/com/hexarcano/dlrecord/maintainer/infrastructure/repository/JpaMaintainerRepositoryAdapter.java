@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hexarcano.dlrecord.maintainer.application.port.out.MaintainerRepositoryPort;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 import com.hexarcano.dlrecord.maintainer.infrastructure.entities.MaintainerEntity;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 

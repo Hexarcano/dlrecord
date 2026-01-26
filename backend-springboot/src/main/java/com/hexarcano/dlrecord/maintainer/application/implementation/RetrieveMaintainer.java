@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.hexarcano.dlrecord.maintainer.application.port.in.RetrieveMaintainerUseCase;
 import com.hexarcano.dlrecord.maintainer.application.port.out.MaintainerRepositoryPort;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 

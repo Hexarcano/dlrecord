@@ -3,7 +3,7 @@ package com.hexarcano.dlrecord.auth.application.implementation;
 import com.hexarcano.dlrecord.auth.application.port.in.LoginUseCase;
 import com.hexarcano.dlrecord.auth.application.port.in.command.LoginCommand;
 import com.hexarcano.dlrecord.auth.application.port.out.AuthRepositoryPort;
-import com.hexarcano.dlrecord.maintainer.model.Maintainer;
+import com.hexarcano.dlrecord.maintainer.domain.model.Maintainer;
 
 import lombok.RequiredArgsConstructor;
 
