@@ -23,7 +23,6 @@ Use Lombok to reduce boilerplate, but follow these rules:
 
 ## 2. Java Modern Practices (Java 25)
 
-*   **Var**: Use `var` for local variables where type is obvious.
 *   **Records**: Use `record` for simple data carriers (DTOs, Value Objects) if mutability is not required.
 *   **Streams**: Use Streams API for collection processing. Avoid complex nested `for` loops.
 *   **Switch**: Use enhanced `switch` expressions.
