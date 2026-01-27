@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.hexarcano.dlrecord.config.exception.UsernameNotFoundException;
+import com.hexarcano.dlrecord.device.domain.exception.DeviceInvalidDataException;
 
 /**
  * Global exception handler for the application's controllers.
@@ -31,6 +32,13 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        Map<String, String> errorBody = Map.of("error", ex.getMessage());
+        return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DeviceInvalidDataException.class)
+    public ResponseEntity<Map<String, String>> handleDeviceInvalidDataException(
+            DeviceInvalidDataException ex) {
         Map<String, String> errorBody = Map.of("error", ex.getMessage());
         return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
     }
