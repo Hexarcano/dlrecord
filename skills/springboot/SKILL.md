@@ -1,11 +1,18 @@
 ---
-name: java-springboot
-description: Java coding standards, Spring Boot best practices, Lombok usage, and Testing guidelines.
+name: springboot
+description: >
+    Java coding standards, Spring Boot best practices, Lombok usage, and Testing guidelines.
+    Trigger: When implementing backend logic (Services, Controllers, APIs) or modifying Spring Components.
 metadata:
   author: hexarcano
   scope: [backend, coding]
-  auto_invoke: "Writing Java code, creating classes, writing tests"
-allowed-tools: Read, Edit, Write, Grep
+  auto_invoke:
+    - "Creating Services or Repositories"
+    - "Implementing DTOs or Models"
+    - "Designing REST Controllers"
+    - "Applying Lombok annotations
+    - "Refactoring existing code"
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 
 # Java & Spring Boot Coding Standards
@@ -13,7 +20,8 @@ allowed-tools: Read, Edit, Write, Grep
 ## 1. Lombok Usage
 
 Use Lombok to reduce boilerplate, but follow these rules:
-*   ✅ **@Data**: Use for DTOs and mutable domain objects (if carefully designed).
+*   ✅ **@Data**: Use for DTOs and mutable domain objects. **FORBIDDEN** on JPA Entities (breaks hashcode/equals/lazy loading).
+*   ✅ **@Getter / @Setter**: Use this combination for JPA Entities.
 *   ✅ **@Value**: Use for immutable Value Objects (Domain).
 *   ✅ **@Builder**: Recommended for complex object creation.
 *   ✅ **@RequiredArgsConstructor**: MANDATORY for Dependency Injection (Controllers, Services, Adapters).
@@ -21,21 +29,35 @@ Use Lombok to reduce boilerplate, but follow these rules:
 *   ⚠️ **@ToString** / **@EqualsAndHashCode**: Be careful with circular dependencies (exclude relationships).
 *   ❌ **@AllArgsConstructor**: Forbidden on Spring Components (use RequiredArgs); Discouraged on JPA Entities.
 
-## 2. Java Modern Practices (Java 25)
+## 2. Architecture & Packaging (Hexagonal Quick-Ref)
+
+*   **Structure**: Feature-based packaging (`com.hexarcano.dlrecord.<feature>`).
+    *   `domain`: Pure Java logic (Models, Exceptions). NO Spring dependencies.
+    *   `application`: Use Cases (`Service`), Input/Output Ports.
+    *   `infrastructure`: Adapters (Controllers, JPA Entities, Config).
+*   **Mapping**: Manual mapping methods preferred inside DTOs/Entities (`toDomainModel()`, `fromDomainModel()`).
+
+> **NOTE:** For deep architectural rules (Layers, Dependencies), refer to `skills/project-architecture/SKILL.md`.
+
+## 3. Java Modern Practices
 
 *   **Records**: Use `record` for simple data carriers (DTOs, Value Objects) if mutability is not required.
 *   **Streams**: Use Streams API for collection processing. Avoid complex nested `for` loops.
 *   **Switch**: Use enhanced `switch` expressions.
 
-## 3. Spring Boot Patterns
+## 4. Spring Boot & JPA Patterns
 
-*   **Dependency Injection**: Constructor Injection always (`@RequiredArgsConstructor`).
+*   **Dependency Injection**: Constructor Injection (`@RequiredArgsConstructor`) is mandatory. No `@Autowired` on fields.
+*   **IDs**: Use **UUID** (String) for primary keys (`@GeneratedValue(strategy = GenerationType.UUID)`).
+*   **Controller**: Use `@RequestMapping("/api/v1/<resource>")`. Return `ResponseEntity`. Prefer fluent API (e.g., `ResponseEntity.notFound().build()`) over `new ResponseEntity<>(HttpStatus...)`.
 *   **Validation**: Use `jakarta.validation` (`@NotNull`, `@Email`) on DTOs.
 *   **Exception Handling**:
     *   Throw specific runtime exceptions (e.g., `UserNotFoundException`).
-    *   Let `@ControllerAdvice` handle the HTTP response mapping.
+    *   Let `@ControllerAdvice` handle the HTTP response mapping (do NOT try-catch in Controllers).
+*   **Auditing**: Use `@EntityListeners(AuditingEntityListener.class)` on Entities with `createdAt`/`updatedAt`.
+*   **Pagination**: **MANDATORY** for list endpoints (`findAll`). Use `Pageable` as Controller argument and return `Page<T>` (not `List<T>`).
 
-## 4. Import Management
+## 5. Import Management
 
 ### Prohibit Fully Qualified Names (FQN)
 
@@ -43,7 +65,6 @@ Use Lombok to reduce boilerplate, but follow these rules:
 **Exception:** Only use FQN if there is a class name collision (e.g. `java.util.Date` vs `java.sql.Date`).
 
 **Bad Example:**
-
 ```java
 public void configure(org.springframework.security.config.annotation.web.builders.HttpSecurity http) {
     http.sessionManagement(s -> s.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS));
@@ -51,7 +72,6 @@ public void configure(org.springframework.security.config.annotation.web.builder
 ```
 
 **Good Example:**
-
 ```java
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -61,14 +81,14 @@ public void configure(HttpSecurity http) {
 }
 ```
 
-## 5. Naming Conventions
+## 6. Naming Conventions
 
 *   **Classes**: PascalCase (`UserService`).
 *   **Methods**: camelCase (`saveUser`).
 *   **Constants**: UPPER_SNAKE_CASE (`MAX_RETRY_COUNT`).
 *   **Generics**: Single uppercase letter (`T`, `R`) or descriptive (`TUser`).
 
-## 6. Testing
+## 7. Testing
 
 > **IMPORTANT**: For detailed Testing patterns (Mocks, Verifications, Optimizations), refer to the specialized **`java-unit-testing-springboot`** skill.
 
@@ -76,7 +96,7 @@ public void configure(HttpSecurity http) {
 *   **Unit Tests**: Use `@ExtendWith(MockitoExtension.class)`.
 *   **Integration Tests**: Use `@SpringBootTest(webEnvironment = RANDOM_PORT)`.
 
-## 7. Code Style (Spotless/Checkstyle)
+## 8. Code Style (Spotless/Checkstyle)
 
 *   **Indentation**: 4 spaces (or match project .editorconfig).
 *   **Braces**: K&R style (same line).

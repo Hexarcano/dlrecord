@@ -1,11 +1,18 @@
 ---
 name: project-architecture
-description: Strict guidelines for Hexagonal Architecture (Ports & Adapters) and Domain-Driven Design (DDD) structure.
+description: >
+    Strict guidelines for Hexagonal Architecture (Ports & Adapters) and Domain-Driven Design (DDD) structure.
+    Trigger: When creating new modules, refactoring package structure, or designing system components.
 metadata:
   author: hexarcano
+  version: "1.0"
   scope: [backend, architecture]
-  auto_invoke: "Creating new modules, refactoring package structure, designing system components"
-allowed-tools: Read, Write, Glob, Grep
+  auto_invoke:
+    - "Creating new feature modules (e.g. auth, payment)"
+    - "Checking naming convention"
+    - "Refactoring package structure"
+    - "Designing Domain Models or Use Cases"
+allowed-tools: Read, Write, Glob, Grep, Task
 ---
 
 # Project Architecture Rules (Hexagonal & DDD)
@@ -18,64 +25,64 @@ allowed-tools: Read, Write, Glob, Grep
     *   `Infrastructure` depends on `Application` and `Domain`.
 2.  **Separation of Concerns**: Isolate business logic (`Domain`) from technical details (`Infrastructure`).
 
-## Module Structure (Bounding Context)
 
-Each logical module (e.g., `auth`, `devicemodel`) must follow this directory layout:
+## Module Structure (Hexagonal Feature-Based)
+
+Structure by Feature (`com.hexarcano.dlrecord.<feature>`):
 
 ```text
-<module_name>/
-├── application/                # ORCHESTRATION LAYER
-│   ├── implementation          # Implementation of 'port.in' (Use Cases)
-│   ├── port/
-│   │   ├── in/                 # Use Case Interfaces (Inputs)
-│   │   │   └── command/        # Input Commands (Records/POJOs) for Use Cases
-│   │   └── out/                # Repository/External System Interfaces (Outputs)
-│   └── service/                # Facade joining and implementing all Input Ports, delegating to implementation classes.
-├── domain/                     # BUSINESS RULES LAYER
-│   ├── model/                  # Entities, Aggregates, Value Objects (POJOs)
+<feature>/
+├── domain/                     # 1. ENTERPRISE LOGIC (Pure Java)
+│   ├── model/                  # POJOs (Entities, Aggregates)
 │   └── exception/              # Domain-specific exceptions
-└── infrastructure/             # ADAPTERS LAYER
-    ├── adapter/                # Implementations of 'port.out'
-    ├── config/                 # Spring @Configuration beans
-    ├── controller/             # REST Controllers
-    ├── entity/                 # JPA/Database Entities
-    └── repository/             # Spring Data Repositories
+├── application/                # 2. APPLICATION LOGIC
+│   ├── port/
+│   │   ├── in/                 # Interfaces (Use Cases)
+│   │   └── out/                # Interfaces (Repo/External Ports)
+│   ├── service/                # Implementation of Input Ports
+│   └── implementation/         # Specific logic for use cases if needed
+└── infrastructure/             # 3. ADAPTERS (Frameworks)
+    ├── controller/             # REST Adapters (Web)
+    ├── entity/                 # JPA Entities (Persistence)
+    ├── repository/             # Spring Data Interfaces
+    ├── adapter/                # Implementation of Output Ports
+    └── config/                 # Spring Configurations
 ```
 
-## Layer Definitions & Rules
+## Naming Strategy (Strict)
+
+| Component | Pattern | Example |
+| :--- | :--- | :--- |
+| **Use Case (Interface)** | `<Verb><Resource>UseCase` | `CreateBrandUseCase` |
+| **Use Case (Impl)** | `<Verb><Resource>` | `CreateBrand` |
+| **Command (Input)** | `<Verb><Resource>Command` | `CreateBrandCommand` |
+| **Service (Facade)** | `<Resource>Service` | `BrandService` |
+| **Repository Port** | `<Resource>RepositoryPort` | `BrandRepositoryPort` |
+| **Repository Adapter** | `Jpa<Resource>RepositoryAdapter` | `JpaBrandRepositoryAdapter` |
+| **JPA Entity** | `<Resource>Entity` | `BrandEntity` |
+| **Controller** | `<Resource>Controller` | `BrandController` |
+| **DTO (Response/Request)** | `<Action><Resource><Request/Response>` | `CreateBrandRequest` |
+
+## Layer Rules & Mappings
 
 ### 1. Domain Layer (`domain`)
 
-*   **Content**: Pure Java objects reflecting business reality.
-*   **Rules**:
-    *   ✅ **POJOs Only**: No Spring framework annotations (`@Service`, `@Autowired`).
-    *   ❌ **No Persistence**: Never use JPA annotations (`@Entity`, `@Table`) here.
-    *   Logic: Rich behavioral models.
+*   **Rules**: Zero Framework Dependencies (No Spring, No JPA).
+*   **Content**: Business value objects composed of primitive types.
 
 ### 2. Application Layer (`application`)
 
-*   **Content**: Application logic, flow control.
-*   **Rules**:
-    *   ✅ **Implementation**: Actual implement `port.in` of use cases.
-    *   ✅ **Service**: Facade that centralizes and call `port.in` interfaces for controller calls.
-    *   ✅ **Ports**: Interfaces only. `port.in` defines what the app *can do*. `port.out` defines what the app *needs*.
-    *   ✅ **Commands**: Use specific Command objects (Java Records) in `port.in.command` for input data (e.g. `UpdateDeviceCommand`), decoupling Controller from Domain.
-    *   ❌ **Anotations**: Never use JPA / framework annotations.
+*   **Rules**: Orchestrates the flow. Depends strictly on `domain` and `port`.
+*   **Ports**: Interfaces defining WHAT to do, not HOW.
 
 ### 3. Infrastructure Layer (`infrastructure`)
 
-*   **Content**: Framework specific implementations (Web, Database, Messaging).
-*   **Rules**:
-    *   ✅ **Controllers**: Convert HTTP DTOs to Commands (App Layer). Call `application.service`.
-    *   ✅ **Persistence**: Implement `port.out`. Map `domain.model` to `infrastructure.entity` before saving.
-    *   ✅ **Access**: Never access `infrastructure` classes from `domain` or `application`.
-    *   ✅ **Configuration**: All module configuration using spring `@Configuration` annotation in <\<module_name>ModuleConfig>.
-    *   ❌ **Anotations**: Never use Spring configuration annotation outside <\<module_name>ModuleConfig>.
+*   **Rules**: Implements the technical details. Depends on `application` and `domain`.
+*   **Mapping Strategy (CRITICAL)**:
+    *   **Manual Mapping**: Do NOT use AutoMapper/MapStruct unless authorized.
+    *   **Entities**: Must have `toDomainModel()` and `fromDomainModel()` methods.
+    *   **Controller**: Maps DTOs -> Commands -> Domain Models.
 
+## Data Flow
 
-## Data Conversion Strategy
-
-*   **Request** (`Web DTO`) → **Controller** → `Command` → `Domain` (Service)
-*   **Service** → **Repository Port**
-*   **Repository Adapter** → `Domain` → `JPA Entity` (save)
-*   **Database** → `JPA Entity` → `Domain` (load)
+`Request` -> `Controller` -> `Service (Port In)` -> `Domain Logic` -> `Port Out` -> `Adapter` -> `DB/External`
