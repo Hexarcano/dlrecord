@@ -56,6 +56,7 @@ Use Lombok to reduce boilerplate, but follow these rules:
     *   Let `@ControllerAdvice` handle the HTTP response mapping (do NOT try-catch in Controllers).
 *   **Auditing**: Use `@EntityListeners(AuditingEntityListener.class)` on Entities with `createdAt`/`updatedAt`.
 *   **Pagination**: **MANDATORY** for list endpoints (`findAll`). Use `Pageable` as Controller argument and return `Page<T>` (not `List<T>`).
+*   **Entities**: MUST annotate with `@Entity` and `@Table(name = "snake_case_name")`. Do not rely on default naming.
 
 ## 5. Import Management
 
