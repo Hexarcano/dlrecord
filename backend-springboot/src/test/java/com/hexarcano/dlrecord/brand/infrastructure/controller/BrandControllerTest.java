@@ -18,7 +18,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +43,7 @@ import com.hexarcano.dlrecord.config.token.JwtService;
 
 import tools.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+@WebMvcTest(controllers = BrandController.class)
 @Import({ WebSecurityConfig.class, JwtAuthFilter.class })
 class BrandControllerTest {
 
