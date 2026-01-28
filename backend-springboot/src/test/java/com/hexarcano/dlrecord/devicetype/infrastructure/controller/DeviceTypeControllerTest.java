@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,18 +15,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.hexarcano.dlrecord.config.WebSecurityConfig;
 import com.hexarcano.dlrecord.config.token.JwtAuthFilter;
@@ -40,14 +37,12 @@ import com.hexarcano.dlrecord.devicetype.infrastructure.controller.dto.UpdateDev
 
 import tools.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+@WebMvcTest(controllers = DeviceTypeController.class)
 @Import({ WebSecurityConfig.class, JwtAuthFilter.class })
 class DeviceTypeControllerTest {
 
-	private MockMvc mockMvc;
-
 	@Autowired
-	private WebApplicationContext context;
+	private MockMvc mockMvc;
 
 	@MockitoBean
 	private DeviceTypeService deviceTypeService;
@@ -61,16 +56,9 @@ class DeviceTypeControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@BeforeEach
-	void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(context)
-				.apply(springSecurity())
-				.build();
-	}
-
 	@Test
 	@WithMockUser(username = "user")
-	void createDeviceType_ShouldReturn201_WhenUserIsAuthenticated() throws Exception {
+	void shouldReturn201_WhenUserIsAuthenticated() throws Exception {
 		CreateDeviceTypeRequest request = new CreateDeviceTypeRequest("Smartphone");
 		DeviceType createdDeviceType = new DeviceType("uuid-123", "Smartphone");
 
@@ -87,7 +75,7 @@ class DeviceTypeControllerTest {
 	}
 
 	@Test
-	void createDeviceType_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+	void shouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
 		CreateDeviceTypeRequest request = new CreateDeviceTypeRequest("Smartphone");
 
 		mockMvc.perform(post("/api/v1/device-types")
@@ -99,7 +87,7 @@ class DeviceTypeControllerTest {
 
 	@Test
 	@WithMockUser(username = "user")
-	void createDeviceType_ShouldReturn400_WhenDataIsInvalid() throws Exception {
+	void shouldReturn400_WhenDataIsInvalid() throws Exception {
 		CreateDeviceTypeRequest request = new CreateDeviceTypeRequest("");
 
 		when(deviceTypeService.createDeviceType(any(CreateDeviceTypeCommand.class)))
@@ -114,7 +102,7 @@ class DeviceTypeControllerTest {
 
 	@Test
 	@WithMockUser(username = "user")
-	void getAllDeviceTypes_ShouldReturn200_WhenUserIsAuthenticated() throws Exception {
+	void shouldReturn200_WhenGettingAllDeviceTypes() throws Exception {
 		DeviceType dt1 = new DeviceType("1", "Smartphone");
 		DeviceType dt2 = new DeviceType("2", "Tablet");
 
@@ -127,14 +115,14 @@ class DeviceTypeControllerTest {
 	}
 
 	@Test
-	void getAllDeviceTypes_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+	void shouldReturn401_WhenGettingAllDeviceTypesUnauthenticated() throws Exception {
 		mockMvc.perform(get("/api/v1/device-types"))
 				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	@WithMockUser(username = "user")
-	void findDeviceTypeById_ShouldReturn200_WhenFound() throws Exception {
+	void shouldReturn200_WhenDeviceTypeIsFound() throws Exception {
 		DeviceType dt = new DeviceType("1", "Smartphone");
 
 		when(deviceTypeService.findById("1")).thenReturn(Optional.of(dt));
@@ -146,7 +134,7 @@ class DeviceTypeControllerTest {
 
 	@Test
 	@WithMockUser(username = "user")
-	void findDeviceTypeById_ShouldReturn404_WhenNotFound() throws Exception {
+	void shouldReturn404_WhenDeviceTypeIsNotFound() throws Exception {
 		when(deviceTypeService.findById("1")).thenReturn(Optional.empty());
 
 		mockMvc.perform(get("/api/v1/device-types/1"))
@@ -154,14 +142,14 @@ class DeviceTypeControllerTest {
 	}
 
 	@Test
-	void findDeviceTypeById_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+	void shouldReturn401_WhenFindingDeviceTypeByIdUnauthenticated() throws Exception {
 		mockMvc.perform(get("/api/v1/device-types/1"))
 				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
 	@WithMockUser(username = "user")
-	void updateDeviceType_ShouldReturn200_WhenSuccessful() throws Exception {
+	void shouldReturn200_WhenUpdateDeviceTypeIsSuccessful() throws Exception {
 		UpdateDeviceTypeRequest request = new UpdateDeviceTypeRequest("Smartphone Updated");
 		DeviceType updatedDt = new DeviceType("1", "Smartphone Updated");
 
@@ -178,7 +166,7 @@ class DeviceTypeControllerTest {
 
 	@Test
 	@WithMockUser(username = "user")
-	void updateDeviceType_ShouldReturn404_WhenNotFound() throws Exception {
+	void shouldReturn404_WhenUpdatingDeviceTypeThatDoesNotExist() throws Exception {
 		UpdateDeviceTypeRequest request = new UpdateDeviceTypeRequest("Smartphone Updated");
 
 		when(deviceTypeService.updateDeviceType(eq("1"), any(UpdateDeviceTypeCommand.class)))
@@ -192,7 +180,7 @@ class DeviceTypeControllerTest {
 	}
 
 	@Test
-	void updateDeviceType_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+	void shouldReturn401_WhenUpdatingDeviceTypeUnauthenticated() throws Exception {
 		UpdateDeviceTypeRequest request = new UpdateDeviceTypeRequest("Updated");
 
 		mockMvc.perform(put("/api/v1/device-types/1")
@@ -204,7 +192,7 @@ class DeviceTypeControllerTest {
 
 	@Test
 	@WithMockUser(username = "user")
-	void deleteDeviceType_ShouldReturn204_WhenSuccessful() throws Exception {
+	void shouldReturn204_WhenDeleteDeviceTypeIsSuccessful() throws Exception {
 		when(deviceTypeService.deleteDeviceType("1")).thenReturn(true);
 
 		mockMvc.perform(delete("/api/v1/device-types/1")
@@ -214,7 +202,7 @@ class DeviceTypeControllerTest {
 
 	@Test
 	@WithMockUser(username = "user")
-	void deleteDeviceType_ShouldReturn404_WhenNotFound() throws Exception {
+	void shouldReturn404_WhenDeletingDeviceTypeThatDoesNotExist() throws Exception {
 		when(deviceTypeService.deleteDeviceType("1")).thenReturn(false);
 
 		mockMvc.perform(delete("/api/v1/device-types/1")
@@ -223,7 +211,7 @@ class DeviceTypeControllerTest {
 	}
 
 	@Test
-	void deleteDeviceType_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
+	void shouldReturn401_WhenDeletingDeviceTypeUnauthenticated() throws Exception {
 		mockMvc.perform(delete("/api/v1/device-types/1")
 				.with(csrf()))
 				.andExpect(status().isUnauthorized());

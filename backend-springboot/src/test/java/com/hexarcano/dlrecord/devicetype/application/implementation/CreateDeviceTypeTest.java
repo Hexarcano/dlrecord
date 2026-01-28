@@ -28,7 +28,7 @@ class CreateDeviceTypeTest {
     private CreateDeviceType createDeviceType;
 
     @Test
-    void createDeviceType_ShouldReturnCreatedDeviceType() {
+    void shouldReturnCreatedDeviceType() {
         // Arrange
         CreateDeviceTypeCommand command = new CreateDeviceTypeCommand("Smartphone");
         DeviceType savedDeviceType = new DeviceType("uuid-123", "Smartphone");
@@ -46,7 +46,7 @@ class CreateDeviceTypeTest {
     }
 
     @Test
-    void createDeviceType_ShouldThrowException_WhenNameIsInvalid() {
+    void shouldThrowException_WhenNameIsInvalid() {
         // Arrange
         CreateDeviceTypeCommand command = new CreateDeviceTypeCommand("Smart_phone123");
 

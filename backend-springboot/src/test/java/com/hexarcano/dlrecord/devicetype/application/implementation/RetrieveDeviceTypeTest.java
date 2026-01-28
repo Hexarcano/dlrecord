@@ -27,7 +27,7 @@ class RetrieveDeviceTypeTest {
     private RetrieveDeviceType retrieveDeviceType;
 
     @Test
-    void findById_ShouldReturnDeviceType_WhenExists() {
+    void shouldReturnDeviceType_WhenExists() {
         // Arrange
         String uuid = "uuid-123";
         DeviceType deviceType = new DeviceType(uuid, "Smartphone");
@@ -43,7 +43,7 @@ class RetrieveDeviceTypeTest {
     }
 
     @Test
-    void findById_ShouldReturnEmpty_WhenNotExists() {
+    void shouldReturnEmpty_WhenNotExists() {
         // Arrange
         String uuid = "uuid-123";
 
@@ -57,7 +57,7 @@ class RetrieveDeviceTypeTest {
     }
 
     @Test
-    void findAll_ShouldReturnListOfDeviceTypes() {
+    void shouldReturnListOfDeviceTypes() {
         // Arrange
         DeviceType dt1 = new DeviceType("1", "Smartphone");
         DeviceType dt2 = new DeviceType("2", "Tablet");

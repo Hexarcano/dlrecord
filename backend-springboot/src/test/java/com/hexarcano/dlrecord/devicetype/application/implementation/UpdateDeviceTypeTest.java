@@ -30,7 +30,7 @@ class UpdateDeviceTypeTest {
     private UpdateDeviceType updateDeviceType;
 
     @Test
-    void updateDeviceType_ShouldReturnUpdatedDeviceType_WhenExists() {
+    void shouldReturnUpdatedDeviceType_WhenExists() {
         // Arrange
         String uuid = "uuid-123";
         UpdateDeviceTypeCommand command = new UpdateDeviceTypeCommand("Smartphone Updated");
@@ -50,7 +50,7 @@ class UpdateDeviceTypeTest {
     }
 
     @Test
-    void updateDeviceType_ShouldReturnEmpty_WhenNotExists() {
+    void shouldReturnEmpty_WhenNotExists() {
         // Arrange
         String uuid = "uuid-123";
         UpdateDeviceTypeCommand command = new UpdateDeviceTypeCommand("Smartphone Updated");
@@ -65,7 +65,7 @@ class UpdateDeviceTypeTest {
     }
 
     @Test
-    void updateDeviceType_ShouldThrowException_WhenNameIsInvalid() {
+    void shouldThrowException_WhenNameIsInvalid() {
         // Arrange
         String uuid = "uuid-123";
         UpdateDeviceTypeCommand command = new UpdateDeviceTypeCommand("Smart_phone123");

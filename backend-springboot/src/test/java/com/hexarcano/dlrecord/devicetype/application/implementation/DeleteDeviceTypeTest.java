@@ -22,7 +22,7 @@ class DeleteDeviceTypeTest {
     private DeleteDeviceType deleteDeviceType;
 
     @Test
-    void shouldReturnTrue_WhenDeleteSuccessful() {
+    void shouldReturnTrue_WhenDeleteDeviceTypeIsSuccessful() {
         // Arrange
         String uuid = "uuid-123";
         when(deviceTypeRepository.deleteById(uuid)).thenReturn(true);
