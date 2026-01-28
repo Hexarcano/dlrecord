@@ -49,9 +49,6 @@ public class Brand {
      * @throws IllegalArgumentException if the validation fails.
      */
     private void validateName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Brand name cannot be null or empty.");
-        }
         // Use \\p{L} to match any Unicode letter character, including accents.
         if (!name.matches("^[\\p{L}\\s]+$")) {
             throw new IllegalArgumentException("Brand name can only contain letters and spaces.");

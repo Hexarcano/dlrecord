@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,5 +95,18 @@ public class BrandController {
         return brandService.updateBrand(id, request.toUpdateBrandCommand())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * REST endpoint to delete a brand by its unique ID.
+     * 
+     * @param id The unique identifier of the brand to delete.
+     * @return A {@link ResponseEntity} with HTTP status 204 (No Content) if
+     *         deleted,
+     *         or HTTP status 404 (Not Found) if brand does not exist.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBrand(@PathVariable String id) {
+        return (brandService.deleteBrand(id)) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

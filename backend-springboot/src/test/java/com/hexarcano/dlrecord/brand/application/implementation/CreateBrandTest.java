@@ -51,4 +51,13 @@ class CreateBrandTest {
 
         verify(brandRepository, never()).save(any(Brand.class));
     }
+
+    @Test
+    void shouldThrowException_WhenNameContainsInvalidCharacters() {
+        CreateBrandCommand command = new CreateBrandCommand("Samsung123");
+
+        assertThrows(IllegalArgumentException.class, () -> createBrand.createBrand(command));
+
+        verify(brandRepository, never()).save(any(Brand.class));
+    }
 }

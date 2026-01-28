@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -31,6 +33,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.hexarcano.dlrecord.brand.application.port.in.command.CreateBrandCommand;
 import com.hexarcano.dlrecord.brand.application.port.in.command.UpdateBrandCommand;
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
+import com.hexarcano.dlrecord.brand.domain.exception.BrandAlreadyExistsException;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.CreateBrandRequest;
 import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.UpdateBrandRequest;
@@ -101,15 +104,13 @@ class BrandControllerTest {
 	void createBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
 		CreateBrandRequest request = new CreateBrandRequest("");
 
-		when(brandService.createBrand(any(CreateBrandCommand.class)))
-				.thenThrow(new IllegalArgumentException("Invalid name"));
-
 		mockMvc.perform(post("/api/v1/brands")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.error").value("Invalid name"));
+				.andExpect(jsonPath("$.error").value("Bad Request"))
+				.andExpect(jsonPath("$.details").value("Brand name is required"));
 	}
 
 	@Test
@@ -117,14 +118,15 @@ class BrandControllerTest {
 	void getAllBrands_ShouldReturn200_WhenUserIsAuthenticated() throws Exception {
 		Brand brand1 = new Brand("1", "Samsung");
 		Brand brand2 = new Brand("2", "Apple");
+		Page<Brand> brandPage = new PageImpl<>(Arrays.asList(brand1, brand2));
 
-		when(brandService.findAll()).thenReturn(Arrays.asList(brand1, brand2));
+		when(brandService.findAll(any())).thenReturn(brandPage);
 
 		mockMvc.perform(get("/api/v1/brands"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.size()").value(2))
-				.andExpect(jsonPath("$[0].name").value("Samsung"))
-				.andExpect(jsonPath("$[1].name").value("Apple"));
+				.andExpect(jsonPath("$.content.size()").value(2))
+				.andExpect(jsonPath("$.content[0].name").value("Samsung"))
+				.andExpect(jsonPath("$.content[1].name").value("Apple"));
 	}
 
 	@Test
@@ -196,15 +198,13 @@ class BrandControllerTest {
 	void updateBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
 		UpdateBrandRequest request = new UpdateBrandRequest("");
 
-		when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
-				.thenThrow(new IllegalArgumentException("Invalid name"));
-
 		mockMvc.perform(put("/api/v1/brands/1")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.error").value("Invalid name"));
+				.andExpect(jsonPath("$.error").value("Bad Request"))
+				.andExpect(jsonPath("$.details").value("Brand name is required"));
 	}
 
 	@Test
@@ -216,6 +216,36 @@ class BrandControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	@WithMockUser(username = "user")
+	void updateBrand_ShouldReturn409_WhenBrandNameAlreadyExists() throws Exception {
+		UpdateBrandRequest request = new UpdateBrandRequest("Existing Brand");
+
+		when(brandService.updateBrand(eq("1"), any(UpdateBrandCommand.class)))
+				.thenThrow(BrandAlreadyExistsException.ofName("Existing Brand"));
+
+		mockMvc.perform(put("/api/v1/brands/1")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isConflict());
+	}
+
+	@Test
+	@WithMockUser(username = "user")
+	void createBrand_ShouldReturn409_WhenBrandNameAlreadyExists() throws Exception {
+		CreateBrandRequest request = new CreateBrandRequest("Existing Brand");
+
+		when(brandService.createBrand(any(CreateBrandCommand.class)))
+				.thenThrow(BrandAlreadyExistsException.ofName("Existing Brand"));
+
+		mockMvc.perform(post("/api/v1/brands")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isConflict());
 	}
 
 	@Test
