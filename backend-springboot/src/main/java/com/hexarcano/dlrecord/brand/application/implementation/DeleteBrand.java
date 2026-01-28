@@ -1,5 +1,7 @@
 package com.hexarcano.dlrecord.brand.application.implementation;
 
+import org.springframework.stereotype.Service;
+
 import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
 import com.hexarcano.dlrecord.config.exception.DataConflictException;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
  * {@link BrandRepositoryPort} output port to delete the brand data.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class DeleteBrand implements DeleteBrandUseCase {
     private final BrandRepositoryPort brandRepository;

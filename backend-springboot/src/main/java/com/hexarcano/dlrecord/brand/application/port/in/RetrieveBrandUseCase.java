@@ -1,7 +1,9 @@
 package com.hexarcano.dlrecord.brand.application.port.in;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
@@ -21,9 +23,10 @@ public interface RetrieveBrandUseCase {
     Optional<Brand> findById(String uuid);
 
     /**
-     * Retrieves all brands.
+     * Retrieves all brands with pagination.
      *
-     * @return A {@link List} of all {@link Brand} objects.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of {@link Brand} objects.
      */
-    List<Brand> findAll();
+    Page<Brand> findAll(Pageable pageable);
 }

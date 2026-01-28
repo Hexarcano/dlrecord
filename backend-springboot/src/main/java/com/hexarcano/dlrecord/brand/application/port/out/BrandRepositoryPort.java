@@ -1,7 +1,9 @@
 package com.hexarcano.dlrecord.brand.application.port.out;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 
@@ -33,11 +35,12 @@ public interface BrandRepositoryPort {
     Optional<Brand> findById(String uuid);
 
     /**
-     * Retrieves all brands from the repository.
+     * Retrieves all brands from the repository with pagination.
      *
-     * @return A {@link List} of all brands. May be empty if none exist.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of brands. May be empty if none exist.
      */
-    List<Brand> findAll();
+    Page<Brand> findAll(Pageable pageable);
 
     /**
      * Updates an existing brand in the repository.
@@ -58,10 +61,18 @@ public interface BrandRepositoryPort {
     boolean deleteById(String uuid);
 
     /**
-     * Checks if a brand exists in the repository by its unique identifier.
+     * Checks if a brand exists in repository by its unique identifier.
      *
      * @param uuid The ID of the brand to check.
      * @return {@code true} if the brand exists, {@code false} otherwise.
      */
     boolean existsById(String uuid);
+
+    /**
+     * Checks if a brand exists in repository by its name.
+     *
+     * @param name The name of the brand to check.
+     * @return {@code true} if the brand exists, {@code false} otherwise.
+     */
+    boolean existsByName(String name);
 }

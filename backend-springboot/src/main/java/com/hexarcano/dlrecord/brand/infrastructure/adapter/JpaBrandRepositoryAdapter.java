@@ -1,14 +1,17 @@
 package com.hexarcano.dlrecord.brand.infrastructure.adapter;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
+import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.brand.infrastructure.entity.BrandEntity;
 import com.hexarcano.dlrecord.brand.infrastructure.repository.JpaBrandRepository;
-import com.hexarcano.dlrecord.brand.domain.model.Brand;
+
+import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
  * abstracting away the underlying persistence-specific {@link BrandEntity}.
  * </p>
  */
+@Repository
 @RequiredArgsConstructor
 public class JpaBrandRepositoryAdapter implements BrandRepositoryPort {
     private final JpaBrandRepository repository;
@@ -55,14 +59,15 @@ public class JpaBrandRepositoryAdapter implements BrandRepositoryPort {
     }
 
     /**
-     * Retrieves all brands from the database.
+     * Retrieves all brands from the database with pagination.
      *
-     * @return A {@link List} of all {@link Brand} domain models.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of all {@link Brand} domain models.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Brand> findAll() {
-        return repository.findAll().stream().map(BrandEntity::toDomainModel).toList();
+    public Page<Brand> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(BrandEntity::toDomainModel);
     }
 
     /**
@@ -102,5 +107,10 @@ public class JpaBrandRepositoryAdapter implements BrandRepositoryPort {
     @Override
     public boolean existsById(String uuid) {
         return repository.existsById(uuid);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return repository.existsByName(name);
     }
 }

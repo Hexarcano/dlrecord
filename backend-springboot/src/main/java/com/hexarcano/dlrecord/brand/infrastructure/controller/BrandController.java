@@ -1,23 +1,25 @@
 package com.hexarcano.dlrecord.brand.infrastructure.controller;
 
-import java.util.List;
+import java.net.URI;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.hexarcano.dlrecord.brand.application.service.BrandService;
 import com.hexarcano.dlrecord.brand.domain.model.Brand;
 import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.CreateBrandRequest;
 import com.hexarcano.dlrecord.brand.infrastructure.controller.dto.UpdateBrandRequest;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -39,23 +41,29 @@ public class BrandController {
      *         201 (Created).
      */
     @PostMapping()
-    public ResponseEntity<Brand> createBrand(@RequestBody CreateBrandRequest request) {
+    public ResponseEntity<Brand> createBrand(@Valid @RequestBody CreateBrandRequest request) {
         Brand createdBrand = brandService.createBrand(request.toCreateBrandCommand());
 
-        return new ResponseEntity<Brand>(createdBrand, HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdBrand.getUuid())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdBrand);
     }
 
     /**
-     * REST endpoint to retrieve all brands.
+     * REST endpoint to retrieve all brands with pagination.
      * 
-     * @return A {@link ResponseEntity} with a list of all brands and an HTTP status
+     * @param pageable The pagination information.
+     * @return A {@link ResponseEntity} with a page of all brands and an HTTP status
      *         of 200 (OK).
      */
     @GetMapping()
-    public ResponseEntity<List<Brand>> getAllBrands() {
-        List<Brand> list = brandService.findAll();
+    public ResponseEntity<Page<Brand>> getAllBrands(Pageable pageable) {
+        Page<Brand> page = brandService.findAll(pageable);
 
-        return new ResponseEntity<List<Brand>>(list, HttpStatus.OK);
+        return ResponseEntity.ok(page);
     }
 
     /**
@@ -68,29 +76,23 @@ public class BrandController {
     @GetMapping("/{id}")
     public ResponseEntity<Brand> findBrandById(@PathVariable String id) {
         return brandService.findById(id)
-                .map(brand -> new ResponseEntity<Brand>(brand, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable String id, @RequestBody UpdateBrandRequest request) {
-        return brandService.updateBrand(id, request.toUpdateBrandCommand())
-                .map(brand -> new ResponseEntity<Brand>(brand, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
-     * REST endpoint to delete a brand by its unique ID.
+     * REST endpoint to completely replace an existing brand.
      * 
-     * @param id The unique identifier of the brand to delete, passed in the URL
-     *           path.
-     * @return A {@link ResponseEntity} with HTTP status 200 (OK) if deletion was
-     *         successful, or HTTP status 404 (Not Found) if the brand does not
+     * @param id      The unique identifier of brand to update.
+     * @param request The complete brand data for replacement.
+     * @return A {@link ResponseEntity} with updated brand and HTTP status 200
+     *         (OK), or HTTP status 404 (Not Found) if brand does not
      *         exist.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteBrand(@PathVariable String id) {
-        return (brandService.deleteBrand(id)) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PutMapping("/{id}")
+    public ResponseEntity<Brand> updateBrand(@PathVariable String id, @Valid @RequestBody UpdateBrandRequest request) {
+        return brandService.updateBrand(id, request.toUpdateBrandCommand())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

@@ -1,7 +1,10 @@
 package com.hexarcano.dlrecord.brand.application.implementation;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.hexarcano.dlrecord.brand.application.port.in.RetrieveBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.out.BrandRepositoryPort;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
  * {@link BrandRepositoryPort} output port to fetch brand data.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class RetrieveBrand implements RetrieveBrandUseCase {
     private final BrandRepositoryPort brandRepository;
@@ -35,12 +39,13 @@ public class RetrieveBrand implements RetrieveBrandUseCase {
     }
 
     /**
-     * Retrieves a list of all brands.
+     * Retrieves a page of brands with pagination.
      * 
-     * @return A {@link List} of all {@link Brand} domain models.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of {@link Brand} domain models.
      */
     @Override
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+    public Page<Brand> findAll(Pageable pageable) {
+        return brandRepository.findAll(pageable);
     }
 }

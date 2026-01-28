@@ -1,7 +1,10 @@
 package com.hexarcano.dlrecord.brand.application.service;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.hexarcano.dlrecord.brand.application.port.in.CreateBrandUseCase;
 import com.hexarcano.dlrecord.brand.application.port.in.DeleteBrandUseCase;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
  * application's core logic.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class BrandService implements CreateBrandUseCase, RetrieveBrandUseCase, UpdateBrandUseCase, DeleteBrandUseCase {
     private final CreateBrandUseCase createBrand;
@@ -56,13 +60,15 @@ public class BrandService implements CreateBrandUseCase, RetrieveBrandUseCase, U
     }
 
     /**
-     * Delegates the call to the 'Retrieve Brand' use case to find all brands.
+     * Delegates the call to the 'Retrieve Brand' use case to find all brands with
+     * pagination.
      * 
-     * @return A list of all brands.
+     * @param pageable The pagination information.
+     * @return A page of all brands.
      */
     @Override
-    public List<Brand> findAll() {
-        return retrieveBrand.findAll();
+    public Page<Brand> findAll(Pageable pageable) {
+        return retrieveBrand.findAll(pageable);
     }
 
     @Override

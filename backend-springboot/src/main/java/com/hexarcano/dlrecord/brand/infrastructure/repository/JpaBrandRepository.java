@@ -8,4 +8,6 @@ import com.hexarcano.dlrecord.brand.infrastructure.entity.BrandEntity;
 @Repository
 public interface JpaBrandRepository extends JpaRepository<BrandEntity, String> {
     long deleteByUuid(String uuid);
+
+    boolean existsByName(String name);
 }
