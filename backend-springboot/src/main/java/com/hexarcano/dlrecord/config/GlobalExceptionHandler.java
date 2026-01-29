@@ -39,8 +39,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
-                message,
-                request.getRequestURI());
+                message);
 
         return new ResponseEntity<>(errorResponse, status);
     }
