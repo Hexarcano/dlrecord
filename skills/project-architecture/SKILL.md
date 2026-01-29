@@ -45,8 +45,7 @@ Structure by Feature (`com.hexarcano.dlrecord.<feature>`):
     ├── controller/             # REST Adapters (Web)
     ├── entity/                 # JPA Entities (Persistence)
     ├── repository/             # Spring Data Interfaces
-    ├── adapter/                # Implementation of Output Ports
-    └── config/                 # Spring Configurations
+    └── adapter/                # Implementation of Output Ports
 ```
 
 ## Naming Strategy (Strict)
@@ -67,7 +66,9 @@ Structure by Feature (`com.hexarcano.dlrecord.<feature>`):
 
 ### 1. Domain Layer (`domain`)
 
-*   **Rules**: Zero Framework Dependencies (No Spring, No JPA).
+*   **Rules**:
+    *   Zero Framework Dependencies (No Spring, No JPA).
+    *   **Declarative Exceptions**: Use specific, semantic exception names that reflect business rules (e.g., `BrandNameTooShortException` vs `IllegalArgumentException`).
 *   **Content**: Business value objects composed of primitive types.
 
 ### 2. Application Layer (`application`)

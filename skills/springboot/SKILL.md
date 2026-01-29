@@ -34,7 +34,7 @@ Use Lombok to reduce boilerplate, but follow these rules:
 *   **Structure**: Feature-based packaging (`com.hexarcano.dlrecord.<feature>`).
     *   `domain`: Pure Java logic (Models, Exceptions). NO Spring dependencies.
     *   `application`: Use Cases (`Service`), Input/Output Ports.
-    *   `infrastructure`: Adapters (Controllers, JPA Entities, Config).
+    *   `infrastructure`: Adapters (Controllers, JPA Entities).
 *   **Mapping**: Manual mapping methods preferred inside DTOs/Entities (`toDomainModel()`, `fromDomainModel()`).
 
 > **NOTE:** For deep architectural rules (Layers, Dependencies), refer to `skills/project-architecture/SKILL.md`.
@@ -47,13 +47,17 @@ Use Lombok to reduce boilerplate, but follow these rules:
 
 ## 4. Spring Boot & JPA Patterns
 
-*   **Dependency Injection**: Constructor Injection (`@RequiredArgsConstructor`) is mandatory. No `@Autowired` on fields.
+*   **Auto-Configuration & Dependency Injection**:
+    *   **No Manual Config**: Rely on Spring Boot's auto-configuration and component scanning. Avoid manual `@Bean` definitions or `new` keyword instantiation unless strictly necessary (e.g., external libraries).
+    *   **IoC Container**: Let Spring manage beans using annotations (`@Service`, `@Component`).
+    *   **Injection Style**: Constructor Injection (`@RequiredArgsConstructor`) is **MANDATORY**. Field injection (`@Autowired`) is **FORBIDDEN**.
 *   **IDs**: Use **UUID** (String) for primary keys (`@GeneratedValue(strategy = GenerationType.UUID)`).
 *   **Controller**: Use `@RequestMapping("/api/v1/<resource>")`. Return `ResponseEntity`. Prefer fluent API (e.g., `ResponseEntity.notFound().build()`) over `new ResponseEntity<>(HttpStatus...)`.
 *   **Validation**: Use `jakarta.validation` (`@NotNull`, `@Email`) on DTOs.
 *   **Exception Handling**:
-    *   Throw specific runtime exceptions (e.g., `UserNotFoundException`).
-    *   Let `@ControllerAdvice` handle the HTTP response mapping (do NOT try-catch in Controllers).
+    *   **Custom Exceptions**: Create specific RuntimeExceptions for Use Case/Domain validations (e.g., `InvalidBrandNameException`).
+    *   **Global Handling**: Register ALL custom exceptions in the `GlobalExceptionHandler` (`@RestControllerAdvice`) to map them to appropriate HTTP statuses.
+    *   **No Logic in Controller**: Do NOT use try-catch blocks in Controllers; let the Global Handler utilize the exception mapping.
 *   **Auditing**: Use `@EntityListeners(AuditingEntityListener.class)` on Entities with `createdAt`/`updatedAt`.
 *   **Pagination**: **MANDATORY** for list endpoints (`findAll`). Use `Pageable` as Controller argument and return `Page<T>` (not `List<T>`).
 *   **Entities**: MUST annotate with `@Entity` and `@Table(name = "snake_case_name")`. Do not rely on default naming.
