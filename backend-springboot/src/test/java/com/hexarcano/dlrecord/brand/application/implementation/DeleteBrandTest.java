@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +32,7 @@ class DeleteBrandTest {
     private DeleteBrand deleteBrand;
 
     @Test
+    @DisplayName("should delete brand successfully when brand exists and no associated models")
     void shouldDeleteBrandSuccessfully_WhenBrandExistsAndNoAssociatedModels() {
         String uuid = "uuid-123";
         when(deviceModelRepository.countByBrandUuid(uuid)).thenReturn(0L);
@@ -44,6 +46,7 @@ class DeleteBrandTest {
     }
 
     @Test
+    @DisplayName("should return false when brand does not exist")
     void shouldReturnFalse_WhenBrandDoesNotExist() {
         String uuid = "uuid-123";
         when(deviceModelRepository.countByBrandUuid(uuid)).thenReturn(0L);
@@ -56,6 +59,7 @@ class DeleteBrandTest {
     }
 
     @Test
+    @DisplayName("should throw exception when brand has associated models")
     void shouldThrowException_WhenBrandHasAssociatedModels() {
         String uuid = "uuid-123";
         when(deviceModelRepository.countByBrandUuid(uuid)).thenReturn(5L);

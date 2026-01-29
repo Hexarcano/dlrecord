@@ -75,7 +75,7 @@ public class BrandController {
      *         (OK), or HTTP status 404 (Not Found) if the brand does not exist.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Brand> findBrandById(@PathVariable String id) {
+    public ResponseEntity<Brand> findBrandById(@PathVariable("id") String id) {
         return brandService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -91,7 +91,7 @@ public class BrandController {
      *         exist.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> updateBrand(@PathVariable String id, @Valid @RequestBody UpdateBrandRequest request) {
+    public ResponseEntity<Brand> updateBrand(@PathVariable("id") String id, @Valid @RequestBody UpdateBrandRequest request) {
         return brandService.updateBrand(id, request.toUpdateBrandCommand())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -106,7 +106,7 @@ public class BrandController {
      *         or HTTP status 404 (Not Found) if brand does not exist.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable String id) {
+    public ResponseEntity<Void> deleteBrand(@PathVariable("id") String id) {
         return (brandService.deleteBrand(id)) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

@@ -33,7 +33,7 @@ public class MaintainerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Maintainer> findMaintainerById(@PathVariable String id) {
+    public ResponseEntity<Maintainer> findMaintainerById(@PathVariable("id") String id) {
         return maintainerService.findById(id).map(maintainer -> new ResponseEntity<>(maintainer, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -44,7 +44,7 @@ public class MaintainerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Maintainer> updateMaintainer(@PathVariable String id,
+    public ResponseEntity<Maintainer> updateMaintainer(@PathVariable("id") String id,
             @RequestBody UpdateMaintainerRequest request) {
         return maintainerService.updateMaintainer(id, request.toUpdateMaintainerCommand())
                 .map(maintainer -> new ResponseEntity<>(maintainer, HttpStatus.OK))
@@ -52,7 +52,7 @@ public class MaintainerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMaintainer(@PathVariable String id) {
+    public ResponseEntity<Void> deleteMaintainer(@PathVariable("id") String id) {
         return maintainerService.deleteMaintainer(id)
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -68,7 +68,7 @@ public class DeviceTypeController {
      *         exist.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<DeviceType> findDeviceTypeById(@PathVariable String id) {
+    public ResponseEntity<DeviceType> findDeviceTypeById(@PathVariable("id") String id) {
         return deviceTypeService.findById(id)
                 .map(deviceType -> new ResponseEntity<DeviceType>(deviceType, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -85,7 +85,7 @@ public class DeviceTypeController {
      *         does not exist.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<DeviceType> updateDeviceType(@PathVariable String id,
+    public ResponseEntity<DeviceType> updateDeviceType(@PathVariable("id") String id,
             @RequestBody UpdateDeviceTypeRequest request) {
         return deviceTypeService.updateDeviceType(id, request.toUpdateDeviceTypeCommand())
                 .map(deviceType -> new ResponseEntity<DeviceType>(deviceType, HttpStatus.OK))
@@ -102,7 +102,7 @@ public class DeviceTypeController {
      *         type does not exist.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDeviceType(@PathVariable String id) {
+    public ResponseEntity<Void> deleteDeviceType(@PathVariable("id") String id) {
         return (deviceTypeService.deleteDeviceType(id))
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

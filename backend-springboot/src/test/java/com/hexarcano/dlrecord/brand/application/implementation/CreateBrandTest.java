@@ -9,8 +9,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,10 +30,14 @@ class CreateBrandTest {
     @Mock
     private BrandRepositoryPort brandRepository;
 
+    @Captor
+    private ArgumentCaptor<Brand> brandCaptor;
+
     @InjectMocks
     private CreateBrand createBrand;
 
     @Test
+    @DisplayName("should create brand successfully")
     void shouldCreateBrandSuccessfully() {
         CreateBrandCommand command = new CreateBrandCommand("Samsung");
 
@@ -40,21 +49,20 @@ class CreateBrandTest {
         assertEquals("Samsung", result.getName());
         assertEquals("uuid-123", result.getUuid());
 
-        verify(brandRepository, times(1)).save(any(Brand.class));
+        verify(brandRepository, times(1)).save(brandCaptor.capture());
+        assertEquals("Samsung", brandCaptor.getValue().getName());
     }
 
-    @Test
-    void shouldThrowException_WhenNameIsInvalid() {
-        CreateBrandCommand command = new CreateBrandCommand("");
-
-        assertThrows(IllegalArgumentException.class, () -> createBrand.createBrand(command));
-
-        verify(brandRepository, never()).save(any(Brand.class));
-    }
-
-    @Test
-    void shouldThrowException_WhenNameContainsInvalidCharacters() {
-        CreateBrandCommand command = new CreateBrandCommand("Samsung123");
+    @ParameterizedTest
+    @CsvSource({
+            "''",
+            "Samsung123",
+            "Samsung_Smart",
+            "Samsung@Smart"
+    })
+    @DisplayName("should throw exception when name is invalid")
+    void shouldThrowException_WhenNameIsInvalid(String invalidName) {
+        CreateBrandCommand command = new CreateBrandCommand(invalidName);
 
         assertThrows(IllegalArgumentException.class, () -> createBrand.createBrand(command));
 

@@ -11,8 +11,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,7 +35,8 @@ class UpdateBrandTest {
     @InjectMocks
     private UpdateBrand updateBrand;
 
-	@Test
+    @Test
+    @DisplayName("should update brand when name is different")
     void shouldUpdateBrand_WhenNameIsDifferent() {
         String uuid = "uuid-123";
         Brand existingBrand = new Brand(uuid, "OldName");
@@ -51,7 +55,8 @@ class UpdateBrandTest {
         verify(brandRepository, times(1)).save(any(Brand.class));
     }
 
-	@Test
+    @Test
+    @DisplayName("should not call save when name is same")
     void shouldNotCallSave_WhenNameIsSame() {
         String uuid = "uuid-123";
         Brand existingBrand = new Brand(uuid, "SameName");
@@ -65,11 +70,18 @@ class UpdateBrandTest {
         verify(brandRepository, never()).save(any(Brand.class));
     }
 
-	@Test
-    void shouldThrowException_WhenNameIsInvalid() {
+    @ParameterizedTest
+    @CsvSource({
+            "''",
+            "Invalid123",
+            "Invalid_Smart",
+            "Invalid@Smart"
+    })
+    @DisplayName("should throw exception when name is invalid")
+    void shouldThrowException_WhenNameIsInvalid(String invalidName) {
         String uuid = "uuid-123";
         Brand existingBrand = new Brand(uuid, "ValidName");
-        UpdateBrandCommand command = new UpdateBrandCommand("");
+        UpdateBrandCommand command = new UpdateBrandCommand(invalidName);
 
         when(brandRepository.existsById(uuid)).thenReturn(true);
         when(brandRepository.findById(uuid)).thenReturn(Optional.of(existingBrand));
@@ -80,6 +92,7 @@ class UpdateBrandTest {
     }
 
     @Test
+    @DisplayName("should throw BrandNotFoundException when brand does not exist")
     void shouldThrowBrandNotFoundException_WhenBrandDoesNotExist() {
         String uuid = "non-existent-uuid";
         UpdateBrandCommand command = new UpdateBrandCommand("NewName");
@@ -92,6 +105,7 @@ class UpdateBrandTest {
     }
 
     @Test
+    @DisplayName("should throw BrandAlreadyExistsException when name already exists")
     void shouldThrowBrandAlreadyExistsException_WhenNameAlreadyExists() {
         String uuid = "uuid-123";
         UpdateBrandCommand command = new UpdateBrandCommand("ExistingName");

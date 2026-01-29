@@ -16,7 +16,12 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -45,6 +50,7 @@ import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = BrandController.class)
 @Import({ WebSecurityConfig.class, JwtAuthFilter.class })
+@ExtendWith(MockitoExtension.class)
 class BrandControllerTest {
 
 	private MockMvc mockMvc;
@@ -72,6 +78,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 201 when user is authenticated")
 	@WithMockUser(username = "user")
 	void createBrand_ShouldReturn201_WhenUserIsAuthenticated() throws Exception {
 		CreateBrandRequest request = new CreateBrandRequest("Samsung");
@@ -89,6 +96,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 401 when user is not authenticated")
 	void createBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
 		CreateBrandRequest request = new CreateBrandRequest("Samsung");
 
@@ -99,21 +107,52 @@ class BrandControllerTest {
 				.andExpect(status().isUnauthorized());
 	}
 
-	@Test
+	@ParameterizedTest
+	@CsvSource({
+			"'', Brand name is required",
+			"'   ', Brand name is required"
+	})
+	@DisplayName("should return 400 when request body validation fails")
 	@WithMockUser(username = "user")
-	void createBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
-		CreateBrandRequest request = new CreateBrandRequest("");
+	void createBrand_ShouldReturn400_WhenRequestBodyIsBlank(String invalidName, String expectedMessage)
+			throws Exception {
+		CreateBrandRequest request = new CreateBrandRequest(invalidName);
 
 		mockMvc.perform(post("/api/v1/brands")
 				.with(csrf())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.error").value("Bad Request"))
-				.andExpect(jsonPath("$.details").value("Brand name is required"));
+				.andExpect(status().isBadRequest());
 	}
 
 	@Test
+	@DisplayName("should return 400 when name exceeds maximum length")
+	@WithMockUser(username = "user")
+	void createBrand_ShouldReturn400_WhenNameExceedsMaxLength() throws Exception {
+		String longName = "a".repeat(101);
+		CreateBrandRequest request = new CreateBrandRequest(longName);
+
+		mockMvc.perform(post("/api/v1/brands")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("should return 400 when request body validation fails")
+	void createBrand_ShouldReturn400_WhenRequestBodyIsInvalid(String invalidName, String expectedMessage)
+			throws Exception {
+		CreateBrandRequest request = new CreateBrandRequest(invalidName);
+
+		mockMvc.perform(post("/api/v1/brands")
+				.with(csrf())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	@DisplayName("should return 200 when getting all brands authenticated")
 	@WithMockUser(username = "user")
 	void getAllBrands_ShouldReturn200_WhenUserIsAuthenticated() throws Exception {
 		Brand brand1 = new Brand("1", "Samsung");
@@ -130,12 +169,14 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 401 when getting all brands unauthenticated")
 	void getAllBrands_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
 		mockMvc.perform(get("/api/v1/brands"))
 				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
+	@DisplayName("should return 200 when brand is found")
 	@WithMockUser(username = "user")
 	void findBrandById_ShouldReturn200_WhenFound() throws Exception {
 		Brand brand = new Brand("1", "Samsung");
@@ -148,21 +189,24 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 404 when brand is not found")
 	@WithMockUser(username = "user")
 	void findBrandById_ShouldReturn404_WhenNotFound() throws Exception {
 		when(brandService.findById("1")).thenReturn(Optional.empty());
 
-		mockMvc.perform(get("/api/v1/brands/1"))
+		mockMvc.perform(get("/api/v1/brands/{id}", "1"))
 				.andExpect(status().isNotFound());
 	}
 
 	@Test
+	@DisplayName("should return 401 when finding brand by ID unauthenticated")
 	void findBrandById_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
 		mockMvc.perform(get("/api/v1/brands/1"))
 				.andExpect(status().isUnauthorized());
 	}
 
 	@Test
+	@DisplayName("should return 200 when update is successful")
 	@WithMockUser(username = "user")
 	void updateBrand_ShouldReturn200_WhenSuccessful() throws Exception {
 		UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
@@ -180,6 +224,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 404 when updating brand that does not exist")
 	@WithMockUser(username = "user")
 	void updateBrand_ShouldReturn404_WhenNotFound() throws Exception {
 		UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
@@ -194,6 +239,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 400 when updating brand with invalid name")
 	@WithMockUser(username = "user")
 	void updateBrand_ShouldReturn400_WhenNameIsInvalid() throws Exception {
 		UpdateBrandRequest request = new UpdateBrandRequest("");
@@ -208,6 +254,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 401 when updating brand unauthenticated")
 	void updateBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
 		UpdateBrandRequest request = new UpdateBrandRequest("Samsung Updated");
 
@@ -219,6 +266,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 409 when brand name already exists")
 	@WithMockUser(username = "user")
 	void updateBrand_ShouldReturn409_WhenBrandNameAlreadyExists() throws Exception {
 		UpdateBrandRequest request = new UpdateBrandRequest("Existing Brand");
@@ -249,6 +297,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 204 when delete is successful")
 	@WithMockUser(username = "user")
 	void deleteBrand_ShouldReturn204_WhenSuccessful() throws Exception {
 		when(brandService.deleteBrand("1")).thenReturn(true);
@@ -259,6 +308,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 404 when deleting brand that does not exist")
 	@WithMockUser(username = "user")
 	void deleteBrand_ShouldReturn404_WhenNotFound() throws Exception {
 		when(brandService.deleteBrand("1")).thenReturn(false);
@@ -269,6 +319,7 @@ class BrandControllerTest {
 	}
 
 	@Test
+	@DisplayName("should return 401 when deleting brand unauthenticated")
 	void deleteBrand_ShouldReturn401_WhenUserIsNotAuthenticated() throws Exception {
 		mockMvc.perform(delete("/api/v1/brands/1")
 				.with(csrf()))

@@ -68,7 +68,7 @@ public class DeviceModelController {
      *         exist.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<DeviceModel> findDeviceModelById(@PathVariable String id) {
+    public ResponseEntity<DeviceModel> findDeviceModelById(@PathVariable("id") String id) {
         return deviceModelService.findById(id)
                 .map(deviceModel -> new ResponseEntity<>(deviceModel, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -88,7 +88,7 @@ public class DeviceModelController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<DeviceModel> updateDeviceModel(
-            @PathVariable String id,
+            @PathVariable("id") String id,
             @RequestBody UpdateDeviceModelRequest request) {
         return deviceModelService.updateDeviceModel(id, request.toUpdateDeviceModelCommand())
                 .map(updatedDeviceModel -> new ResponseEntity<>(updatedDeviceModel, HttpStatus.OK))
@@ -105,7 +105,7 @@ public class DeviceModelController {
      *         model does not exist.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDeviceModel(@PathVariable String id) {
+    public ResponseEntity<Void> deleteDeviceModel(@PathVariable("id") String id) {
         return (deviceModelService.deleteDeviceModel(id))
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

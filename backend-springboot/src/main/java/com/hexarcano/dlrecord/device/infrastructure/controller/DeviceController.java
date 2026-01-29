@@ -46,7 +46,7 @@ public class DeviceController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<DeviceResponse> getDevice(@PathVariable String uuid) {
+    public ResponseEntity<DeviceResponse> getDevice(@PathVariable("uuid") String uuid) {
         return deviceService.findById(uuid)
                 .map(device -> new DeviceResponse(
                         device.getUuid(),
@@ -80,7 +80,7 @@ public class DeviceController {
 
     @PutMapping("/{uuid}")
     public ResponseEntity<DeviceResponse> updateDevice(
-            @PathVariable String uuid,
+            @PathVariable("uuid") String uuid,
             @RequestBody UpdateDeviceRequest request) {
 
         Device device = deviceService.updateDevice(request.toUpdateDeviceCommand(uuid));

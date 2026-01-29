@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ class RetrieveBrandTest {
     private RetrieveBrand retrieveBrand;
 
     @Test
+    @DisplayName("should return brand when exists")
     void shouldReturnBrand_WhenExists() {
         String uuid = "uuid-123";
         Brand expectedBrand = new Brand(uuid, "Sony");
