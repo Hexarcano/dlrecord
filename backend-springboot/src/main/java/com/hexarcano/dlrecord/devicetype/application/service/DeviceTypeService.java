@@ -1,7 +1,10 @@
 package com.hexarcano.dlrecord.devicetype.application.service;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.hexarcano.dlrecord.devicetype.application.port.in.CreateDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.in.DeleteDeviceTypeUseCase;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
  * application's core logic.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class DeviceTypeService implements CreateDeviceTypeUseCase, RetrieveDeviceTypeUseCase, UpdateDeviceTypeUseCase,
         DeleteDeviceTypeUseCase {
@@ -58,13 +62,14 @@ public class DeviceTypeService implements CreateDeviceTypeUseCase, RetrieveDevic
 
     /**
      * Delegates the call to the 'Retrieve DeviceType' use case to find all device
-     * types.
+     * types with pagination.
      * 
-     * @return A list of all device types.
+     * @param pageable The pagination information.
+     * @return A page of all device types.
      */
     @Override
-    public List<DeviceType> findAll() {
-        return retrieveDeviceType.findAll();
+    public Page<DeviceType> findAll(Pageable pageable) {
+        return retrieveDeviceType.findAll(pageable);
     }
 
     /**

@@ -2,6 +2,8 @@ package com.hexarcano.dlrecord.devicetype.application.implementation;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.hexarcano.dlrecord.devicetype.application.port.in.UpdateDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.in.command.UpdateDeviceTypeCommand;
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
  * {@link DeviceTypeRepositoryPort} output port to persist the changes.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class UpdateDeviceType implements UpdateDeviceTypeUseCase {
     private final DeviceTypeRepositoryPort deviceTypeRepository;

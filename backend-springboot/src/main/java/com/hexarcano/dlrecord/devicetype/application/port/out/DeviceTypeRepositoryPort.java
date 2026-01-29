@@ -1,7 +1,9 @@
 package com.hexarcano.dlrecord.devicetype.application.port.out;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
@@ -33,11 +35,12 @@ public interface DeviceTypeRepositoryPort {
     Optional<DeviceType> findById(String uuid);
 
     /**
-     * Retrieves all device types from the repository.
+     * Retrieves all device types from the repository with pagination.
      *
-     * @return A {@link List} of all device types. May be empty if none exist.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of device types. May be empty if none exist.
      */
-    List<DeviceType> findAll();
+    Page<DeviceType> findAll(Pageable pageable);
 
     /**
      * Updates an existing device type in the repository.

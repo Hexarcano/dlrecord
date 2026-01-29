@@ -14,17 +14,20 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Represents a DeviceType in the persistence layer.
  */
-@Entity(name = "device_type")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Table(name = "device_type")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class DeviceTypeEntity {
     @Id

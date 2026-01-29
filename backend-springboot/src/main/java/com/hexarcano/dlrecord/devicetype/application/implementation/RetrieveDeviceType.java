@@ -1,7 +1,10 @@
 package com.hexarcano.dlrecord.devicetype.application.implementation;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.hexarcano.dlrecord.devicetype.application.port.in.RetrieveDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
  * {@link DeviceTypeRepositoryPort} output port to fetch device type data.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class RetrieveDeviceType implements RetrieveDeviceTypeUseCase {
     private final DeviceTypeRepositoryPort deviceTypeRepository;
@@ -35,12 +39,13 @@ public class RetrieveDeviceType implements RetrieveDeviceTypeUseCase {
     }
 
     /**
-     * Retrieves a list of all device types.
+     * Retrieves a page of all device types.
      * 
-     * @return A {@link List} of all {@link DeviceType} domain models.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of all {@link DeviceType} domain models.
      */
     @Override
-    public List<DeviceType> findAll() {
-        return deviceTypeRepository.findAll();
+    public Page<DeviceType> findAll(Pageable pageable) {
+        return deviceTypeRepository.findAll(pageable);
     }
 }

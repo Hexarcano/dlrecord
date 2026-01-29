@@ -1,15 +1,16 @@
 package com.hexarcano.dlrecord.devicetype.infrastructure.adapter;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
+import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 import com.hexarcano.dlrecord.devicetype.infrastructure.entity.DeviceTypeEntity;
 import com.hexarcano.dlrecord.devicetype.infrastructure.repository.JpaDeviceTypeRepository;
-import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
  * {@link DeviceTypeEntity}.
  * </p>
  */
+@Repository
 @RequiredArgsConstructor
 public class JpaDeviceTypeRepositoryAdapter implements DeviceTypeRepositoryPort {
     private final JpaDeviceTypeRepository repository;
@@ -57,14 +59,15 @@ public class JpaDeviceTypeRepositoryAdapter implements DeviceTypeRepositoryPort 
     }
 
     /**
-     * Retrieves all device types from the database.
+     * Retrieves all device types from the database with pagination.
      *
-     * @return A {@link List} of all {@link DeviceType} domain models.
+     * @param pageable The pagination information.
+     * @return A {@link Page} of all {@link DeviceType} domain models.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<DeviceType> findAll() {
-        return repository.findAll().stream().map(DeviceTypeEntity::toDomainModel).collect(Collectors.toList());
+    public Page<DeviceType> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(DeviceTypeEntity::toDomainModel);
     }
 
     /**

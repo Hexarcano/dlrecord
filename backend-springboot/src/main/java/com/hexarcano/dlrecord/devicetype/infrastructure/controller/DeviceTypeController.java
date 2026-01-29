@@ -1,8 +1,9 @@
 package com.hexarcano.dlrecord.devicetype.infrastructure.controller;
 
-import java.util.List;
+import java.net.URI;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +13,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.hexarcano.dlrecord.devicetype.application.service.DeviceTypeService;
 import com.hexarcano.dlrecord.devicetype.domain.model.DeviceType;
 import com.hexarcano.dlrecord.devicetype.infrastructure.controller.dto.CreateDeviceTypeRequest;
 import com.hexarcano.dlrecord.devicetype.infrastructure.controller.dto.UpdateDeviceTypeRequest;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -40,23 +43,29 @@ public class DeviceTypeController {
      *         status of 201 (Created).
      */
     @PostMapping()
-    public ResponseEntity<DeviceType> createDeviceType(@RequestBody CreateDeviceTypeRequest request) {
+    public ResponseEntity<DeviceType> createDeviceType(@Valid @RequestBody CreateDeviceTypeRequest request) {
         DeviceType createdDeviceType = deviceTypeService.createDeviceType(request.toCreateDeviceTypeCommand());
 
-        return new ResponseEntity<DeviceType>(createdDeviceType, HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdDeviceType.getUuid())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdDeviceType);
     }
 
     /**
-     * REST endpoint to retrieve all device types.
+     * REST endpoint to retrieve all device types with pagination.
      * 
-     * @return A {@link ResponseEntity} with a list of all device types and an HTTP
+     * @param pageable The pagination information.
+     * @return A {@link ResponseEntity} with a page of all device types and an HTTP
      *         status of 200 (OK).
      */
     @GetMapping()
-    public ResponseEntity<List<DeviceType>> getAllDeviceTypes() {
-        List<DeviceType> list = deviceTypeService.findAll();
+    public ResponseEntity<Page<DeviceType>> getAllDeviceTypes(Pageable pageable) {
+        Page<DeviceType> page = deviceTypeService.findAll(pageable);
 
-        return new ResponseEntity<List<DeviceType>>(list, HttpStatus.OK);
+        return ResponseEntity.ok(page);
     }
 
     /**
@@ -70,8 +79,8 @@ public class DeviceTypeController {
     @GetMapping("/{id}")
     public ResponseEntity<DeviceType> findDeviceTypeById(@PathVariable("id") String id) {
         return deviceTypeService.findById(id)
-                .map(deviceType -> new ResponseEntity<DeviceType>(deviceType, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -86,10 +95,10 @@ public class DeviceTypeController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<DeviceType> updateDeviceType(@PathVariable("id") String id,
-            @RequestBody UpdateDeviceTypeRequest request) {
+            @Valid @RequestBody UpdateDeviceTypeRequest request) {
         return deviceTypeService.updateDeviceType(id, request.toUpdateDeviceTypeCommand())
-                .map(deviceType -> new ResponseEntity<DeviceType>(deviceType, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -104,7 +113,7 @@ public class DeviceTypeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDeviceType(@PathVariable("id") String id) {
         return (deviceTypeService.deleteDeviceType(id))
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

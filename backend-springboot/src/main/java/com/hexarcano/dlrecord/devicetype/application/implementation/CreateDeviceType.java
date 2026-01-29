@@ -1,5 +1,7 @@
 package com.hexarcano.dlrecord.devicetype.application.implementation;
 
+import org.springframework.stereotype.Service;
+
 import com.hexarcano.dlrecord.devicetype.application.port.in.CreateDeviceTypeUseCase;
 import com.hexarcano.dlrecord.devicetype.application.port.in.command.CreateDeviceTypeCommand;
 import com.hexarcano.dlrecord.devicetype.application.port.out.DeviceTypeRepositoryPort;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
  * {@link DeviceTypeRepositoryPort} output port to persist the device type data.
  * </p>
  */
+@Service
 @RequiredArgsConstructor
 public class CreateDeviceType implements CreateDeviceTypeUseCase {
     private final DeviceTypeRepositoryPort deviceTypeRepository;
