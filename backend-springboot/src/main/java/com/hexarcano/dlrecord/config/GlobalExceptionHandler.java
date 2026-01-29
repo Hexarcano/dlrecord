@@ -1,8 +1,11 @@
 package com.hexarcano.dlrecord.config;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.hexarcano.dlrecord.brand.domain.exception.BrandAlreadyExistsException;
 import com.hexarcano.dlrecord.brand.domain.exception.BrandNotFoundException;
+import com.hexarcano.dlrecord.config.dto.ErrorResponse;
+import com.hexarcano.dlrecord.config.exception.DataConflictException;
 import com.hexarcano.dlrecord.config.exception.UsernameNotFoundException;
 import com.hexarcano.dlrecord.device.domain.exception.DeviceInvalidDataException;
 
@@ -20,80 +25,88 @@ import com.hexarcano.dlrecord.device.domain.exception.DeviceInvalidDataException
  * 
  * <p>
  * This class captures specific exceptions and translates them into appropriate
- * HTTP responses.
+ * HTTP responses using a standardized ErrorResponse format.
  * </p>
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
+     * Helper method to build the ResponseEntity.
+     */
+    private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                message,
+                request.getRequestURI());
+
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
+    /**
      * Handles IllegalArgumentException, thrown by domain models when a business
      * rule is violated.
-     *
-     * @param ex The captured IllegalArgumentException.
-     * @return A ResponseEntity with HTTP status 400 (Bad Request) and a
-     *         JSON body containing the error message.
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        Map<String, String> errorBody = Map.of("error", ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex,
+            HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     /**
      * Handles validation errors specifically for @Valid annotations.
-     * Uses standard validation error response format with timestamp.
-     *
-     * @param ex The MethodArgumentNotValidException from validation failure.
-     * @return A ResponseEntity with structured validation error details.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex,
+            HttpServletRequest request) {
+        String errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining(", "));
 
-        response.put("timestamp", java.time.Instant.now().toString());
-        response.put("error", "Bad Request");
-        response.put("status", 400);
-        response.put("details", ex.getBindingResult().getFieldError().getDefaultMessage());
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return buildResponse(HttpStatus.BAD_REQUEST, errors, request);
     }
 
     @ExceptionHandler(BrandNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleBrandNotFoundException(BrandNotFoundException ex) {
-        Map<String, String> errorBody = Map.of("error", ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
+    public ResponseEntity<ErrorResponse> handleBrandNotFoundException(BrandNotFoundException ex,
+            HttpServletRequest request) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
     @ExceptionHandler(BrandAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleBrandAlreadyExistsException(BrandAlreadyExistsException ex) {
-        Map<String, String> errorBody = Map.of("error", ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorBody);
+    public ResponseEntity<ErrorResponse> handleBrandAlreadyExistsException(BrandAlreadyExistsException ex,
+            HttpServletRequest request) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 
     @ExceptionHandler(DeviceInvalidDataException.class)
-    public ResponseEntity<Map<String, String>> handleDeviceInvalidDataException(DeviceInvalidDataException ex) {
-        Map<String, String> errorBody = Map.of("error", ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleDeviceInvalidDataException(DeviceInvalidDataException ex,
+            HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    @ExceptionHandler(DataConflictException.class)
+    public ResponseEntity<ErrorResponse> handleDataConflictException(DataConflictException ex,
+            HttpServletRequest request) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 
     /**
-     * Handles authentication exceptions (BadCredentialsException and
-     * UsernameNotFoundException).
+     * Handles authentication exceptions.
      * Returns a generic error message to prevent user enumeration.
-     *
-     * @param ex The captured exception (either BadCredentials or UsernameNotFound).
-     * @return A ResponseEntity with HTTP status 401 (Unauthorized) and a generic
-     *         error message.
      */
     @ExceptionHandler({ BadCredentialsException.class, UsernameNotFoundException.class })
-    public ResponseEntity<Map<String, String>> handleAuthenticationException(RuntimeException ex) {
-        Map<String, String> errorBody = Map.of("error", "Bad credentials");
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(RuntimeException ex,
+            HttpServletRequest request) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, "Bad credentials", request);
+    }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+    /**
+     * Fallback for unexpected exceptions.
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", request);
     }
 }
